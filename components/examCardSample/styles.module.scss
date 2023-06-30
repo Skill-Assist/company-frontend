@@ -67,6 +67,12 @@
         width: 26px;
         height: 26px;
       }
+
+      .picker {
+        position: absolute;
+        left: 0;
+        top: -100px;
+      }
     }
   }
 

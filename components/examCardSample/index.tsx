@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react"
+
+import { SketchPicker } from 'react-color'
 
 import styles from "./styles.module.scss";
 import Image from "next/image";
@@ -10,31 +12,46 @@ type Company = {
   logo: string;
 };
 
-type Exam = {
-  id: number;
-  entityName: string;
-  owner: string;
-  category: string;
-  subCategory?: string | null;
-  level?: string | null;
-  durationInHours?: string | null;
-  deadline?: string | null;
-  isPublished: boolean;
-  isLive: boolean;
-  isArchived: boolean;
-  status: string;
-};
-
 type Props = {
   company: Company;
   title: string;
+  changeColor: (color: string) => void;
+  changePhoto: () => void;
 };
 
-let examLeftTime: string = "";
-
-const ExamCardSample: React.FC<Props> = ({ company, title }: Props) => {
+const ExamCardSample: React.FC<Props> = ({ company, title, changeColor }: Props) => {
+  // const [color, setColor] = useColor("hex", company.color);
   const [hoverColor, setHoverColor] = useState(false)
   const [hoverPhoto, setHoverPhoto] = useState(false)
+  const [showPicker, setShowPicker] = useState(false)
+
+  const handlePicker = (picker: any) => {
+    let hex = picker.hex
+    let alpha = Math.round(picker.rgb.a * 255).toString(16)
+
+    if(alpha.length < 2) alpha = '0' + alpha
+
+    changeColor(hex+alpha)
+  }
+
+  const useOutsideAlerter = (ref: any) => {
+    useEffect(() => {
+      const handleClickOutside = (event: any) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setShowPicker(false)
+        }
+      }
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
 
   return (
     <div className={styles.card}>
@@ -55,7 +72,18 @@ const ExamCardSample: React.FC<Props> = ({ company, title }: Props) => {
           }
         </div>
         <div className={styles.editIcon}>
-          <EditIcon onMouseEnter={() => setHoverColor(true)} onMouseLeave={() => setHoverColor(false)} />
+          <EditIcon onMouseEnter={() => setHoverColor(true)} onMouseLeave={() => setHoverColor(false)} onClick={() => setShowPicker(true)} />
+          {
+            showPicker && (
+              <div ref={wrapperRef} className={styles.picker}>
+                <SketchPicker
+                  color={company.color}
+                  onChange={(picker: any) => handlePicker(picker)}
+                />
+                {/* <HexColorPicker color={company.color} onChange={changeColor}/> */}
+              </div>
+            )
+          }
         </div>
       </div>
       <div className={styles.content}>

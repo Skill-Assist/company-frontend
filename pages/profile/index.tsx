@@ -24,7 +24,7 @@ const Profile: React.FC = (user: any) => {
   return (
     <Layout sidebar footer header headerTitle='Perfil' active={0} user={user}>
       <div className={styles.profile}>
-        <Image src={Photo} alt='Profile Image' width={140} height={140} />
+        <Image className={styles.profilePhoto} src={Photo} alt='Profile Image' width={140} height={140} />
 
         <div className={styles.grid}>
           <div className={styles.inputContainer}>
@@ -52,7 +52,7 @@ const Profile: React.FC = (user: any) => {
 
         <h3 className={styles.title}>Personalizar</h3>
 
-        <ExamCardSample company={{name: fields.name, color: fields.color, logo: fields.logo}} title='Exemplo de Teste'/>
+        <ExamCardSample company={{name: fields.name, color: fields.color, logo: fields.logo}} title='Exemplo de Teste' changePhoto={() => false} changeColor={(color: string) => setFields({...fields, color: color})}/>
       </div>
     </Layout>
   )

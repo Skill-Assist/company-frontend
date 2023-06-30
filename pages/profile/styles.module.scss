@@ -1,8 +1,10 @@
 .profile {
   margin: 16px 32px;
 
-  img {
+  .profilePhoto {
     margin-bottom: 30px;
+    border: solid 2px black;
+    border-radius: 50%;
   }
 
   .grid {

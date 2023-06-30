@@ -1,0 +1,32 @@
+.profile {
+  margin: 16px 32px;
+
+  img {
+    margin-bottom: 30px;
+  }
+
+  .grid {
+    width: max-content;
+    display: grid;
+    column-gap: 60px;
+    grid-template-columns: repeat(2, 1fr);
+    
+    .inputContainer {
+      margin-left: 16px;
+      margin-bottom: 30px;
+    }
+  }
+
+  .line {
+    width: 80%;
+    max-width: 600px;
+    margin-left: 16px;
+    height: 1px;
+    background-color: #E5E8EB;
+  }
+
+  .title {
+    margin: 30px 0;
+    margin-left: 16px;
+  }
+}

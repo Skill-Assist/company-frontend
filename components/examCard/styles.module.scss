@@ -1,0 +1,70 @@
+.card {
+  min-width: 300px;
+  max-width: 400px;
+  height: 220px;
+  margin: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-1);
+  cursor: pointer;
+
+  &:hover {
+    scale: 1.04;
+    transition: all 0.15s;
+  }
+
+  .header {
+    position: relative;
+    display: flex;
+    height: 60px;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    justify-content: center;
+
+    .logo {
+      display: flex;
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      top: 30px;
+      border-radius: 50%;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 40px;
+    height: calc(100% - 100px);
+    width: 100%;
+
+    .title {
+      font-size: 18px;
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .company {
+      font-size: 16px;
+      color: var(--legend);
+      font-weight: bold;
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      color: var(--legend);
+    
+      p{
+        text-align: center;
+        width: 80%;
+      }
+    }
+  }
+}

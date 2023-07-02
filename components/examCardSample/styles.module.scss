@@ -51,6 +51,10 @@
           width: 36px;
           height: 36px;
         }
+        
+        input[type=file] {
+          display: none;
+        }
       }
     }
 

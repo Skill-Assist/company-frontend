@@ -17,7 +17,7 @@ const s3Service = {
     try {
       const fileParams = {
         Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME,
-        Key: `recruiter/exam-card-image/1.${type}`,
+        Key: `recruiter/exam-card-image/${id}.${type}`,
         ContentType: file.type,
       };
 

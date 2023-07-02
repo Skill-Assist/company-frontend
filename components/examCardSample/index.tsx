@@ -5,6 +5,7 @@ import { SketchPicker } from 'react-color'
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import EditIcon from '@mui/icons-material/Edit'
+import axios from "axios";
 
 type Company = {
   name: string;
@@ -16,14 +17,15 @@ type Props = {
   company: Company;
   title: string;
   changeColor: (color: string) => void;
-  changePhoto: () => void;
+  changePhoto: (file: any) => void;
 };
 
-const ExamCardSample: React.FC<Props> = ({ company, title, changeColor }: Props) => {
+const ExamCardSample: React.FC<Props> = ({ company, title, changeColor, changePhoto }: Props) => {
   // const [color, setColor] = useColor("hex", company.color);
   const [hoverColor, setHoverColor] = useState(false)
   const [hoverPhoto, setHoverPhoto] = useState(false)
   const [showPicker, setShowPicker] = useState(false)
+  const [logo, setLogo] = useState(null)
 
   const handlePicker = (picker: any) => {
     let hex = picker.hex
@@ -58,17 +60,20 @@ const ExamCardSample: React.FC<Props> = ({ company, title, changeColor }: Props)
       <div className={styles.header} style={{ backgroundColor: `${company.color}${hoverColor ? 'ca' : ''}` }}>
         <div className={styles.photoContainer} onMouseEnter={() => setHoverPhoto(true)}
           onMouseLeave={() => setHoverPhoto(false)}>
-          <Image
-            className={styles.logo}
-            src={company.logo}
-            width={0}
-            height={0}
-            alt="company name"
-          />
+            {
+              company.logo && <img
+              className={styles.logo}
+              src={`${company.logo}?`+new Date().getTime()}
+              width={0}
+              height={0}
+              alt="company name"
+            />
+            }
           {
-            hoverPhoto && <div className={styles.editPhoto}>
+            hoverPhoto && <label className={styles.editPhoto} >
               <EditIcon />
-            </div>
+              <input type="file" accept="image/*" onChange={(e) => changePhoto(e)}/>
+            </label>
           }
         </div>
         <div className={styles.editIcon}>

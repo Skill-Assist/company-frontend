@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 
 import Layout from '@/components/layout'
@@ -9,8 +9,12 @@ import ExamCardSample from '@/components/examCardSample'
 
 import Photo from 'public/images/user-photo.svg'
 import Logo from '/public/images/amazon.svg'
+import s3Service from '@/services/s3.service'
+import axios from 'axios'
+import { flushSync } from 'react-dom'
 
 const Profile: React.FC = (user: any) => {
+  const [file, setFile] = useState<any>()
   const [fields, setFields] = useState({
     name: "Amazon",
     email: "rh.team@amazon.com",
@@ -18,8 +22,26 @@ const Profile: React.FC = (user: any) => {
     cnpj: "",
     role: "Recruter",
     color: '#ff0000',
-    logo: Logo
+    logo: "https://bucket-skill-assist.s3.sa-east-1.amazonaws.com/recruiter/exam-card-image/1.svg"
   })
+  
+  const uploadToS3 = async () => {
+    // setFields({...fields, logo: ''})
+    const response = await s3Service.uploadFile("1", file)
+    flushSync(() => {
+      setFields({...fields, logo: response.data})
+     }, []);
+  }
+
+  useEffect(() => {
+    console.log(fields)
+  }, [fields])
+
+  useEffect(() => {
+    if(file) {
+      uploadToS3()
+    }
+  }, [file])
 
   return (
     <Layout sidebar footer header headerTitle='Perfil' active={0} user={user}>
@@ -52,7 +74,7 @@ const Profile: React.FC = (user: any) => {
 
         <h3 className={styles.title}>Personalizar</h3>
 
-        <ExamCardSample company={{name: fields.name, color: fields.color, logo: fields.logo}} title='Exemplo de Teste' changePhoto={() => false} changeColor={(color: string) => setFields({...fields, color: color})}/>
+        <ExamCardSample company={{name: fields.name, color: fields.color, logo: fields.logo}} title='Exemplo de Teste' changePhoto={(file: any) => setFile(file.target.files[0])} changeColor={(color: string) => setFields({...fields, color: color})}/>
       </div>
     </Layout>
   )

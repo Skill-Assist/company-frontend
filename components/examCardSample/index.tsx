@@ -5,12 +5,13 @@ import { SketchPicker } from 'react-color'
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import EditIcon from '@mui/icons-material/Edit'
-import axios from "axios";
+
+import defaultLogo from 'public/images/user-photo.svg'
 
 type Company = {
   name: string;
-  color: string;
-  logo: string;
+  color: string | null;
+  logo: string | null;
 };
 
 type Props = {
@@ -25,7 +26,6 @@ const ExamCardSample: React.FC<Props> = ({ company, title, changeColor, changePh
   const [hoverColor, setHoverColor] = useState(false)
   const [hoverPhoto, setHoverPhoto] = useState(false)
   const [showPicker, setShowPicker] = useState(false)
-  const [logo, setLogo] = useState(null)
 
   const handlePicker = (picker: any) => {
     let hex = picker.hex
@@ -60,13 +60,21 @@ const ExamCardSample: React.FC<Props> = ({ company, title, changeColor, changePh
       <div className={styles.header} style={{ backgroundColor: `${company.color}${hoverColor ? 'ca' : ''}` }}>
         <div className={styles.photoContainer} onMouseEnter={() => setHoverPhoto(true)}
           onMouseLeave={() => setHoverPhoto(false)}>
-            {
-              company.logo && <img
+             {
+              company.logo ? <img
               className={styles.logo}
               src={`${company.logo}?`+new Date().getTime()}
               width={0}
               height={0}
-              alt="company name"
+              alt="company Logo"
+            />
+            :
+            <Image
+              className={styles.logo}
+              src={defaultLogo}
+              width={0}
+              height={0}
+              alt="company Logo"
             />
             }
           {
@@ -82,7 +90,7 @@ const ExamCardSample: React.FC<Props> = ({ company, title, changeColor, changePh
             showPicker && (
               <div ref={wrapperRef} className={styles.picker}>
                 <SketchPicker
-                  color={company.color}
+                  color={company.color || '#ffffff'}
                   onChange={(picker: any) => handlePicker(picker)}
                 />
                 {/* <HexColorPicker color={company.color} onChange={changeColor}/> */}

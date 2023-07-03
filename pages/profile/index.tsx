@@ -1,16 +1,16 @@
-import React, { SetStateAction, useEffect, useState } from "react";
-import styles from "./styles.module.scss";
+import React, { SetStateAction, useEffect, useState } from "react"
+import styles from "./styles.module.scss"
 
-import Layout from "@/components/layout";
-import Image from "next/image";
+import Layout from "@/components/layout"
+import Image from "next/image"
 
 import InputField from "@/components/inputField";
-import ExamCardSample from "@/components/examCardSample";
+import ExamCardSample from "@/components/examCardSample"
 
-import Photo from "public/images/user-photo.svg";
-import s3Service from "@/services/s3.service";
-import { flushSync } from "react-dom";
-import userService from "@/services/user.service";
+import Photo from "public/images/user-photo.svg"
+import s3Service from "@/services/s3.service"
+import { flushSync } from "react-dom"
+import userService from "@/services/user.service"
 
 type Profile = {
   id: string;
@@ -21,7 +21,7 @@ type Profile = {
   roles: string[];
   color: string;
   logo: string | null;
-};
+}
 
 const Profile: React.FC = (user: any) => {
   const [file, setFile] = useState<any>();
@@ -34,41 +34,41 @@ const Profile: React.FC = (user: any) => {
     roles: ["recruiter"],
     color: "#ff0000",
     logo: null,
-  });
+  })
 
   const getProfile = async () => {
-    const response = await userService.getProfile();
+    const response = await userService.getProfile()
 
     if (response.status === 200) {
-      setFields(response.data);
+      setFields(response.data)
     }
-  };
+  }
 
   const handleChange = async (data: any) => {
-    const response = await userService.update(data);
-    const key = Object.getOwnPropertyNames(data)[0];
+    const response = await userService.update(data)
+    const key = Object.getOwnPropertyNames(data)[0]
 
     if (response.status == 200) {
       flushSync(() => {
-        setFields({ ...fields, [key]: data[key] });
-      }, []);
+        setFields({ ...fields, [key]: data[key] })
+      }, [])
     }
-  };
+  }
 
   const uploadToS3 = async () => {
-    const response = await s3Service.uploadFile(fields.id, file);
-    handleChange({ logo: response.data });
-  };
+    const response = await s3Service.uploadFile(fields.id, file)
+    handleChange({ logo: response.data })
+  }
 
   useEffect(() => {
     if (file && fields.id) {
-      uploadToS3();
+      uploadToS3()
     }
-  }, [file]);
+  }, [file])
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    getProfile()
+  }, [])
 
   return (
     <Layout sidebar footer header headerTitle="Perfil" active={0} user={user}>
@@ -150,7 +150,7 @@ const Profile: React.FC = (user: any) => {
         />
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

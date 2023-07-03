@@ -7,8 +7,9 @@ import Mask from "@/utils/mask";
 interface InputField {
   title: string;
   type?: "select" | "input";
+  dataType?: "text" | "number" | "Date" | 'boolean';
   regex?: string;
-  value: string;
+  value: string | number | any;
   placeholder?: string;
   editable?: boolean;
   changeValue?: (value: string) => void;
@@ -18,6 +19,7 @@ const InputField: React.FC<InputField> = ({
   editable,
   title,
   type,
+  dataType,
   regex,
   value,
   placeholder,
@@ -33,21 +35,27 @@ const InputField: React.FC<InputField> = ({
           <form onSubmit={(e) => e.preventDefault()}>
             <input
               id={`${title}_edit`}
-              type="text"
+              type={dataType ? dataType : 'text'}
               pattern={regex ? regex : ""}
               value={newValue}
               onChange={(e) => handleChange(e.target.value)}
               onBlur={() => handleEdit()}
-              onKeyDown={(e) => handleKeyPress(e)}
+              onKeyDown={(e) => dataType == "Date" ? e.preventDefault() : handleKeyPress(e)}
             />
           </form>
         );
       case "select":
-        return false;
+        return (
+          <select value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() =>  handleEdit()}>
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        )
     }
   };
 
   const handleEdit = () => {
+    console.log(newValue)
     if (changeValue) {
       changeValue(newValue);
     }
@@ -82,7 +90,7 @@ const InputField: React.FC<InputField> = ({
       const element = document.getElementById(`${title}_edit`);
 
       if (element) {
-        console.log(element);
+        // console.log(element);
         element.focus();
       }
     }
@@ -101,7 +109,7 @@ const InputField: React.FC<InputField> = ({
       {editable && edit ? (
         generateField()
       ) : (
-        <p>{placeholder ? placeholder : value}</p>
+        <p>{placeholder ? placeholder : String(value)}</p>
       )}
     </div>
   );

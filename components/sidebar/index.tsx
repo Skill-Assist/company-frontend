@@ -47,23 +47,17 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
         icon: HomeIcon,
         text: "Home",
         url: "/",
-        // opened: false,
-        // subItems: [
-        //   {
-        //     text: "Item 1",
-        //   },
-        //   {
-        //     text: "Item 2",
-        //   },
-        //   {
-        //     text: "Item 3",
-        //   },
-        // ],
       },
       {
         icon: ExamsIcon,
         text: "Seus Testes",
         url: "/exams",
+      },
+      {
+        icon: ResultsIcon,
+        text: "Criar Teste",
+        url: "/create",
+        disabled: true
       },
       {
         icon: ResultsIcon,

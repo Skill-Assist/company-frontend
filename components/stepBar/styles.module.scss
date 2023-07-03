@@ -1,0 +1,62 @@
+.stepBar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .container {
+    position: relative;
+    display: flex;
+    width: 60%;
+    max-width: 600px;
+    margin-top: 40px;
+
+    .items {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+
+        .circle {
+          width: 20px;
+          height: 20px;
+          border: solid 3px var(--primary);
+          border-radius: 50%;
+          background-color: white;
+        }
+        .title {
+          margin-top: 50px;
+          position: absolute;
+          padding: 30px;
+        }
+      }
+
+      .active {
+        .circle {
+          background-color: var(--highlight-1);
+          border-color: var(--highlight-1);
+        }
+        .title {
+          font-weight: 500;
+        }
+      }
+    }
+
+    .line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: 8px;
+      left: 0px;
+      height: 4px;
+      background-color: var(--primary);
+      z-index: -1;
+    }
+  }
+}

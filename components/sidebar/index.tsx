@@ -56,8 +56,7 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
       {
         icon: ResultsIcon,
         text: "Criar Teste",
-        url: "/create",
-        disabled: true
+        url: "/create"
       },
       {
         icon: ResultsIcon,

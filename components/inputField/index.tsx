@@ -7,7 +7,8 @@ import Mask from "@/utils/mask";
 interface InputField {
   title: string;
   type?: "select" | "input";
-  dataType?: "text" | "number" | "Date" | 'boolean';
+  dataType?: "text" | "number" | "Date";
+  options?: any
   regex?: string;
   value: string | number | any;
   placeholder?: string;
@@ -20,6 +21,7 @@ const InputField: React.FC<InputField> = ({
   title,
   type,
   dataType,
+  options,
   regex,
   value,
   placeholder,
@@ -46,31 +48,20 @@ const InputField: React.FC<InputField> = ({
         );
       case "select":
         return (
-          <select value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() =>  handleEdit()}>
-            <option value="true">Sim</option>
-            <option value="false">Não</option>
+          <select value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() => handleEdit()}>
+            {
+              options.map((option: any, index: number) => {
+                return <option value={index} key={index}>{option.text}</option>
+              })
+            }
           </select>
         )
     }
-  };
+  }
 
-  const handleEdit = () => {
-    console.log(newValue)
-    if (changeValue) {
-      changeValue(newValue);
-    }
-    setEdit(false);
-  };
-
-  const handleKeyPress = (e: any) => {
-    if (e.keyCode === 13) {
-      e.target.blur();
-    }
-  };
-
-  const handleChange = (value: string) => {
+  const handleChange = (value: any) => {
     if (!regex) {
-      setNewValue(value);
+      setNewValue(value)
     } else {
       switch (regex) {
         case "phone":
@@ -83,14 +74,37 @@ const InputField: React.FC<InputField> = ({
           break
       }
     }
+  }
+
+  const handleEdit = () => {
+    if (changeValue) {
+      changeValue(newValue);
+    }
+    setEdit(false);
   };
+
+  const handleKeyPress = (e: any) => {
+    if (e.keyCode === 13) {
+      e.target.blur();
+    }
+  }
+
+  const handleText = () => {
+    if (placeholder) {
+      return placeholder
+    }
+    else if(options) {
+     return options[newValue].text
+    } 
+    return String(value)
+  }
 
   useEffect(() => {
     if (edit) {
       const element = document.getElementById(`${title}_edit`);
 
       if (element) {
-        // console.log(element);
+        console.log(element);
         element.focus();
       }
     }
@@ -109,7 +123,7 @@ const InputField: React.FC<InputField> = ({
       {editable && edit ? (
         generateField()
       ) : (
-        <p>{placeholder ? placeholder : String(value)}</p>
+        <p>{handleText()}</p>
       )}
     </div>
   );

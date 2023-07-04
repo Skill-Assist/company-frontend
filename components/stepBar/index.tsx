@@ -36,6 +36,7 @@ const StepBar: React.FC = () => {
               <div
                 className={`${styles.item} ${index === actualStep && styles.active}`}
                 onClick={() => setActualStep(index)}
+                key={index}
               >
                 <div className={styles.circle}></div>
                 <div className={styles.title}>{item.title}</div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import cookie from "react-cookies";
 
-const API_URL = "http://localhost:5500/api/v1"
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const userService = {
   signin: async () => {
@@ -18,6 +18,7 @@ const userService = {
     }
   },
   getProfile: async () => {
+    userService.signin()
     let config = {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,

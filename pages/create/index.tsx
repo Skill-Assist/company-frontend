@@ -24,10 +24,32 @@ const Create: React.FC = (user: any) => {
       durationInHours: 120,
       submissionDeadlineInHours: 360,
       showGrade: false,
-      archiveDate: new Date(),
-      isPublic: true
+      archiveDate: "02-07-2023",
+      isPublic: false
     }
   )
+
+  const publicOptions = [
+    {
+      value: true,
+      text: "Público"
+    },
+    {
+      value: false,
+      text: "Privado"
+    },
+  ]
+
+  const showGradeOptions = [
+    {
+      value: true,
+      text: "Mostrar"
+    },
+    {
+      value: false,
+      text: "Não mostrar"
+    }
+  ]
 
   const handleChange = (data: any) => {
     const key = Object.getOwnPropertyNames(data)[0]
@@ -63,10 +85,10 @@ const Create: React.FC = (user: any) => {
                 <InputField type="input" dataType="Date" editable title='Data de Arquivamento' placeholder={fields.archiveDate ? '' : 'Sem arquivamento'} value={fields.archiveDate} changeValue={(value: any) => handleChange({ archiveDate: value })}
                 />
 
-                <InputField type="select" dataType='boolean' editable title='Mostrar Notas' placeholder={fields.showGrade ? '' : 'Não mostrar'} value={String(fields.showGrade)} changeValue={(value: any) => handleChange({ showGrade: value })}
+                <InputField type="select" options={showGradeOptions} editable title='Mostrar Notas' placeholder={fields.showGrade ? '' : 'Não mostrar'} value={String(fields.showGrade)} changeValue={(value: any) => handleChange({ showGrade: value })}
                 />
 
-                <InputField type="select" dataType='boolean' editable title='Visualização' placeholder={fields.isPublic ? '' : 'Público'} value={String(fields.isPublic)} changeValue={(value: any) => handleChange({ isPublic: value })}
+                <InputField type="select" options={publicOptions} editable title='Visualização' placeholder={fields.isPublic ? '' : 'Público'} value={String(fields.isPublic)} changeValue={(value: any) => handleChange({ isPublic: value })}
                 />
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,8 +27,8 @@ const InputField: React.FC<InputField> = ({
   placeholder,
   changeValue,
 }: InputField) => {
-  const [edit, setEdit] = useState(false);
-  const [newValue, setNewValue] = useState<any>(value);
+  const [edit, setEdit] = useState(false)
+  const [newValue, setNewValue] = useState<any>(value)
 
   const generateField = () => {
     switch (type) {
@@ -48,10 +48,10 @@ const InputField: React.FC<InputField> = ({
         );
       case "select":
         return (
-          <select value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() => handleEdit()}>
+          <select autoFocus={true} id={`${title}_edit`} value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() => handleEdit()}>
             {
               options.map((option: any, index: number) => {
-                return <option value={index} key={index}>{option.text}</option>
+                return <option value={option.value} key={index}>{option.text}</option>
               })
             }
           </select>
@@ -60,6 +60,7 @@ const InputField: React.FC<InputField> = ({
   }
 
   const handleChange = (value: any) => {
+    console.log(value)
     if (!regex) {
       setNewValue(value)
     } else {
@@ -93,9 +94,12 @@ const InputField: React.FC<InputField> = ({
     if (placeholder) {
       return placeholder
     }
-    else if(options) {
-     return options[newValue].text
-    } 
+    else if (options) {
+      const filter = options.find((item: any) => {
+        return String(item.value) == String(newValue)
+      })
+      return filter.text
+    }
     return String(value)
   }
 
@@ -104,14 +108,19 @@ const InputField: React.FC<InputField> = ({
       const element = document.getElementById(`${title}_edit`);
 
       if (element) {
-        console.log(element);
-        element.focus();
+        element.focus()
       }
     }
   });
 
   useEffect(() => {
-    setNewValue(value);
+    if(options) {
+      handleEdit()
+    }
+  }, [newValue])
+
+  useEffect(() => {
+    setNewValue(value)
   }, [value]);
 
   return (

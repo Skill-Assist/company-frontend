@@ -2,13 +2,10 @@ import Layout from "@/components/layout";
 import { useEffect, useState, FC } from "react";
 import styles from "./styles.module.scss";
 
-// import examService from "@/services/examService";
 import { Exam } from "@/types/exam";
 import examService from "@/services/examService";
 import Search from "@/components/search";
 import Placeholder from "@/components/placeholder";
-// import Search from "@/components/search";
-// import ExamCard from "@/components/examCard";
 
 const Invitations: FC = () => {
   const [loading, setLoading] = useState(true);

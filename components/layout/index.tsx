@@ -42,7 +42,7 @@ const Layout: React.FC<Props> = ({
         {header && (
           <Header title={headerTitle} />
         )}
-        <div>{children}</div>
+        <div className={styles.content}>{children}</div>
       </div>
 
       {footer && <Footer />}

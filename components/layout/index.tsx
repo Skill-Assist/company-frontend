@@ -28,17 +28,6 @@ const Layout: React.FC<Props> = ({
   children,
   secondarySidebar,
 }: Props) => {
-  const [profile, setProfile] = useState<User>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      let userResponse = await userService.getProfile();
-      setProfile(userResponse.data);
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <div className={styles.container}>
       {sidebar && (
@@ -51,7 +40,7 @@ const Layout: React.FC<Props> = ({
 
       <div className={styles.rightContainer}>
         {header && (
-          <Header title={headerTitle} user={profile ? profile : false} />
+          <Header title={headerTitle} />
         )}
         <div>{children}</div>
       </div>

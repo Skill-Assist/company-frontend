@@ -72,3 +72,15 @@
     }
   }
 }
+
+.headerInfo{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+  }
+}

@@ -1,20 +1,9 @@
-.content {
-  margin-left: 20vw;
-  width: calc(80vw - 4px);
+.container {
+  display: flex;
   height: 100vh;
-  overflow-y: auto;
 }
 
-.mt{
-  margin-top: 20px;
-  height: calc(100vh - 100px);
-}
-
-.mb {
-  margin-bottom: 20px;
-  height: calc(100vh - 40px);
-}
-
-.mt.mb {
-  height: calc(100vh - 140px);
+.rightContainer {
+  width: 100%;
+  overflow-x: hidden;
 }

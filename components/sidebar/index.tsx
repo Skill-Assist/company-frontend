@@ -16,7 +16,7 @@ import RolesIcon from "public/icons/roles.svg";
 type Props = {
   active: number;
   secondary?: boolean;
-  disabled?: boolean
+  disabled?: boolean;
 };
 
 type NavigationItems = {
@@ -25,59 +25,49 @@ type NavigationItems = {
   url: string;
   opened?: boolean;
   subItems?: any;
-  disabled?: boolean
+  disabled?: boolean;
 };
 
 const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
+  const [show, setShow] = useState(false);
+
   const defaultNavigationItems = secondary
     ? [
-      {
-        icon: QuestionsIcon,
-        text: "Questões",
-        url: "#",
-      },
-      {
-        icon: RolesIcon,
-        text: "Regras",
-        url: "#",
-      },
-    ]
+        {
+          icon: QuestionsIcon,
+          text: "Questões",
+          url: "#",
+        },
+        {
+          icon: RolesIcon,
+          text: "Regras",
+          url: "#",
+        },
+      ]
     : [
-      {
-        icon: HomeIcon,
-        text: "Home",
-        url: "/",
-        // opened: false,
-        // subItems: [
-        //   {
-        //     text: "Item 1",
-        //   },
-        //   {
-        //     text: "Item 2",
-        //   },
-        //   {
-        //     text: "Item 3",
-        //   },
-        // ],
-      },
-      {
-        icon: ExamsIcon,
-        text: "Seus Testes",
-        url: "/exams",
-      },
-      {
-        icon: ResultsIcon,
-        text: "Resultados",
-        url: "/results",
-        disabled: true
-      },
-      {
-        icon: SupportIcon,
-        text: "Suporte",
-        url: "/help",
-        disabled: true
-      },
-    ];
+        {
+          icon: HomeIcon,
+          text: "Home",
+          url: "/",
+        },
+        {
+          icon: ExamsIcon,
+          text: "Seus Testes",
+          url: "/exams",
+        },
+        {
+          icon: ResultsIcon,
+          text: "Resultados",
+          url: "/results",
+          disabled: true,
+        },
+        {
+          icon: SupportIcon,
+          text: "Suporte",
+          url: "/help",
+          disabled: true,
+        },
+      ];
 
   const [navigationItems, setNavigationItems] = useState<NavigationItems[]>(
     defaultNavigationItems
@@ -91,12 +81,19 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
   };
 
   useEffect(() => {
-    console.log(navigationItems);
+    navigationItems;
   }, [navigationItems]);
 
   return (
-    <div className={styles.container}>
-      <Image className={styles.logo} src={Logo} alt="Logo da plataforma" />
+    <div className={`${styles.container} ${!show ? styles.hidden : {}}`}>
+      <Image
+        className={styles.logo}
+        src={Logo}
+        alt="Logo da plataforma"
+        onClick={() => {
+          setShow(!show);
+        }}
+      />
 
       <div className={styles.navigation}>
         {navigationItems.map((item, index) =>
@@ -113,7 +110,7 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
                   src={item.icon}
                   alt="Logo da plat aforma"
                 />
-                <span className={styles.itemText}>{item.text}</span>
+                <span className={`${styles.itemText}`}>{item.text}</span>
               </div>
               {item.subItems && (
                 <div
@@ -125,8 +122,12 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
             </div>
           ) : (
             <Link
-              href={!disabled ? item.url : '#'}
-              className={`${styles.item} ${active === index ? styles.active : ''} ${item.disabled ? styles.disabled : ''} ${disabled ? styles.disabled : ''}`}
+              href={!disabled ? item.url : "#"}
+              className={`${styles.item} ${
+                active === index ? styles.active : ""
+              } ${item.disabled ? styles.disabled : ""} ${
+                disabled ? styles.disabled : ""
+              }`}
               key={item.text}
             >
               <div className={`${styles.itemContainer}`}>
@@ -136,7 +137,7 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
                   src={item.icon}
                   alt="Logo da plataforma"
                 />
-                <span className={styles.itemText}>{item.text}</span>
+                <span className={`${styles.itemText}`}>{item.text}</span>
               </div>
               {item.subItems && (
                 <div

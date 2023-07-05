@@ -8,9 +8,9 @@ import InputField from "@/components/inputField";
 import ExamCardSample from "@/components/examCardSample";
 
 import Photo from "public/images/user-photo.svg";
-import s3Service from "@/services/s3.service";
+import s3Service from "@/services/s3Service";
 import { flushSync } from "react-dom";
-import userService from "@/services/user.service";
+import userService from "@/services/userService";
 
 type Profile = {
   id: string;

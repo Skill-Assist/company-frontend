@@ -1,9 +1,10 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import styles from "./styles.module.scss";
 import Sidebar from "../sidebar";
 import Header from "../header";
 import Footer from "../footer";
+import userService from "@/services/userService";
 
 type Props = {
   active: number;
@@ -14,7 +15,7 @@ type Props = {
   disabledSidebar?: boolean;
   secondarySidebar?: boolean;
   children: ReactNode;
-  user?: any
+  user?: any;
 };
 
 const Layout: React.FC<Props> = ({
@@ -26,15 +27,33 @@ const Layout: React.FC<Props> = ({
   active,
   children,
   secondarySidebar,
-  user
 }: Props) => {
+  const [profile, setProfile] = useState<User>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let userResponse = await userService.getProfile();
+      setProfile(userResponse.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className={styles.container}>
-      {sidebar && <Sidebar active={active} secondary={secondarySidebar ? true : false} disabled={disabledSidebar}/>}
+      {sidebar && (
+        <Sidebar
+          active={active}
+          secondary={secondarySidebar ? true : false}
+          disabled={disabledSidebar}
+        />
+      )}
 
-      {header && <Header title={headerTitle} user={user} />}
-      <div className={`${styles.content} ${header && styles.mt} ${footer && styles.mb}`}>
-        {children}
+      <div className={styles.rightContainer}>
+        {header && (
+          <Header title={headerTitle} user={profile ? profile : false} />
+        )}
+        <div>{children}</div>
       </div>
 
       {footer && <Footer />}

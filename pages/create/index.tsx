@@ -20,15 +20,20 @@ type Exam = {
 
 type Question = {
   title: string;
+  description: string;
+  type: 'text' | 'multipleCoice' | 'programming' | 'challenge' | '';
 }
 
 type Section = {
   title: string
+  description: string;
   questions: Question[];
 }
 
 const Create: React.FC = (user: any) => {
   const [step, setStep] = useState(1)
+  const [actualSection, setActualSection] = useState(-1)
+  const [actualQuestion, setActualQuestion] = useState(-1)
   const [sections, setSections] = useState<Section[]>([])
   const [fields, setFields] = useState(
     {
@@ -72,17 +77,27 @@ const Create: React.FC = (user: any) => {
     }
   }
 
+  const changeStep = (value: number) => {
+    console.log(value, actualSection, actualQuestion)
+    if (value == 2 && actualSection == -1) {
+      return false
+    }
+    else if (value == 3 && actualQuestion == -1) {
+      return false
+    }
+    else {
+      setStep(value)
+    }
+  }
+
   const handleSections = (value: number) => {
     if (value > sections.length) {
       let newSections: Section[] = []
       for (let i = sections.length; i < value; i++) {
         newSections.push({
           title: '',
-          questions: [
-            {
-              title: ''
-            }
-          ]
+          description: '',
+          questions: []
         })
       }
       setSections([...sections, ...newSections])
@@ -94,11 +109,15 @@ const Create: React.FC = (user: any) => {
       }
       setSections(newSections)
     }
-    // else if(value == 0) {
-    //   setSections([{
-    //     questions: 0
-    //   }])
-    // 
+    else {
+      setSections([
+        {
+          title: '',
+          description: '',
+          questions: []
+        }
+      ])
+    }
   }
 
   const handleQuestions = (value: number, index: number) => {
@@ -108,7 +127,9 @@ const Create: React.FC = (user: any) => {
       let newQuestions: Question[] = [...questions]
       for (let i = questions.length; i < value; i++) {
         newQuestions.push({
-          title: ''
+          title: '',
+          description: '',
+          type: ''
         })
       }
       newSections[index].questions = newQuestions
@@ -121,6 +142,19 @@ const Create: React.FC = (user: any) => {
       }
       setSections(newSections)
     }
+  }
+
+  const goToSection = (section: number) => {
+    setActualSection(section)
+    setStep(2)
+  }
+
+  const updateSection = (data: any) => {
+    const key = Object.getOwnPropertyNames(data)[0]
+    let newSections: Section[] = [...sections]
+    let newSection = {...newSections[actualSection], [key]: data[key]}
+    newSections[actualSection] = newSection
+    setSections(newSections)
   }
 
   const generatePage = () => {
@@ -160,7 +194,7 @@ const Create: React.FC = (user: any) => {
 
             <div className={styles.buttonsContainer}>
               <Button text='Preview' type='cancel' />
-              <Button text='Próximo' type='submit' onClick={() => setStep(step + 1)} />
+              <Button text='Próximo' type='submit' onClick={() => changeStep(step + 1)} />
             </div>
           </div>
         )
@@ -179,9 +213,9 @@ const Create: React.FC = (user: any) => {
               sections.map((item, index) => {
                 return (
                   <div className={`${styles.fieldsContainer} ${styles.borded} ${styles.padding}`} key={index}>
-                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} text={`${sections[index].questions.length} questões`} placeholder={sections[index].questions.length ? '' : 'Sem questões'} value={sections[index].questions.length} changeValue={(value: any) => handleQuestions(Number(value), index)}
+                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} text={`${item.questions.length} questões`} placeholder={item.questions.length ? '' : 'Sem questões'} value={item.questions.length} changeValue={(value: any) => handleQuestions(Number(value), index)}
                     />
-                    <AiOutlineRight size={20} />
+                    <AiOutlineRight size={20} onClick={() => goToSection(index)} />
                   </div>
                 )
               })
@@ -191,19 +225,20 @@ const Create: React.FC = (user: any) => {
       case 2:
         return (
           <div className={styles.modal}>
-            <div className={`${styles.fieldsContainer} ${styles.padding}`}>
-              <InputField type="input" dataType='number' editable title='Número de Seções' placeholder={sections ? '' : 'Sem seções'} value={`${sections.length} seções`} changeValue={(value: any) => handleSections(value)}
+            <div className={`${styles.fieldsContainer} ${styles.padding} ${styles.mb}`}>
+              <InputField type="input" editable title='Título' placeholder={sections[actualSection].title ? '' : 'Sem nome'} value={sections[actualSection].title} changeValue={(value: any) => updateSection({ title: value })}
               />
-              <Button type="cancel" text="Preview" />
+              <InputField type="input" editable title='Descrição' placeholder={sections[actualSection].description ? '' : 'Sem descrição'} value={sections[actualSection].description} changeValue={(value: any) => updateSection({ description: value })}
+              />
             </div>
 
-            <div className={styles.line}></div>
+            {sections[actualSection].questions.length > 0 && <div className={styles.line}></div>}
 
             {
-              sections.map((item, index) => {
+              sections[actualSection].questions.map((item, index) => {
                 return (
                   <div className={`${styles.fieldsContainer} ${styles.borded} ${styles.padding}`} key={index}>
-                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} text={sections.length ? `${sections.length} seções` : ''} placeholder={sections.length ? '' : 'Sem seções'} value={`${sections[index].questions} questões`} changeValue={(value: any) => handleQuestions(value, index)}
+                    <InputField type="input" editable title={`Questão ${index + 1}`} text={item.type} placeholder={item.type ? '' : 'Sem questões'} value={item.type} changeValue={(value: any) => handleQuestions(Number(value), index)}
                     />
                     <AiOutlineRight size={20} />
                   </div>
@@ -219,7 +254,7 @@ const Create: React.FC = (user: any) => {
     <Layout sidebar footer header headerTitle="Criar Teste" active={0} user={user}>
       <div className={styles.create}>
         <div className={styles.container}>
-          <StepBar actualStep={step} changeStep={(value: number) => setStep(value)} />
+          <StepBar actualStep={step} changeStep={(value: number) => changeStep(value)} />
 
           <div className={styles.content}>
             {generatePage()}

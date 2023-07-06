@@ -1,11 +1,11 @@
 import React, { SetStateAction, useEffect, useState } from "react"
 import styles from "./styles.module.scss"
 
-import Layout from "@/components/layout"
+import Layout from "@/components/Layout"
 import Image from "next/image"
 
-import InputField from "@/components/inputField";
-import ExamCardSample from "@/components/examCardSample"
+import InputField from "@/components/InputField";
+import ExamCardSample from "@/components/ExamCardSample"
 
 import Photo from "public/images/user-photo.svg"
 import s3Service from "@/services/s3.service"

@@ -8,7 +8,7 @@
     margin-top: 60px;
 
     .modal {
-      width: 70%;
+      width: max-content;
       max-width: 800px;
       padding: 45px 65px;
       border-radius: var(--border-radius);
@@ -19,9 +19,24 @@
       .fieldsContainer {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        align-items: center;
         gap: 30px;
         margin: 30px 0;
+
+        button, svg {
+          justify-self: flex-end;
+        }
       }
+
+      .padding {
+        padding: 8px 16px;
+      }
+      
+      .borded {
+        border: solid 1px #E5E8EB;
+        border-radius: var(--border-radius);
+      }
+
 
       .line {
         width: 100%;
@@ -29,6 +44,13 @@
         // margin-left: 16px;
         height: 1px;
         background-color: #E5E8EB;
+      }
+      
+      .buttonsContainer {
+        margin-top: 60px;
+        display: flex;
+        justify-content: center;
+        gap: 60px;
       }
     }
   }

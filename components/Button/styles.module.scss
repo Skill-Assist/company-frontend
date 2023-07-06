@@ -1,0 +1,17 @@
+.button {
+  max-width: fit-content;
+  max-height: max-content;
+  padding: 8px 20px;
+  border-radius: var(--border-radius);
+  border: solid 1px black;
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: var(--background);
+}
+
+.submit {
+  background-color: var(--highlight-1);
+  color: var(--text-white);
+}

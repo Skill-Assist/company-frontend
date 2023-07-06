@@ -111,7 +111,7 @@ const InputField: React.FC<InputField> = ({
         element.focus()
       }
     }
-  });
+  })
 
   useEffect(() => {
     if(options) {

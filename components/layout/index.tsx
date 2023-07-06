@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 
 import styles from "./styles.module.scss";
-import Sidebar from "../sidebar";
-import Header from "../header";
-import Footer from "../footer";
+import Sidebar from "../Sidebar";
+import Header from "../Header";
+import Footer from "../Footer";
 
 type Props = {
   active: number;

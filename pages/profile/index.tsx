@@ -57,7 +57,6 @@ const Profile: React.FC = (user: any) => {
 
   const uploadToS3 = async () => {
     const response = await s3Service.uploadFile(fields.id, file)
-    console.log(response)
     handleChange({ logo: response.data })
   }
 

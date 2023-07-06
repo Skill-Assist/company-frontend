@@ -11,6 +11,7 @@ interface InputField {
   options?: any
   regex?: string;
   value: string | number | any;
+  text?: string;
   placeholder?: string;
   editable?: boolean;
   changeValue?: (value: string) => void;
@@ -24,6 +25,7 @@ const InputField: React.FC<InputField> = ({
   options,
   regex,
   value,
+  text,
   placeholder,
   changeValue,
 }: InputField) => {
@@ -39,7 +41,7 @@ const InputField: React.FC<InputField> = ({
               id={`${title}_edit`}
               type={dataType ? dataType : 'text'}
               pattern={regex ? regex : ""}
-              value={newValue}
+              value={newValue ? newValue : ""}
               onChange={(e) => handleChange(e.target.value)}
               onBlur={() => handleEdit()}
               onKeyDown={(e) => dataType == "Date" ? e.preventDefault() : handleKeyPress(e)}
@@ -60,7 +62,6 @@ const InputField: React.FC<InputField> = ({
   }
 
   const handleChange = (value: any) => {
-    console.log(value)
     if (!regex) {
       setNewValue(value)
     } else {
@@ -93,6 +94,9 @@ const InputField: React.FC<InputField> = ({
   const handleText = () => {
     if (placeholder) {
       return placeholder
+    }
+    else if(text) {
+      return text
     }
     else if (options) {
       const filter = options.find((item: any) => {

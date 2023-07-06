@@ -18,8 +18,13 @@ type Exam = {
   isPublic: boolean | null;
 }
 
+type Question = {
+  title: string;
+}
+
 type Section = {
-  questions: number;
+  title: string
+  questions: Question[];
 }
 
 const Create: React.FC = (user: any) => {
@@ -31,7 +36,7 @@ const Create: React.FC = (user: any) => {
       subtitle: "Backend",
       level: "Senior",
       durationInHours: 120,
-      submissionDeadlineInHours: 360,
+      submissionDeadlineInHours: 200,
       showGrade: false,
       archiveDate: "02-07-2023",
       isPublic: false
@@ -62,16 +67,22 @@ const Create: React.FC = (user: any) => {
 
   const handleChange = (data: any) => {
     const key = Object.getOwnPropertyNames(data)[0]
-    setFields({ ...fields, [key]: data[key] })
+    if (data[key]) {
+      setFields({ ...fields, [key]: data[key] })
+    }
   }
 
   const handleSections = (value: number) => {
-    console.log(value)
     if (value > sections.length) {
       let newSections: Section[] = []
       for (let i = sections.length; i < value; i++) {
         newSections.push({
-          questions: 0
+          title: '',
+          questions: [
+            {
+              title: ''
+            }
+          ]
         })
       }
       setSections([...sections, ...newSections])
@@ -87,14 +98,29 @@ const Create: React.FC = (user: any) => {
     //   setSections([{
     //     questions: 0
     //   }])
-    // }
-    console.log(sections)
+    // 
   }
 
   const handleQuestions = (value: number, index: number) => {
-    let newSections: Section[] = [...sections]
-    newSections[index].questions = value
-    setSections(newSections)
+    let questions = [...sections[index].questions]
+    if (value > questions.length) {
+      let newSections = [...sections]
+      let newQuestions: Question[] = [...questions]
+      for (let i = questions.length; i < value; i++) {
+        newQuestions.push({
+          title: ''
+        })
+      }
+      newSections[index].questions = newQuestions
+      setSections(newSections)
+    }
+    else if (value < questions.length) {
+      let newSections: Section[] = [...sections]
+      for (let i = questions.length; i > value; i--) {
+        newSections[index].questions.pop()
+      }
+      setSections(newSections)
+    }
   }
 
   const generatePage = () => {
@@ -116,10 +142,13 @@ const Create: React.FC = (user: any) => {
             <div className={styles.line}></div>
 
             <div className={styles.fieldsContainer}>
-              <InputField type="input" dataType="number" editable title='Duração em Horas' placeholder={fields.durationInHours ? '' : 'Sem prazo'} value={fields.durationInHours} changeValue={(value: any) => handleChange({ durationInHours: value })}
+              <InputField type="input" dataType="number" editable title='Duração' text={`${fields.durationInHours} horas`} placeholder={fields.durationInHours ? '' : 'Sem prazo'} value={fields.durationInHours} changeValue={(value: any) => handleChange({ durationInHours: value })}
               />
 
               <InputField type="input" dataType="Date" editable title='Data de Arquivamento' placeholder={fields.archiveDate ? '' : 'Sem arquivamento'} value={fields.archiveDate} changeValue={(value: any) => handleChange({ archiveDate: value })}
+              />
+
+              <InputField type="input" dataType="number" editable title='Prazo' text={`${fields.submissionDeadlineInHours} horas`} placeholder={fields.submissionDeadlineInHours ? '' : 'Sem prazo'} value={fields.submissionDeadlineInHours} changeValue={(value: any) => handleChange({ submissionDeadlineInHours: value })}
               />
 
               <InputField type="select" options={showGradeOptions} editable title='Mostrar Notas' placeholder={fields.showGrade ? '' : 'Não mostrar'} value={String(fields.showGrade)} changeValue={(value: any) => handleChange({ showGrade: value })}
@@ -138,6 +167,30 @@ const Create: React.FC = (user: any) => {
       case 1:
         return (
           <div className={styles.modal}>
+            <div className={`${styles.fieldsContainer} ${styles.padding} ${styles.mb}`}>
+              <InputField type="input" dataType='number' editable title='Número de Seções' text={sections.length ? `${sections.length} seções` : ''} placeholder={sections.length ? '' : 'Sem seções'} value={sections.length} changeValue={(value: any) => handleSections(value)}
+              />
+              <Button type="cancel" text="Preview" />
+            </div>
+
+            {sections.length > 0 && <div className={styles.line}></div>}
+
+            {
+              sections.map((item, index) => {
+                return (
+                  <div className={`${styles.fieldsContainer} ${styles.borded} ${styles.padding}`} key={index}>
+                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} text={`${sections[index].questions.length} questões`} placeholder={sections[index].questions.length ? '' : 'Sem questões'} value={sections[index].questions.length} changeValue={(value: any) => handleQuestions(Number(value), index)}
+                    />
+                    <AiOutlineRight size={20} />
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+      case 2:
+        return (
+          <div className={styles.modal}>
             <div className={`${styles.fieldsContainer} ${styles.padding}`}>
               <InputField type="input" dataType='number' editable title='Número de Seções' placeholder={sections ? '' : 'Sem seções'} value={`${sections.length} seções`} changeValue={(value: any) => handleSections(value)}
               />
@@ -150,7 +203,7 @@ const Create: React.FC = (user: any) => {
               sections.map((item, index) => {
                 return (
                   <div className={`${styles.fieldsContainer} ${styles.borded} ${styles.padding}`} key={index}>
-                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} placeholder={sections ? '' : 'Sem questões'} value={`${sections[index].questions} questões`} changeValue={(value: any) => handleQuestions(value, index)}
+                    <InputField type="input" dataType='number' editable title={`Seção ${index + 1}`} text={sections.length ? `${sections.length} seções` : ''} placeholder={sections.length ? '' : 'Sem seções'} value={`${sections[index].questions} questões`} changeValue={(value: any) => handleQuestions(value, index)}
                     />
                     <AiOutlineRight size={20} />
                   </div>

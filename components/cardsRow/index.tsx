@@ -31,8 +31,8 @@ const cardsRow: FC<Props> = ({
 }: Props) => {
   return (
     <div className={styles.cardsContainer}>
-      <div className={styles.cardsRow} onClick={() => toggleRow(index)}>
-        <div className={styles.divisor}>
+      <div className={styles.cardsRow} >
+        <div className={styles.divisor} onClick={() => toggleRow(index)}>
           <p>{title}</p>
           <hr />
           <BsArrowDown size={25} className={open ? styles.rotate : ""} />

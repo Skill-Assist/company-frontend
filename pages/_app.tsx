@@ -6,7 +6,7 @@ import cookies from "react-cookies";
 
 import userService from "@/services/userService";
 
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

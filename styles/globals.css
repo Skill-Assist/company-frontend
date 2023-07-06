@@ -63,3 +63,8 @@ a {
 li{
   list-style: none;
 }
+
+button {
+  outline: none;
+  cursor: pointer;
+}

@@ -12,7 +12,7 @@ export type Exam = {
   dateToArchive: Date,
   showScore: boolean,
   isPublic: boolean,
-  status: "live" | "archived" | "draft",
+  status: "live" | "archived" | "draft" | "archived",
   createdByRef?: User
   answerSheetsRef?: AnswerSheet
   __sections__?: Section[]

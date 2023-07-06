@@ -1,0 +1,68 @@
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: var(--border-radius);
+  // background-color: var(--background-2);
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.cardsRow {
+  width: 100%;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 15px;
+  padding: 5px 15px 15px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  opacity: 0;
+  max-height: 0;
+  overflow-y: hidden;
+  transition: all 400ms ease;
+}
+
+.divisor {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 16px;
+  color: var(--legend);
+  margin: 5px 0;
+  transition: all 400ms ease;
+  cursor: pointer;
+
+  p {
+    white-space: nowrap;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  hr {
+    width: 100%;
+    color: var(--legend);
+  }
+
+  svg {
+    transition: all 400ms ease;
+  }
+}
+
+.open {
+  margin-bottom: 15px;
+  max-height: 1000px;
+  opacity: 1;
+  transition: all 400ms ease;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}

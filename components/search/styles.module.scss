@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: space-between;
   width: 40%;
-  margin-bottom: 1rem;
 }
 
 .inputField {
@@ -13,7 +12,7 @@
   input {
     border: 1px solid var(--primary);
     border-radius: 1.5rem;
-    padding: 0.8rem 1rem;
+    padding: 0.4rem 1rem;
     width: 100%;
 
     ::placeholder {

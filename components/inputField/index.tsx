@@ -2,22 +2,27 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Mask from "@/utils/mask";
 
 interface InputField {
   title: string;
-  type?: "select" | "input";
+  type?: "select" | "input" | "textarea";
   dataType?: "text" | "number" | "Date";
   options?: any
   regex?: string;
   value: string | number | any;
+  defaultValue?: string | number | any;
   text?: string;
   placeholder?: string;
   editable?: boolean;
+  deletable?: boolean;
   changeValue?: (value: string) => void;
+  onDelete?: () => void;
 }
 
 const InputField: React.FC<InputField> = ({
+  deletable,
   editable,
   title,
   type,
@@ -25,11 +30,13 @@ const InputField: React.FC<InputField> = ({
   options,
   regex,
   value,
+  defaultValue,
   text,
   placeholder,
   changeValue,
+  onDelete,
 }: InputField) => {
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState<boolean>(false)
   const [newValue, setNewValue] = useState<any>(value)
 
   const generateField = () => {
@@ -52,12 +59,26 @@ const InputField: React.FC<InputField> = ({
         return (
           <select autoFocus={true} id={`${title}_edit`} value={newValue} onChange={(e) => handleChange(e.target.value)} onBlur={() => handleEdit()}>
             {
+              defaultValue && <option value={defaultValue} hidden>{defaultValue}</option>
+            }
+            {
               options.map((option: any, index: number) => {
                 return <option value={option.value} key={index}>{option.text}</option>
               })
             }
           </select>
         )
+      case "textarea":
+        return (
+          <textarea
+            id={`${title}_edit`}
+            value={newValue}
+            onChange={(e) => handleChange(e.target.value)}
+            onBlur={() => handleEdit()}
+          />
+        )
+      default:
+        return false
     }
   }
 
@@ -95,14 +116,17 @@ const InputField: React.FC<InputField> = ({
     if (placeholder) {
       return placeholder
     }
-    else if(text) {
+    else if (text) {
       return text
     }
     else if (options) {
       const filter = options.find((item: any) => {
+        console.log(item.value, newValue)
         return String(item.value) == String(newValue)
       })
-      return filter.text
+      if(filter) {
+        return filter.text
+      }
     }
     return String(value)
   }
@@ -118,7 +142,7 @@ const InputField: React.FC<InputField> = ({
   })
 
   useEffect(() => {
-    if(options) {
+    if (options) {
       handleEdit()
     }
   }, [newValue])
@@ -131,7 +155,8 @@ const InputField: React.FC<InputField> = ({
     <div className={styles.inputField}>
       <div className={styles.titleField}>
         <h3>{title}</h3>{" "}
-        {editable && <EditIcon onClick={() => setEdit(true)} />}
+          {editable && <EditIcon onClick={() => setEdit(true)} />}
+          {deletable && <DeleteIcon className={styles.delete} onClick={() => onDelete && onDelete()} />}
       </div>
       {editable && edit ? (
         generateField()

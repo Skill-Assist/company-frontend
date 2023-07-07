@@ -1,18 +1,24 @@
 .inputField {
-  width: max-content;
-  
+  width: 100%;
+
   .titleField {
     display: flex;
-    gap: 6px;
     margin-bottom: 4px;
 
     svg {
-      cursor: pointer;
+      margin-left: 12px;
+      cursor: pointer;  
+    }
+    
+    .delete {
+      margin-left: 3px;
+      color: #8f0000;
     }
   }
 
   p {
     padding: 4px 0px;
+    word-wrap: break-word;
   }
 
   input {
@@ -31,5 +37,17 @@
     padding: 2px 8px;
     padding-right: 16px;
     border-radius: var(--border-radius);
+  }
+
+  textarea {
+    width: 80%;
+    height: 50px;
+    border-radius: var(--border-radius);
+    padding: 8px 8px;
+    resize: none;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
   }
 }

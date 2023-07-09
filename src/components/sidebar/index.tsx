@@ -4,12 +4,12 @@ import Link from "next/link";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 
-import Logo from "public/images/logo.svg";
-import HomeIcon from "public/icons/home.svg";
-import ExamsIcon from "public/icons/exams.svg";
-import InviteIcon from "public/icons/invite.svg";
-import ResultsIcon from "public/icons/trophy.svg";
-import SupportIcon from "public/icons/support.svg";
+import Logo from "@public/logo.svg";
+import DashboardIcon from "@public/icons/dashboard.svg";
+import ExamsIcon from "@public/icons/exams.svg";
+import InviteIcon from "@public/icons/invite.svg";
+import ResultsIcon from "@public/icons/result.svg";
+import SupportIcon from "@public/icons/support.svg";
 
 type Props = {
   active: number;
@@ -24,8 +24,8 @@ const Sidebar: FC<Props> = ({
 }: Props) => {
   const navigationItems = [
     {
-      icon: HomeIcon,
-      text: "Home",
+      icon: DashboardIcon,
+      text: "Dashboard",
       url: "/",
     },
     {

@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <link rel="icon" sizes='16x16' href='/static/favicon.svg' />
+        <link rel="icon" sizes='16x16' href='/favicon.svg' />
         <title>SkillAssist</title>
       </Head>
       {!loading && <Component {...pageProps} />}

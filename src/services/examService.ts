@@ -17,6 +17,51 @@ const examService = {
       return error.response;
     }
   },
+
+  createExam: async (exam: {
+    title: string;
+    durationInHours: number;
+    submissionInHours: number;
+  }) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const response = await axios.post(`${API_URL}/exam`, exam, config);
+      return response;
+    } catch (error: any) {
+      return error.response;
+    }
+  },
+
+  updateExam: async (
+    updatedExam: {
+      subtitle?: string;
+      level?: string;
+      dateToArchive?: Date;
+      showScore?: boolean;
+      isPublic?: boolean;
+    },
+    examId: number
+  ) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const response = await axios.patch(
+        `${API_URL}/exam?id=${examId}`,
+        updatedExam,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      return error.response;
+    }
+  },
 };
 
 export default examService;

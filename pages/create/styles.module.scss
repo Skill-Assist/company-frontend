@@ -6,10 +6,10 @@
     display: flex;
     justify-content: center;
     margin-top: 60px;
+    margin-bottom: 30px;
 
     .modal {
-      width: 70%;
-      max-width: 800px;
+      width: 700px;
       padding: 45px 65px;
       border-radius: var(--border-radius);
       border: 1px solid rgba(228, 228, 228, 0.93);
@@ -19,8 +19,35 @@
       .fieldsContainer {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        align-items: center;
         gap: 30px;
         margin: 30px 0;
+
+        button, svg {
+          justify-self: flex-end;
+          cursor: pointer;
+        }
+      }
+
+      .singleField {
+        display: flex;
+        width: 100%;
+        padding: 8px 16px;
+        margin-bottom: 30px;
+        display: flex;
+      }
+
+      .padding {
+        padding: 8px 16px;
+      }
+      
+      .borded {
+        border: solid 1px #E5E8EB;
+        border-radius: var(--border-radius);
+      }
+
+      .mb {
+        margin-bottom: 20px;
       }
 
       .line {
@@ -29,6 +56,13 @@
         // margin-left: 16px;
         height: 1px;
         background-color: #E5E8EB;
+      }
+      
+      .buttonsContainer {
+        margin-top: 60px;
+        display: flex;
+        justify-content: center;
+        gap: 60px;
       }
     }
   }

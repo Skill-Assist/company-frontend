@@ -83,10 +83,6 @@ const Sidebar: React.FC<Props> = ({ active, secondary, disabled }: Props) => {
     setNavigationItems(newItems);
   };
 
-  useEffect(() => {
-    console.log(navigationItems);
-  }, [navigationItems]);
-
   return (
     <div className={styles.container}>
       <Image className={styles.logo} src={Logo} alt="Logo da plataforma" />

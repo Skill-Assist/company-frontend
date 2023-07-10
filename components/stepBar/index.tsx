@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import { useState, FC } from "react";
 import styles from "./styles.module.scss";
 
 type Item = {
   title: String;
 }
 
-const StepBar: React.FC = () => {
-  const [actualStep, setActualStep] = useState(0)
+type Props = {
+  actualStep: number;
+  changeStep: (step: number) => void;
+}
 
+const StepBar: FC<Props> = ({actualStep, changeStep}) => {
   const steps = [
     {
       title: 'Geral',
@@ -35,7 +38,7 @@ const StepBar: React.FC = () => {
             return (
               <div
                 className={`${styles.item} ${index === actualStep && styles.active}`}
-                onClick={() => setActualStep(index)}
+                onClick={() => changeStep(index)}
                 key={index}
               >
                 <div className={styles.circle}></div>

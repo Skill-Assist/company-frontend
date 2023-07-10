@@ -12,7 +12,7 @@ import ResultsIcon from "@public/icons/result.svg";
 import SupportIcon from "@public/icons/support.svg";
 
 type Props = {
-  active: number;
+  active: number | undefined;
   show: boolean;
   setShow: (show: boolean) => void;
 };

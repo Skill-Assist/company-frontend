@@ -13,18 +13,21 @@ import { User } from "@/types/user";
 
 import styles from "./styles.module.scss";
 import userService from "@/services/userService";
+import Link from "next/link";
 
-const Invitations: FC = () => {
+const Exams: FC = () => {
   const [loading, setLoading] = useState(true);
   const [allExams, setAllExams] = useState<Exam[]>([]);
   const [search, setSearch] = useState("");
-  const [cardsRows, setCardsRows] = useState<{
-    title: string;
-    owner: User;
-    cards: Exam[];
-    placeholder: string;
-    open: boolean;
-  }[]>([]);
+  const [cardsRows, setCardsRows] = useState<
+    {
+      title: string;
+      owner: User;
+      cards: Exam[];
+      placeholder: string;
+      open: boolean;
+    }[]
+  >([]);
 
   useEffect(() => {
     setLoading(true);
@@ -93,9 +96,12 @@ const Invitations: FC = () => {
   return (
     <Layout sidebar header headerTitle="Seus Exames" active={1}>
       <div className={styles.container}>
-        {!loading &&
-        allExams.length === 0 ? (
-          <Placeholder />
+        {!loading && allExams.length === 0 ? (
+          <Placeholder
+            title="Ops, parece que você ainda não tem nenhum exame"
+            subtitle="Clique no botão abaixo para criar um novo exame"
+            buttonText="Criar exame"
+          />
         ) : (
           <>
             <div className={styles.contentHeader}>
@@ -104,10 +110,10 @@ const Invitations: FC = () => {
                 onSearch={setSearch}
                 placeholder="Pesquisar convites"
               />
-              <button>
+              <Link href={`/exams/create`}>
                 <AiFillPlusCircle size={25} fill="var(--primary)" />
                 <span>Novo Exame</span>
-              </button>
+              </Link>
             </div>
 
             {cardsRows.map((row, index) => (
@@ -123,73 +129,6 @@ const Invitations: FC = () => {
                 toggleRow={toggleRow}
               />
             ))}
-
-            {/* <div className={styles.cardsContainer}>
-              <div className={styles.cardsRow}>
-                <div className={styles.divisor}>
-                  <p>Testes em andamento</p>
-                  <hr />
-                </div>
-                <div className={styles.cards}>
-                  {!loading && liveExams.length > 0 ? (
-                    liveExams.map((exam: Exam) => (
-                      <div className={styles.card} key={exam.id}>
-                        <div className={styles.cardHeader}>
-                          <p>{exam.title}</p>
-                          <p>{exam.status}</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <RowPlaceholder />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.cardsContainer}>
-              <div className={styles.cardsRow}>
-                <div className={styles.divisor}>
-                  <p>Rascunhos</p>
-                  <hr />
-                </div>
-                <div className={styles.cards}>
-                  {!loading &&
-                    draftExams.length > 0 &&
-                    draftExams.map((exam: Exam) => (
-                      <div className={styles.card} key={exam.id}>
-                        <div className={styles.cardHeader}>
-                          <p>{exam.title}</p>
-                          <p>{exam.status}</p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.cardsContainer}>
-              <div className={styles.cardsRow}>
-                <div className={styles.divisor}>
-                  <p>Testes em arquivados</p>
-                  <hr />
-                </div>
-                <div className={styles.cards}>
-                  {!loading && archivedExams.length > 0 ? (
-                    archivedExams.map((exam: Exam) => (
-                      <div className={styles.card} key={exam.id}>
-                        <div className={styles.cardHeader}>
-                          <p>{exam.title}</p>
-                          <p>{exam.status}</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <RowPlaceholder />
-                  )}
-                </div>
-              </div>
-            </div> */}
           </>
         )}
       </div>
@@ -197,4 +136,4 @@ const Invitations: FC = () => {
   );
 };
 
-export default Invitations;
+export default Exams;

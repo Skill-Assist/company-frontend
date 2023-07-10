@@ -8,7 +8,7 @@ import styles from "./styles.module.scss";
 type Props = {
   sidebar?: boolean;
   sidebarClosed?: boolean;
-  active: number;
+  active?: number;
   header?: boolean;
   headerTitle?: string;
   goBack?: boolean;

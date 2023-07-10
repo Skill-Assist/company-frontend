@@ -31,7 +31,6 @@ const cardsRow: FC<Props> = ({
 }: Props) => {
   return (
     <div className={styles.cardsContainer}>
-      <div className={styles.cardsRow} >
         <div className={styles.divisor} onClick={() => toggleRow(index)}>
           <p>{title}</p>
           <hr />
@@ -44,7 +43,6 @@ const cardsRow: FC<Props> = ({
             : <p>{placeholder}</p>
           }
         </div>
-      </div>
     </div>
   );
 };

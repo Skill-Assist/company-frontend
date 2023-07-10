@@ -1,27 +1,18 @@
 .cardsContainer {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
-  border-radius: var(--border-radius);
-  // background-color: var(--neutral-50);
-  // margin-bottom: 20px;
   padding: 0 10px;
-}
-
-.cardsRow {
-  width: 100%;
 }
 
 .cards {
   display: flex;
+  justify-content: flex-start;
   flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: 50px;
   padding: 5px 15px 15px;
-  width: 100%;
-  overflow-x: auto;
+  overflow-x: scroll;
   overflow-y: hidden;
 
   opacity: 0;

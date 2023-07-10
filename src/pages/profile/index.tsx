@@ -7,7 +7,6 @@ import Image from "next/image";
 import InputField from "@/components/inputField";
 import ExamCardSample from "@/components/examCardSample";
 
-import Photo from "public/images/user-photo.svg";
 import s3Service from "@/services/s3Service";
 import { flushSync } from "react-dom";
 import userService from "@/services/userService";
@@ -73,13 +72,13 @@ const Profile: FC = () => {
   return (
     <Layout sidebar header headerTitle="Perfil" active={0}>
       <div className={styles.profile}>
-        <Image
+        {/* <Image
           className={styles.profilePhoto}
           src={Photo}
           alt="Profile Image"
           width={140}
           height={140}
-        />
+        /> */}
 
         <div className={styles.grid}>
           <div className={styles.inputContainer}>

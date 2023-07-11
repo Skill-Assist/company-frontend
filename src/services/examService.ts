@@ -18,6 +18,23 @@ const examService = {
     }
   },
 
+  getOnwExam: async (examId: number) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${API_URL}/exam/findOne?key=id&value=${examId}`,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      return error.response;
+    }
+  },
+
   createExam: async (exam: {
     title: string;
     durationInHours: number;

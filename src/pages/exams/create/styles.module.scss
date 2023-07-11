@@ -38,7 +38,7 @@
         color: var(--neutral-50);
       }
 
-      &:hover svg{
+      &:hover svg {
         fill: var(--neutral-50);
       }
     }
@@ -77,21 +77,69 @@
 .row {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   gap: 24px;
 }
 
-.toggles{
+.toggles {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   color: var(--secondary-2);
 
-  div{
+  div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
   }
+}
+
+.finishingView {
+  display: flex;
+
+  h1{
+    margin-bottom: 25px;
+  }
+}
+
+.lottie {
+  width: 70%;
+  margin: auto;
+  transform: translateY(-20%);
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 50px;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: none;
+    border: 1px solid var(--secondary);
+    border-radius: 1rem;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary);
+    transition: 300ms ease-in-out;
+    width: 180px;
+
+    &:hover {
+      scale: 1.02;
+    }
+  }
+}
+
+.principalBtn{
+  background-color: var(--primary)!important;
+  color: var(--neutral-0)!important;
 }

@@ -3,12 +3,16 @@ import { Tooltip, Input, Switch } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { ThreeDots } from "react-loader-spinner";
+import { useLottie } from "lottie-react";
 
 import examService from "@/services/examService";
 
 import Layout from "@/components/layout";
 
+import success from "@public/lottie/success.json";
+
 import styles from "./styles.module.scss";
+import Link from "next/link";
 
 const stepOneDropIn = {
   hidden: {
@@ -40,20 +44,28 @@ const stepTwoDropIn = {
   },
 };
 
+const lottieOptions = {
+  animationData: success,
+  loop: true,
+};
+
 const CreateExam: FC = () => {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { View } = useLottie(lottieOptions);
 
   const titleInputRef = useRef<HTMLInputElement>(null);
   const durationInputRef = useRef<HTMLInputElement>(null);
   const submissionDeadlineInputRef = useRef<HTMLInputElement>(null);
-
+  
   const subtitleInputRef = useRef<HTMLInputElement>(null);
   const levelInputRef = useRef<HTMLInputElement>(null);
   const dateToArchiveInputRef = useRef<HTMLInputElement>(null);
-
+  
   const [showScore, setShowScore] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
+  
+  let examId = localStorage.getItem("examId");
 
   const createExam = async (e: FormEvent) => {
     e.preventDefault();
@@ -76,7 +88,7 @@ const CreateExam: FC = () => {
     };
 
     const response = await examService.createExam(exam);
-    
+
     if (response.status !== 200 && response.status !== 201) {
       setLoading(false);
       alert("Erro ao criar exame");
@@ -108,7 +120,7 @@ const CreateExam: FC = () => {
       isPublic,
     };
 
-    const examId = localStorage.getItem("examId");
+    examId = localStorage.getItem("examId");
 
     const response = await examService.updateExam(updatedExam, Number(examId));
 
@@ -118,7 +130,7 @@ const CreateExam: FC = () => {
       return;
     } else {
       setLoading(false);
-      alert("Exame atualizado com sucesso");
+      setStep(2);
       return;
     }
   };
@@ -249,6 +261,7 @@ const CreateExam: FC = () => {
                       ref={dateToArchiveInputRef}
                       className={styles.styledInput}
                       underlined
+                      label="Data para arquivar o exame"
                       type="date"
                       aria-label="date-to-archive-input"
                     />
@@ -296,6 +309,37 @@ const CreateExam: FC = () => {
                   )}
                 </button>
               </form>
+            </motion.div>
+          )}
+          {step === 2 && (
+            <motion.div
+              className={styles.motionDiv}
+              variants={stepTwoDropIn}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className={styles.finishingView}>
+                <div>
+                  <div className={styles.intro}>
+                    <h1>Perfeito! Exame já criado!.</h1>
+                    <p>
+                      O que acha da gente começar a criar a sessões do seu
+                      exame?
+                    </p>
+                  </div>
+                  <div className={styles.actions}>
+                    <Link href={`/exams`}>Meus exames</Link>
+                    <Link
+                      href={`/exams/${examId}`}
+                      className={styles.principalBtn}
+                    >
+                      Ver exame criado
+                    </Link>
+                  </div>
+                </div>
+                <div className={styles.lottie}>{View}</div>
+              </div>
             </motion.div>
           )}
         </div>

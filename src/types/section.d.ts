@@ -4,6 +4,7 @@ export type Section = {
   id: number;
   name: string;
   description: string;
+  weight: string;
   startDate: null | Date,
   durationInHours: number;
   isShuffleQuestions?: boolean;

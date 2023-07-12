@@ -268,7 +268,7 @@ const CreateExam: FC = () => {
                     <Tooltip
                       className={styles.tooltip}
                       content={
-                        "A partir do momento que o candidato receber o convite, quantas horas ele terá para começar o teste e mandar suas respostas"
+                        "Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data."
                       }
                     >
                       <AiOutlineQuestionCircle fill="var(--secondary-2)" />

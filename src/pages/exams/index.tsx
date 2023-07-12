@@ -32,7 +32,7 @@ const Exams: FC = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      let ownedExamsResponse = (await examService.getOwnedExams()).reverse();
+      let ownedExamsResponse = (await examService.getAllOwnExams()).reverse();
       let profileExamsResponse = await userService.getProfile();
 
       setAllExams(ownedExamsResponse);

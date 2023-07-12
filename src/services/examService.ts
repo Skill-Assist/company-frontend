@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const examService = {
-  getOwnedExams: async () => {
+  getAllOwnExams: async () => {
     let config = {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,
@@ -18,7 +18,7 @@ const examService = {
     }
   },
 
-  getOnwExam: async (examId: number) => {
+  getOwnExam: async (examId: string) => {
     let config = {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,
@@ -26,7 +26,7 @@ const examService = {
     };
     try {
       const response = await axios.get(
-        `${API_URL}/exam/findOne?key=id&value=${examId}`,
+        `${API_URL}/exam/findOne?key=id&value=${examId}&relations=sections&map=true`,
         config
       );
       return response;

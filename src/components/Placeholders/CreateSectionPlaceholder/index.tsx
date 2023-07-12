@@ -3,8 +3,13 @@ import { useLottie } from "lottie-react";
 import LookingMan from "@public/lottie/looking.json";
 
 import styles from "./styles.module.scss";
+import { FC } from "react";
 
-const CreateSectionPlaceholder = () => {
+interface Props {
+  onClick: () => void;
+}
+
+const CreateSectionPlaceholder: FC<Props> = ({onClick}: Props) => {
   const options = {
     animationData: LookingMan,
     loop: true,
@@ -21,7 +26,7 @@ const CreateSectionPlaceholder = () => {
           questões para deixar seu teste mais organizado.
         </p>
         <p>E o melhor de tudo, você pode criar quantas sessões quiser!</p>
-        <button>Criar sessão</button>
+        <button onClick={onClick}>Criar sessão</button>
       </div>
       <div className={styles.view}>{View}</div>
     </div>

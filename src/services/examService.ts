@@ -79,6 +79,23 @@ const examService = {
       return error.response;
     }
   },
+
+  switchStatus: async (examId: number, status: string) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${API_URL}/exam/switchStatus?id=${examId}&status=${status}`,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      return error.response;
+    }
+  },
 };
 
 export default examService;

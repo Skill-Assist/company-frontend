@@ -31,7 +31,7 @@ const Placeholder: FC<Props> = ({
         <p>
           {subtitle}
         </p>
-        <Link href={"#"} className={styles.button}>{buttonText}</Link>
+        <Link href={"exams/create"} className={styles.button}>{buttonText}</Link>
       </div>
       <div className={styles.view}>{View}</div>
     </div>

@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.createSectionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  width: 80%;
+  padding: 10px;
+  background-color: transparent;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    margin: 0 5px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--secondary-2);
+  }
+  
+  hr {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--secondary-2);
+    color: var(--secondary-2);
+  }
+}
+
+.sectionsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--neutral-100);
+  margin-bottom: 15px;
+}

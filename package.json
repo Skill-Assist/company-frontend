@@ -26,6 +26,7 @@
     "react-color": "^2.19.3",
     "react-cookies": "^0.1.1",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
     "react-loader-spinner": "^5.3.4",
     "sass": "^1.63.6",

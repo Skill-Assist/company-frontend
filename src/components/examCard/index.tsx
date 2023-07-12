@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from "./styles.module.scss";
 import { Exam } from "@/types/exam";
 import { User } from "@/types/user";
+import Link from "next/link";
 
 type Props = {
   exam: Exam;
@@ -20,7 +21,7 @@ const ExamCard: FC<Props> = ({
   }`;
 
   return (
-      <div className={styles.card}>
+      <Link href={`/exams/${exam.id}`} className={styles.card}>
         <div
           className={styles.header}
           style={{ backgroundColor: owner.color }}
@@ -38,7 +39,7 @@ const ExamCard: FC<Props> = ({
           <span>{owner.name}</span>
 
         </div>
-      </div>
+      </Link>
   );
 };
 

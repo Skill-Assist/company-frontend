@@ -8,11 +8,11 @@ export type Exam = {
   subtitle: string,
   level: string,
   durationInHours: number,
-  submissionDeadlineInHours: number,
+  submissionInHours: number,
   dateToArchive: Date,
   showScore: boolean,
   isPublic: boolean,
-  status: "live" | "archived" | "draft" | "archived",
+  status: "live" | "archived" | "draft" | "published",
   createdByRef?: User
   answerSheetsRef?: AnswerSheet
   __sections__?: Section[]

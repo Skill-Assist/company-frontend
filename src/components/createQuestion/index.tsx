@@ -13,12 +13,11 @@ import sectionService from "@/services/sectionService";
 
 import styles from "./styles.module.scss";
 import Link from "next/link";
+import CreateQuestionPlaceholder from "../placeholders/createQuestionPlaceholder";
+import Modal from "../modal";
+import ManualCreator from "../questionCreators/manual";
 
-interface Props {
-  sections: Section[] | undefined;
-  examId: number;
-  onCreateSection: () => void;
-}
+interface Props {}
 
 const dropIn = {
   hidden: {
@@ -41,53 +40,26 @@ const dropIn = {
   },
 };
 
-const CreateSection: FC<Props> = ({
-  examId,
-  sections,
-  onCreateSection,
-}: Props) => {
-  const [newSection, setNewSection] = useState(false);
-  const [sectionName, setSectionName] = useState("");
-  const [sectionDescription, setSectionDescription] = useState("");
-  const [sectionWeight, setSectionWeight] = useState(0);
-  const [sectionDuration, setSectionDuration] = useState(0);
+const CreateQuestion: FC<Props> = ({}: Props) => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState<
+    "manual" | "wizard" | "ai" | ""
+  >("");
+  const close = () => {
+    setShowModal(false);
+    setModalContent("");
+  };
 
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const newSection = {
-      name: sectionName,
-      description: sectionDescription,
-      weight: sectionWeight / 100,
-      durationInHours: sectionDuration,
-    };
-
-    console.log(newSection);
-
-    const response = await sectionService.createSection(examId, newSection);
-
-    console.log(response);
-
-    if (response.status === 201) {
-      toast.success("Sessão criada com sucesso!", {
-        duration: 3000,
-        position: "top-right",
-      });
-      setSectionName("");
-      setSectionDescription("");
-      setSectionWeight(0);
-      setSectionDuration(0);
-      setNewSection(false);
-
-      onCreateSection();
-    }
+  const open = (content: "manual" | "wizard" | "ai") => {
+    setShowModal(true);
+    setModalContent(content);
   };
 
   return (
-    <div className={styles.container}>
-      <>
+    <>
+      <div className={styles.container}>
         <div className={styles.sectionsContainer}>
-          <div className={styles.sectionContainerHeader}>
+          {/* <div className={styles.sectionContainerHeader}>
             {sections && sections.length > 0 && (
               <>
                 <h3>Sessões</h3>
@@ -96,10 +68,10 @@ const CreateSection: FC<Props> = ({
                 </button>
               </>
             )}
-          </div>
+          </div> */}
 
           {/* MAP DE SECTIONS EXISTENTES */}
-          {sections &&
+          {/* {sections &&
             sections.length > 0 &&
             sections.map((section, index) => {
               return (
@@ -159,10 +131,10 @@ const CreateSection: FC<Props> = ({
                   </div>
                 </motion.div>
               );
-            })}
+            })} */}
 
-            {/* FORMULÁRIO DE NOVA SECTION */}
-          {newSection && (
+          {/* FORMULÁRIO DE NOVA SECTION */}
+          {/* {newSection && (
             <motion.div
               className={styles.section}
               variants={dropIn}
@@ -251,13 +223,15 @@ const CreateSection: FC<Props> = ({
                 </div>
               </form>
             </motion.div>
-          )}
+          )} */}
         </div>
-      </>
 
-      {/* PLACEHOLDER */}
-      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-        {sections && sections?.length === 0 && !newSection && (
+        {/* PLACEHOLDER */}
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+          onExitComplete={() => null}
+        >
           <motion.div
             className={styles.placeholderContainer}
             variants={dropIn}
@@ -265,12 +239,32 @@ const CreateSection: FC<Props> = ({
             animate="visible"
             exit="exit"
           >
-            <CreateSectionPlaceholder onClick={() => setNewSection(true)} />
+            <CreateQuestionPlaceholder open={open} />
           </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {showModal && (
+          <Modal
+            handleClose={close}
+            dimensions={{
+              height: "90%",
+              width: "100%",
+            }}
+          >
+            <div className={styles.modalContainer}>
+              {modalContent === "manual" && (
+                <ManualCreator />
+              )}
+              {modalContent === "wizard" && "wizard"}
+              {modalContent === "ai" && "ai"}
+            </div>
+          </Modal>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
-export default CreateSection;
+export default CreateQuestion;

@@ -3,7 +3,7 @@ import { AiFillPlusCircle } from "react-icons/ai";
 
 import Layout from "@/components/layout";
 import Search from "@/components/search";
-import Placeholder from "@/components/placeholder";
+import Placeholder from "@/components/placeholders/mainPlaceholder";
 import CardsRow from "@/components/cardsRow";
 
 import examService from "@/services/examService";

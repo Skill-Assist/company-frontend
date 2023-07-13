@@ -1,0 +1,119 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  gap: 10px;
+
+  h1 {
+    font-size: 2rem;
+    color: var(--primary);
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--secondary-2);
+  }
+}
+
+.stroke {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 700px;
+  margin-top: 15px;
+
+  button {
+    position: relative;
+    padding: 10px 20px;
+    width: 200px;
+    height: 80px;
+    border: none;
+    background: none;
+    font-size: 18px;
+    color: var(--primary);
+    font-weight: 600;
+    background-color: var(--neutral-50);
+    border-radius: 10px;
+
+    &,
+    &:after,
+    &:before {
+      transition: all 0.5s;
+    }
+
+    &:after {
+      border-radius: 10px;
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      margin: auto;
+      width: 0%;
+      content: ".";
+      color: transparent;
+      background: var(--primary-2);
+      z-index: -1;
+      height: 100%;
+    }
+
+    &:hover:after {
+      width: 100%;
+    }
+
+    &:hover {
+      scale: 1.05;
+      background-color: transparent;
+    }
+  }
+}
+
+// .actions{
+//   display: flex;
+//   width: 100%;
+//   max-width: 700px;
+//   gap: 15px;
+//   align-items: center;
+//   justify-content: space-around;
+
+//   button{
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 200px;
+//     height: 40px;
+//     border-radius: 10px;
+//     background-color: var(--primary);
+//     color: var(--neutral-0);
+//     font-size: 16px;
+//     font-weight: 700;
+//     cursor: pointer;
+//     transition: 0.2s;
+//     border: none;
+
+//     &:hover{
+//       scale: 1.05;
+//     }
+//   }
+// }
+
+.view {
+  height: 50%;
+  width: 50%;
+  position: relative;
+
+  div {
+    height: 100%;
+  }
+}

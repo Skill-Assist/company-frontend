@@ -47,6 +47,10 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    localStorage.setItem("sectionName", sectionData.name || "");
+  }, []);
+
   const fetchData = async () => {
     const sectionId = router.query.sectionId;
 

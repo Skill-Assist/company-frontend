@@ -87,6 +87,11 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
   };
 
   useEffect(() => {
+    localStorage.setItem(
+      "exameName",
+      examData.title + " " + examData.subtitle + " - " + examData.level || ""
+    );
+
     const currentValue = statusOptions.filter(
       (statusOption) => statusOption.select === true
     )[0].currentValue;

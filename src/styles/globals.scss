@@ -3,7 +3,7 @@
 :root {
   --primary: #285943;
   --primary-2: #8ed696;
-  --secondary: #212b36;
+  --secondary: #3e4d5c;
   --secondary-2: #637381;
 
   --neutral-200: #cdcdcd;
@@ -33,7 +33,7 @@
   }
 
   &::-webkit-scrollbar {
-    width: 0.8rem;
+    width: 0.4rem;
   }
 
   /* Track */
@@ -43,13 +43,13 @@
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: var(--highlight-1);
+    background: var(--primary);
     border-radius: 1rem;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--highlight-2);
+    background: var(--primary-2);
   }
 }
 

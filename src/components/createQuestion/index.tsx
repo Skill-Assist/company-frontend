@@ -253,13 +253,9 @@ const CreateQuestion: FC<Props> = ({}: Props) => {
               width: "100%",
             }}
           >
-            <div className={styles.modalContainer}>
-              {modalContent === "manual" && (
-                <ManualCreator />
-              )}
-              {modalContent === "wizard" && "wizard"}
-              {modalContent === "ai" && "ai"}
-            </div>
+            {modalContent === "manual" && <ManualCreator />}
+            {modalContent === "wizard" && "wizard"}
+            {modalContent === "ai" && "ai"}
           </Modal>
         )}
       </AnimatePresence>

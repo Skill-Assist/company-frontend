@@ -23,12 +23,14 @@ const fetchSectionName = async (
 ) => {
   const response = await sectionService.getOwnSection(sectionId);
 
-  if (response) {
+  if (response.status >= 200 && response.status < 300) {
     const { name } = response.data;
 
     localStorage.setItem("exameName", name);
 
     setSectionName(name);
+  } else {
+    toast.error("Erro ao buscar nome da sessão.");
   }
 };
 
@@ -38,7 +40,7 @@ const fetchExameName = async (
 ) => {
   const response = await examService.getOwnExam(examId);
 
-  if (response) {
+  if (response.status >= 200 && response.status < 300) {
     const { title, subtitle, level } = response.data;
 
     const exameName = title + " " + subtitle + " - " + level;
@@ -46,6 +48,8 @@ const fetchExameName = async (
     localStorage.setItem("exameName", exameName);
 
     setExamName(exameName);
+  } else {
+    toast.error("Erro ao buscar nome do exame.");
   }
 };
 
@@ -80,7 +84,9 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     });
   };
 
-  let correctOption = { answer: { option: "" } };
+  const [correctOption, setCorrectOption] = useState({
+    answer: { option: "" },
+  });
 
   const [defaultTags, setDefaultTags] = useState<selectOption[]>([
     {
@@ -162,8 +168,6 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       };
     }
 
-    console.log(questionData);
-
     const response = await questionService
       .createQuestion(questionData, sectionId, +enteredWeight)
       .then((res) => {
@@ -244,7 +248,9 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               <>
                 <div className={styles.multipleChoiceHeader}>
                   <h3>Alternativas</h3>
-                  <p>Marque a alternativa correta</p>
+                  <p onClick={() => console.log(correctOption)}>
+                    Marque a alternativa correta
+                  </p>
                 </div>
                 {Object.keys(options).map((option, index) => {
                   return (
@@ -254,12 +260,13 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           type="checkbox"
                           name="check"
                           id="check"
+                          checked={correctOption.answer.option === option}
                           onChange={(e) => {
-                            correctOption = {
+                            setCorrectOption({
                               answer: {
-                                option: e.target.checked ? option : "",
+                                option: e.target.checked ? option  : "",
                               },
-                            };
+                            })
                           }}
                         />
                         <span className={styles.checkmark}></span>

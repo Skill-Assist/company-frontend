@@ -7,7 +7,6 @@ import Image from "next/image";
 import Logo from "@public/logo.svg";
 import DashboardIcon from "@public/icons/dashboard.svg";
 import ExamsIcon from "@public/icons/exams.svg";
-import InviteIcon from "@public/icons/invite.svg";
 import ResultsIcon from "@public/icons/result.svg";
 import SupportIcon from "@public/icons/support.svg";
 
@@ -32,11 +31,6 @@ const Sidebar: FC<Props> = ({
       icon: ExamsIcon,
       text: "Seus Testes",
       url: "/exams",
-    },
-    {
-      icon: InviteIcon,
-      text: "Seus Convites",
-      url: "/invites",
     },
     {
       icon: ResultsIcon,

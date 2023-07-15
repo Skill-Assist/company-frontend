@@ -82,7 +82,6 @@ const InputField: FC<InputField> = ({
       const element = document.getElementById(`${title}_edit`);
 
       if (element) {
-        console.log(element);
         element.focus();
       }
     }

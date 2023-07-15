@@ -57,14 +57,14 @@ const CreateExam: FC = () => {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const durationInputRef = useRef<HTMLInputElement>(null);
   const submissionDeadlineInputRef = useRef<HTMLInputElement>(null);
-  
+
   const subtitleInputRef = useRef<HTMLInputElement>(null);
   const levelInputRef = useRef<HTMLInputElement>(null);
   const dateToArchiveInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [showScore, setShowScore] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
-  
+
   let examId = localStorage.getItem("examId");
 
   const createExam = async (e: FormEvent) => {
@@ -89,16 +89,14 @@ const CreateExam: FC = () => {
 
     const response = await examService.createExam(exam);
 
-    console.log(response)
-
-    if (response.status !== 200 && response.status !== 201) {
-      setLoading(false);
-      alert("Erro ao criar exame");
-      return;
-    } else {
+    if (response.status >= 200 && response.status < 300) {
       localStorage.setItem("examId", response.data.id);
       setLoading(false);
       setStep(1);
+      return;
+    } else {
+      setLoading(false);
+      alert("Erro ao criar exame");
       return;
     }
   };
@@ -126,13 +124,13 @@ const CreateExam: FC = () => {
 
     const response = await examService.updateExam(updatedExam, Number(examId));
 
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status >= 200 && response.status < 300) {
       setLoading(false);
-      alert("Erro ao criar exame");
+      setStep(2);
       return;
     } else {
       setLoading(false);
-      setStep(2);
+      alert("Erro ao criar exame");
       return;
     }
   };

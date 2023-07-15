@@ -10,6 +10,7 @@ import ExamCardSample from "@/components/examCardSample";
 import s3Service from "@/services/s3Service";
 import { flushSync } from "react-dom";
 import userService from "@/services/userService";
+import { toast } from "react-hot-toast";
 
 type Profile = {
   id: string;
@@ -25,7 +26,7 @@ type Profile = {
 const Profile: FC = () => {
   const [file, setFile] = useState<any>();
   const [fields, setFields] = useState<Profile>({
-    id: '',
+    id: "",
     name: "",
     email: "",
     mobilePhone: "",
@@ -38,8 +39,10 @@ const Profile: FC = () => {
   const getProfile = async () => {
     const response = await userService.getProfile();
 
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
       setFields(response.data);
+    } else {
+      toast.error("Erro ao buscar perfil!");
     }
   };
 
@@ -47,10 +50,12 @@ const Profile: FC = () => {
     const response = await userService.update(data);
     const key = Object.getOwnPropertyNames(data)[0];
 
-    if (response.status == 200) {
+    if (response.status >= 200 && response.status < 300) {
       flushSync(() => {
         setFields({ ...fields, [key]: data[key] });
       }, []);
+    } else {
+      toast.error("Erro ao atualizar perfil!");
     }
   };
 
@@ -128,7 +133,9 @@ const Profile: FC = () => {
             <InputField
               title="Cargo"
               placeholder={fields.roles ? "" : "Sem cargo"}
-              value={fields.roles[0] == 'recruiter' ? 'Recrutador' : 'Candidato'}
+              value={
+                fields.roles[0] == "recruiter" ? "Recrutador" : "Candidato"
+              }
             />
           </div>
         </div>

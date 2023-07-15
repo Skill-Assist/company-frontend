@@ -16,6 +16,7 @@ import sectionService from "@/services/sectionService";
 import { Section } from "@/types/section";
 
 import styles from "./styles.module.scss";
+import SectionSideBar from "@/components/sectionSideBar";
 
 interface Props {
   sectionServerData: Section;
@@ -36,23 +37,12 @@ const dropIn = {
   },
 };
 
-function formatDate(dateString: Date) {
-  var date = new Date(dateString);
-  var year = date.getFullYear();
-  var month = ("0" + (date.getMonth() + 1)).slice(-2); 
-  var day = ("0" + date.getDate()).slice(-2); 
-  var formattedDate = year + "-" + month + "-" + day;
-  return formattedDate;
-}
-
 const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
   const [sectionData, setSectionData] = useState<Section>(sectionServerData);
-  const [sectionEditingloading, setSectionEditingLoading] = useState(false);
-  const [disabledBtn, setDisabledBtn] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const close = () => setShowModal(false);
   const open = () => setShowModal(true);
-  const dateRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -60,97 +50,19 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
     localStorage.setItem("sectionName", sectionData.name || "");
   }, []);
 
-  const fetchData = async () => {
+  const fetchOwnSection = async () => {
     const sectionId = router.query.sectionId;
 
     if (sectionId && typeof sectionId === "string") {
       const response = await sectionService.getOwnSection(sectionId);
 
-      if (response) {
+      if (response.status >= 200 && response.status < 300) {
         setSectionData(response.data);
-      }
-    }
-  };
-
-  const handleCheckbox = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    const sectionId = router.query.sectionId;
-
-    let updatedSection = {};
-
-    if (name === "isShuffleQuestions") {
-      updatedSection = {
-        isShuffleQuestions: checked,
-      };
-    } else if (name === "hasProctoring") {
-      updatedSection = {
-        hasProctoring: checked,
-      };
-    }
-
-    if (sectionId && typeof sectionId === "string") {
-      setSectionEditingLoading(true);
-
-      const response = await sectionService.updateSection(
-        sectionId,
-        updatedSection
-      );
-
-      console.log(response);
-
-      if (response) {
-        await fetchData();
-        setSectionEditingLoading(false);
-        toast.success("Informação atualizada com sucesso!", {
-          duration: 2000,
-          position: "top-right",
-        });
       } else {
-        setSectionEditingLoading(false);
-        toast.error("Erro ao atualizar informação!", {
-          duration: 2000,
-          position: "top-right",
-        });
+        toast.error("Erro ao buscar seção!");
       }
     }
   };
-
-  const handleDate = async () => {
-    const sectionId = router.query.sectionId;
-    const enteredDate = dateRef.current?.value;
-
-    if (sectionId && typeof sectionId === "string" && enteredDate) {
-      setSectionEditingLoading(true);
-
-      const updatedSection = {
-        startDate: new Date(enteredDate),
-      };
-
-      const response = await sectionService.updateSection(
-        sectionId,
-        updatedSection
-      );
-
-      console.log(response);
-
-      if (response) {
-        await fetchData();
-        setSectionEditingLoading(false);
-        toast.success("Data atualizada com sucesso!", {
-          duration: 2000,
-          position: "top-right",
-        });
-      } else {
-        setSectionEditingLoading(false);
-        toast.error("Erro ao atualizar data!", {
-          duration: 2000,
-          position: "top-right",
-        });
-      }
-    }
-  };
-
-  console.log(sectionData);
 
   return (
     <>
@@ -170,97 +82,16 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
             animate="visible"
             exit="exit"
           >
-            <div className={styles.sectionHeader}>
-              <div className={styles.headerTitle}>
-                <h2>{sectionData.name && sectionData.name}</h2>
-                <BiPencil size={25} onClick={open} />
-              </div>
-              <div className={styles.headerSub}>
-                <p>{sectionData.description && sectionData.description}</p>
-              </div>
-            </div>
-
-            <h3>
-              <TbInfoSquareRounded />
-              Pontos principais
-            </h3>
-            <div className={styles.infosBox}>
-              <div>
-                <span>Duração:</span>
-                <p>{sectionData.durationInHours} horas</p>
-              </div>
-              <div>
-                <span>Peso da sessão:</span>
-                <p>{+sectionData.weight * 100}%</p>
-              </div>
-            </div>
-
-            <h3>
-              <TbInfoSquareRounded />
-              Informações opicionais
-            </h3>
-            <div className={styles.optionalInfos}>
-              <div>
-                <span>Data de início:</span>
-                <input
-                  className={styles.dateInput}
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  defaultValue={sectionData.startDate ? formatDate(sectionData.startDate) : ""}
-                  ref={dateRef}
-                  onChange={() => setDisabledBtn(false)}
-                />
-              </div>
-              <div>
-                <span>Perguntas embaralhadas?</span>
-                <label className={styles.checkboxContainer}>
-                  <input
-                    type="checkbox"
-                    name="isShuffleQuestions"
-                    id="isShuffleQuestions"
-                    checked={sectionData.isShuffleQuestions}
-                    onChange={handleCheckbox}
-                  />
-                  <span className={styles.checkmark}></span>
-                </label>
-              </div>
-              <div>
-                <span>Proctoring ativado?</span>
-                <label className={styles.checkboxContainer}>
-                  <input
-                    type="checkbox"
-                    name="hasProctoring"
-                    id="hasProctoring"
-                    checked={sectionData.hasProctoring}
-                    onChange={handleCheckbox}
-                  />
-                  <span className={styles.checkmark}></span>
-                </label>
-              </div>
-            </div>
-
-            <div className={styles.actions}>
-              <button disabled={disabledBtn} type="button" onClick={handleDate}>
-                {sectionEditingloading ? (
-                  <ThreeDots
-                    height="15"
-                    width="15"
-                    radius="9"
-                    color="white"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{}}
-                    visible={true}
-                  />
-                ) : (
-                  "Salvar"
-                )}
-              </button>
-            </div>
+            <SectionSideBar
+              sectionData={sectionData}
+              open={open}
+              fetchOwnSection={fetchOwnSection}
+            />
           </motion.div>
         </div>
         <Toaster />
       </Layout>
+      
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {showModal && (
           <Modal
@@ -272,7 +103,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
           >
             <div className={styles.modalContainer}>
               <>
-                {sectionEditingloading ? (
+                {loading ? (
                   <div className={styles.loadingContainer}>
                     <TailSpin
                       height="80"

@@ -16,6 +16,7 @@ import { Exam } from "@/types/exam";
 import styles from "./styles.module.scss";
 import Modal from "@/components/modal";
 import { useRouter } from "next/router";
+import ExamSideBar from "@/components/examSideBar";
 
 interface Props {
   examServerData: Exam;
@@ -38,36 +39,7 @@ const dropIn = {
 
 const ExamPage: FC<Props> = ({ examServerData }: Props) => {
   const [examData, setExamData] = useState<Exam>(examServerData);
-
-  const [statusOptions, setStatusOptions] = useState([
-    {
-      value: "draft",
-      label: "Rascunho",
-      select: examData.status === "draft" ? true : false,
-      currentValue: examData.status,
-    },
-    {
-      value: "live",
-      label: "Em andamento",
-      select: examData.status === "live" ? true : false,
-      currentValue: examData.status,
-    },
-    {
-      value: "published",
-      label: "Público",
-      select: examData.status === "published" ? true : false,
-      currentValue: examData.status,
-    },
-    {
-      value: "archived",
-      label: "Arquivado",
-      select: examData.status === "archived" ? true : false,
-      currentValue: examData.status,
-    },
-  ]);
   const [examEditingloading, setExamEditingLoading] = useState(false);
-  const [disabledBtn, setDisabledBtn] = useState(true);
-  const [toggleStatusLoading, setToggleStatusLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const close = () => setShowModal(false);
   const open = () => setShowModal(true);
@@ -80,8 +52,10 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
     if (examId && typeof examId === "string") {
       const response = await examService.getOwnExam(examId);
 
-      if (response) {
+      if (response.status >= 200 && response.status < 300) {
         setExamData(response.data);
+      } else {
+        toast.error("Erro ao buscar exame!");
       }
     }
   };
@@ -91,46 +65,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
       "exameName",
       examData.title + " " + examData.subtitle + " - " + examData.level || ""
     );
-
-    const currentValue = statusOptions.filter(
-      (statusOption) => statusOption.select === true
-    )[0].currentValue;
-
-    if (currentValue === examData.status) {
-      setDisabledBtn(true);
-    } else {
-      setDisabledBtn(false);
-    }
-  }, [statusOptions]);
-
-  const selectRef = useRef<HTMLSelectElement>(null);
-
-  const statusHandler = async () => {
-    setToggleStatusLoading(true);
-    const newStatus = selectRef.current?.value;
-
-    if (!newStatus) return;
-
-    const response = await examService.switchStatus(examData.id, newStatus);
-
-    console.log(response);
-
-    if (response) {
-      toast.success("Status alterado com sucesso!", {
-        duration: 3000,
-        position: "top-right",
-      });
-      setToggleStatusLoading(false);
-      setDisabledBtn(true);
-    } else {
-      toast.error("Erro ao alterar status!", {
-        duration: 3000,
-        position: "top-right",
-      });
-      setToggleStatusLoading(false);
-      setDisabledBtn(false);
-    }
-  };
+  }, []);
 
   return (
     <>
@@ -154,123 +89,12 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
             animate="visible"
             exit="exit"
           >
-            <div className={styles.examHeader}>
-              <div className={styles.headerTitle}>
-                <h2>{examData.title && examData.title}</h2>
-                <BiPencil size={25} onClick={open} />
-              </div>
-              <div className={styles.headerSub}>
-                <p>
-                  {examData.subtitle && examData.subtitle}{" "}
-                  {examData.subtitle && examData.level && "-"}{" "}
-                  {examData.level && examData.level}
-                </p>
-              </div>
-            </div>
-
-            <h3>
-              <TbInfoSquareRounded />
-              Informações do exame
-            </h3>
-            <div className={styles.infosBox}>
-              <div>
-                <span>Duração:</span>
-                <p>{examData.durationInHours} horas</p>
-              </div>
-              <div>
-                <span>Tempo para submissão:</span>
-                <p>{examData.submissionInHours} horas</p>
-              </div>
-              <div>
-                <span>O candidato deve receber sua nota?</span>
-                <p>{examData.showScore === true ? "Sim" : "Não"}</p>
-              </div>
-              <div>
-                <span>O exame é público?</span>
-                <p>{examData.isPublic === true ? "Sim" : "Não"}</p>
-              </div>
-            </div>
-
-            <h3>
-              <TbInfoSquareRounded />
-              Status do exame
-            </h3>
-            <div className={styles.statusBox}>
-              <select
-                name="status"
-                id="status"
-                ref={selectRef}
-                defaultValue={examData.status}
-                onChange={(e) => {
-                  if (
-                    e.target.value === "draft" ||
-                    e.target.value === "archived" ||
-                    e.target.value === "published" ||
-                    e.target.value === "live"
-                  ) {
-                    const newStatus:
-                      | "live"
-                      | "archived"
-                      | "draft"
-                      | "published" = e.target.value;
-
-                    const newStatusOptions = statusOptions.map(
-                      (statusOption) => {
-                        if (statusOption.value === newStatus) {
-                          return {
-                            ...statusOption,
-                            select: true,
-                            currentValue: newStatus,
-                          };
-                        } else {
-                          return {
-                            ...statusOption,
-                            select: false,
-                            currentValue: newStatus,
-                          };
-                        }
-                      }
-                    );
-
-                    setStatusOptions(newStatusOptions);
-                  }
-                }}
-              >
-                {statusOptions.map((statusOption) => {
-                  return (
-                    <option
-                      value={statusOption.value}
-                      key={statusOption.value}
-                    >
-                      {statusOption.label}
-                    </option>
-                  );
-                })}
-              </select>
-              <button
-                disabled={disabledBtn}
-                onClick={statusHandler}
-                type="button"
-              >
-                {toggleStatusLoading ? (
-                  <ThreeDots
-                    height="15"
-                    width="15"
-                    radius="9"
-                    color="white"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{}}
-                    visible={true}
-                  />
-                ) : (
-                  "Salvar"
-                )}
-              </button>
-            </div>
+            <ExamSideBar examData={examData} open={open} />
           </motion.div>
         </div>
         <Toaster />
       </Layout>
+      
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {showModal && (
           <Modal

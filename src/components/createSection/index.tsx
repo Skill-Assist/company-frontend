@@ -62,13 +62,9 @@ const CreateSection: FC<Props> = ({
       durationInHours: sectionDuration,
     };
 
-    console.log(newSection);
-
     const response = await sectionService.createSection(examId, newSection);
 
-    console.log(response);
-
-    if (response.status === 201) {
+    if (response.status >= 200 && response.status < 300) {
       toast.success("Sessão criada com sucesso!", {
         duration: 3000,
         position: "top-right",
@@ -80,6 +76,11 @@ const CreateSection: FC<Props> = ({
       setNewSection(false);
 
       onCreateSection();
+    } else {
+      toast.error("Erro ao criar sessão", {
+        duration: 3000,
+        position: "top-right",
+      });
     }
   };
 

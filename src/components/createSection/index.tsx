@@ -109,6 +109,7 @@ const CreateSection: FC<Props> = ({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
+                  key={section.id}
                 >
                   <div className={styles.cardHeader}>
                     <h3>Sessão {index + 1}</h3>

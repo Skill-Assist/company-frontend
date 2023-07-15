@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, FC } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import CreatableSelect from "react-select/creatable";
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
+import makeAnimated from "react-select/animated";
+const animatedComponents = makeAnimated();
 
 import examService from "@/services/examService";
 import sectionService from "@/services/sectionService";
@@ -9,6 +12,10 @@ import sectionService from "@/services/sectionService";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import styles from "./styles.module.scss";
+import { Option } from "@/types/option";
+import { Question } from "@/types/question";
+import { toast } from "react-hot-toast";
+import questionService from "@/services/questionService";
 
 const fetchSectionName = async (
   sectionId: string,
@@ -42,7 +49,17 @@ const fetchExameName = async (
   }
 };
 
-const ManualCreator = () => {
+interface selectOption {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  close: () => void;
+  fetchQuestions: (_id: string) => Promise<void>;
+}
+
+const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const [exameName, setExameName] = useState("");
   const [sectionName, setSectionName] = useState("");
   const [questionType, setQuestionType] = useState<
@@ -50,35 +67,45 @@ const ManualCreator = () => {
   >("");
   const [statement, setStatement] = useState("");
 
-  const [options, setOptions] = useState<
+  const [options, setOptions] = useState<Option>({
+    "1": "",
+    "2": "",
+  });
+
+  const addOptionHandler = () => {
+    setOptions((oldOptions) => {
+      const newOptions = { ...oldOptions };
+      newOptions[Object.keys(oldOptions).length + 1] = "";
+      return newOptions;
+    });
+  };
+
+  let correctOption = { answer: { option: "" } };
+
+  const [defaultTags, setDefaultTags] = useState<selectOption[]>([
     {
-      option: string;
-      isCorrect: boolean;
-    }[]
-  >([
-    {
-      option: "",
-      isCorrect: true,
+      value: "multipla-escolha",
+      label: "Múltipla escolha",
     },
     {
-      option: "",
-      isCorrect: false,
+      value: "desafio",
+      label: "Desafio",
     },
     {
-      option: "",
-      isCorrect: false,
+      value: "programacao",
+      label: "Programação",
     },
     {
-      option: "",
-      isCorrect: false,
-    },
-    {
-      option: "",
-      isCorrect: false,
+      value: "texto",
+      label: "Texto",
     },
   ]);
 
+  const [tags, setTags] = useState<string[]>([]);
   const [textAnswer, setTextAnswer] = useState("");
+  const [difficulty, setDifficulty] = useState(2.5);
+  const [isShareable, setIsShareable] = useState(true);
+  const weightInputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -104,6 +131,48 @@ const ManualCreator = () => {
       }
     }
   }, []);
+
+  const handleCreateQuestion = async () => {
+    const sectionId = router.query.sectionId;
+    const enteredWeight = weightInputRef.current?.value;
+
+    if (!sectionId || typeof sectionId !== "string") {
+      return;
+    }
+
+    if (!enteredWeight) {
+      toast.error("Preencha o peso da questão.");
+      return;
+    }
+
+    let questionData: Question = {
+      type: questionType,
+      statement,
+      // tags: ["tag-test"],
+      difficulty,
+      isShareable,
+      gradingRubric: {},
+    };
+
+    if (questionType === "multipleChoice") {
+      questionData = {
+        ...questionData,
+        options: options,
+        gradingRubric: correctOption,
+      };
+    }
+
+    console.log(questionData);
+
+    const response = await questionService
+      .createQuestion(questionData, sectionId, +enteredWeight)
+      .then((res) => {
+        fetchQuestions(res.data._id);
+      })
+      .then(() => {
+        close();
+      });
+  };
 
   return (
     <div className={styles.container}>
@@ -146,9 +215,18 @@ const ManualCreator = () => {
               <option value="text">Texto</option>
             </select>
           </div>
+          <div>
+            <h3>Peso da questão</h3>
+            <input
+              ref={weightInputRef}
+              type="number"
+              min={1}
+              placeholder="0.0"
+            />
+          </div>
         </div>
         <div className={styles.contentBody}>
-          <div className={styles.statement}>
+          <div className={styles.contentBox} style={{ height: "200px" }}>
             <h3>Enunciado</h3>
             <ReactQuill
               theme="snow"
@@ -158,115 +236,50 @@ const ManualCreator = () => {
               placeholder="Digite o enunciado da questão aqui..."
             />
           </div>
-          <div className={styles.answers}>
+          <div
+            className={styles.answers}
+            style={{ display: questionType === "" ? "none" : "flex" }}
+          >
             {questionType === "multipleChoice" && (
               <>
-                <h3>Alternativas</h3>
-                <div className={styles.option}>
-                  <h4>Alternativa correta</h4>
-                  <ReactQuill
-                    className={styles.optionInput}
-                    theme="bubble"
-                    value={options[0].option}
-                    onChange={(value) => {
-                      setOptions((oldOptions) => {
-                        const newOptions = [...oldOptions];
-                        newOptions[0].option = value;
-                        return newOptions;
-                      });
-                    }}
-                    style={{
-                      height: "120px",
-                      border: "1px solid #ccc",
-                      borderRadius: "4px",
-                    }}
-                    placeholder="Digite a alternativa correta aqui..."
-                  />
+                <div className={styles.multipleChoiceHeader}>
+                  <h3>Alternativas</h3>
+                  <p>Marque a alternativa correta</p>
                 </div>
-                <div className={styles.row}>
-                  <div className={styles.option}>
-                    <h4>Alternativa Errada 1</h4>
-                    <ReactQuill
-                      theme="bubble"
-                      value={options[1].option}
-                      onChange={(value) => {
-                        setOptions((oldOptions) => {
-                          const newOptions = [...oldOptions];
-                          newOptions[1].option = value;
-                          return newOptions;
-                        });
-                      }}
-                      style={{
-                        height: "120px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Digite uma das alternativa erradas aqui..."
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <h4>Alternativa Errada 2</h4>
-                    <ReactQuill
-                      theme="bubble"
-                      value={options[2].option}
-                      onChange={(value) => {
-                        setOptions((oldOptions) => {
-                          const newOptions = [...oldOptions];
-                          newOptions[2].option = value;
-                          return newOptions;
-                        });
-                      }}
-                      style={{
-                        height: "120px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Digite uma das alternativa erradas aqui..."
-                    />
-                  </div>
-                </div>
-                <div className={styles.row}>
-                  <div className={styles.option}>
-                    <h4>Alternativa Errada 3</h4>
-                    <ReactQuill
-                      theme="bubble"
-                      value={options[3].option}
-                      onChange={(value) => {
-                        setOptions((oldOptions) => {
-                          const newOptions = [...oldOptions];
-                          newOptions[3].option = value;
-                          return newOptions;
-                        });
-                      }}
-                      style={{
-                        height: "120px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Digite uma das alternativa erradas aqui..."
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <h4>Alternativa Errada 4</h4>
-                    <ReactQuill
-                      theme="bubble"
-                      value={options[4].option}
-                      onChange={(value) => {
-                        setOptions((oldOptions) => {
-                          const newOptions = [...oldOptions];
-                          newOptions[4].option = value;
-                          return newOptions;
-                        });
-                      }}
-                      style={{
-                        height: "120px",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                      }}
-                      placeholder="Digite uma das alternativa erradas aqui..."
-                    />
-                  </div>
-                </div>
+                {Object.keys(options).map((option, index) => {
+                  return (
+                    <div className={styles.option} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type="checkbox"
+                          name="check"
+                          id="check"
+                          onChange={(e) => {
+                            correctOption = {
+                              answer: {
+                                option: e.target.checked ? option : "",
+                              },
+                            };
+                          }}
+                        />
+                        <span className={styles.checkmark}></span>
+                      </label>
+                      <input
+                        onChange={(e) => {
+                          setOptions((oldOptions) => {
+                            const newOptions = { ...oldOptions };
+                            newOptions[option] = e.target.value;
+                            return newOptions;
+                          });
+                        }}
+                        placeholder="Digite uma das alternativa aqui..."
+                      />
+                    </div>
+                  );
+                })}
+                <button onClick={addOptionHandler}>
+                  Adicionar alternativa
+                </button>
               </>
             )}
             {questionType === "programming" && (
@@ -297,7 +310,82 @@ const ManualCreator = () => {
               </>
             )}
           </div>
-          
+          <div className={styles.contentBox}>
+            <h3>Tags</h3>
+            <CreatableSelect
+              isMulti
+              isClearable
+              placeholder="Selecione as tags"
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  boxShadow: "none",
+                }),
+                option: (provided) => ({
+                  ...provided,
+                  cursor: "pointer",
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary25: "var(--primary-2)",
+                  primary: "var(--primary-2)",
+                },
+              })}
+              components={animatedComponents}
+              options={defaultTags}
+              onChange={(value) => {
+                if (value) {
+                  setTags(value.map((tag: any) => tag.value));
+                } else {
+                  setTags([]);
+                }
+              }}
+            />
+          </div>
+          <div className={styles.footer}>
+            <div>
+              <h4>Nível de Dificuldade</h4>
+              <input
+                type="number"
+                name="difficulty"
+                id="difficulty"
+                min={1}
+                max={5}
+                defaultValue={difficulty}
+                onChange={(e) => {
+                  setDifficulty(Number(e.target.value));
+                }}
+              />
+            </div>
+            <div>
+              <h4>Compartilhavel?</h4>
+              <select
+                name="shareable"
+                id="shareable"
+                onChange={(e) => {
+                  setIsShareable(e.target.value === "true" ? true : false);
+                }}
+              >
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className={styles.actions}>
+          <button type="button" className={styles.cancel}>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            onClick={handleCreateQuestion}
+            className={styles.submit}
+          >
+            Criar questão
+          </button>
         </div>
       </div>
     </div>

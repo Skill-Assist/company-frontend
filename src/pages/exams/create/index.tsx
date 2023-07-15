@@ -89,6 +89,8 @@ const CreateExam: FC = () => {
 
     const response = await examService.createExam(exam);
 
+    console.log(response)
+
     if (response.status !== 200 && response.status !== 201) {
       setLoading(false);
       alert("Erro ao criar exame");
@@ -188,6 +190,7 @@ const CreateExam: FC = () => {
                       underlined
                       labelPlaceholder="Tempo para submissão em horas"
                       type="number"
+                      min={24}
                       aria-label="submission-deadline-input"
                     />
                     <Tooltip

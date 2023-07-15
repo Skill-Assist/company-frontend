@@ -9,8 +9,10 @@ export type Section = {
   durationInHours: number;
   isShuffleQuestions?: boolean;
   hasProctoring?: boolean;
-  questionIds: string[];
+  questions: {
+    id: string;
+    weight: number;
+  }[]
   __exam__: Partial<Exam>;
-  questionId: string[]
   answerCount: number;
 };

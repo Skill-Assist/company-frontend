@@ -36,6 +36,15 @@ const dropIn = {
   },
 };
 
+function formatDate(dateString: Date) {
+  var date = new Date(dateString);
+  var year = date.getFullYear();
+  var month = ("0" + (date.getMonth() + 1)).slice(-2); 
+  var day = ("0" + date.getDate()).slice(-2); 
+  var formattedDate = year + "-" + month + "-" + day;
+  return formattedDate;
+}
+
 const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
   const [sectionData, setSectionData] = useState<Section>(sectionServerData);
   const [sectionEditingloading, setSectionEditingLoading] = useState(false);
@@ -141,6 +150,8 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
     }
   };
 
+  console.log(sectionData);
+
   return (
     <>
       <Layout
@@ -151,7 +162,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
         contentClassName={styles.p0}
       >
         <div className={styles.container}>
-          <CreateQuestion />
+          <CreateQuestion section={sectionData} />
           <motion.div
             className={styles.sectionInfos}
             variants={dropIn}
@@ -196,6 +207,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
                   type="date"
                   name="startDate"
                   id="startDate"
+                  defaultValue={sectionData.startDate ? formatDate(sectionData.startDate) : ""}
                   ref={dateRef}
                   onChange={() => setDisabledBtn(false)}
                 />

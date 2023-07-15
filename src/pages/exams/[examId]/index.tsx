@@ -113,6 +113,8 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
 
     const response = await examService.switchStatus(examData.id, newStatus);
 
+    console.log(response);
+
     if (response) {
       toast.success("Status alterado com sucesso!", {
         duration: 3000,
@@ -198,6 +200,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
                 name="status"
                 id="status"
                 ref={selectRef}
+                defaultValue={examData.status}
                 onChange={(e) => {
                   if (
                     e.target.value === "draft" ||
@@ -237,7 +240,6 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
                   return (
                     <option
                       value={statusOption.value}
-                      selected={statusOption.select}
                       key={statusOption.value}
                     >
                       {statusOption.label}

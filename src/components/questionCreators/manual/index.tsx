@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef, FC } from "react";
+import { useEffect, useState, useRef, FC, FormEvent } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 import dynamic from "next/dynamic";
 import CreatableSelect from "react-select/creatable";
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
@@ -8,14 +9,15 @@ const animatedComponents = makeAnimated();
 
 import examService from "@/services/examService";
 import sectionService from "@/services/sectionService";
+import questionService from "@/services/questionService";
 
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
-import styles from "./styles.module.scss";
 import { Option } from "@/types/option";
 import { Question } from "@/types/question";
-import { toast } from "react-hot-toast";
-import questionService from "@/services/questionService";
+
+import "react-quill/dist/quill.bubble.css";
+import "react-quill/dist/quill.snow.css";
+import styles from "./styles.module.scss";
+import { ThreeDots } from "react-loader-spinner";
 
 const fetchSectionName = async (
   sectionId: string,
@@ -63,13 +65,25 @@ interface Props {
   fetchQuestions: (_id: string) => Promise<void>;
 }
 
+interface Criteria {
+  total_points: number | null;
+  [key: string]: number | null | { min: number | null; max: number | null };
+}
+
+interface CriteriaObject {
+  [key: string]: Criteria;
+}
+
 const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const [exameName, setExameName] = useState("");
   const [sectionName, setSectionName] = useState("");
   const [questionType, setQuestionType] = useState<
     "challenge" | "programming" | "multipleChoice" | "text" | ""
   >("");
+  const weightInputRef = useRef<HTMLInputElement>(null);
   const [statement, setStatement] = useState("");
+
+  // Multiple Choice Variables and Logic
 
   const [options, setOptions] = useState<Option>({
     "1": "",
@@ -87,6 +101,102 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const [correctOption, setCorrectOption] = useState({
     answer: { option: "" },
   });
+
+  // End of Multiple Choice Variables and Logic
+
+  // Grading Rubric Variables and Logic
+  const [savingGradingRubricLoading, setSavingGradingRubricLoading] =
+    useState(false);
+  const [gradingRubricNames, setGradingRubricNames] = useState<string[]>([]);
+  const gradingRubricNameInputRef = useRef<HTMLInputElement>(null);
+
+  const [gradingRubric, setGradingRubric] = useState<CriteriaObject>({});
+
+  const totalPointsInputRef = useRef<HTMLInputElement>(null);
+  const greatGradeTextInputRef = useRef<HTMLInputElement>(null);
+  const greatMaxInputRef = useRef<HTMLInputElement>(null);
+  const avaregeGradeTextInputRef = useRef<HTMLInputElement>(null);
+  const avarageMinInputRef = useRef<HTMLInputElement>(null);
+  const avarageMaxInputRef = useRef<HTMLInputElement>(null);
+  const badGradeTextInputRef = useRef<HTMLInputElement>(null);
+  const badMinInputRef = useRef<HTMLInputElement>(null);
+  const badMaxInputRef = useRef<HTMLInputElement>(null);
+
+  const saveGradingRubricHandler = (name: string) => {
+    setSavingGradingRubricLoading(true);
+    const totalPoints = totalPointsInputRef.current?.value;
+    const greatGradeText = greatGradeTextInputRef.current?.value;
+    const greatMax = greatMaxInputRef.current?.value;
+    const avaregeGradeText = avaregeGradeTextInputRef.current?.value;
+    const avarageMin = avarageMinInputRef.current?.value;
+    const avarageMax = avarageMaxInputRef.current?.value;
+    const badGradeText = badGradeTextInputRef.current?.value;
+    const badMin = badMinInputRef.current?.value;
+    const badMax = badMaxInputRef.current?.value;
+
+    if (
+      !totalPoints ||
+      !greatGradeText ||
+      !greatMax ||
+      !avaregeGradeText ||
+      !avarageMin ||
+      !avarageMax ||
+      !badGradeText ||
+      !badMin ||
+      !badMax
+    ) {
+      toast.error("Preencha todos os campos.");
+      setTimeout(() => {
+        setSavingGradingRubricLoading(false);
+      }, 1000);
+      return;
+    }
+
+    const newCriteria: Criteria = {
+      total_points: +totalPoints,
+      [greatGradeText]: +greatMax,
+      [avaregeGradeText]: { min: +avarageMin, max: +avarageMax },
+      [badGradeText]: { min: +badMin, max: +badMax },
+    };
+
+    setGradingRubric((oldGradingRubric) => {
+      const newGradingRubric = { ...oldGradingRubric };
+      newGradingRubric[name] = newCriteria;
+      return newGradingRubric;
+    });
+
+    setTimeout(() => {
+      setSavingGradingRubricLoading(false);
+    }, 1000);
+
+    toast.success("Critério de correção salvo com sucesso.");
+  };
+
+  const gradingRubricNameHandler = () => {
+    if (
+      gradingRubricNameInputRef.current &&
+      gradingRubricNameInputRef.current.value !== ""
+    ) {
+      setGradingRubricNames((oldNames) => {
+        const newNames = [...oldNames];
+        const existingName = newNames.find(
+          (name) => name === gradingRubricNameInputRef.current!.value
+        );
+
+        if (!existingName) {
+          newNames.push(gradingRubricNameInputRef.current!.value);
+          return newNames;
+        } else {
+          toast.error(
+            `${gradingRubricNameInputRef.current!.value} já foi adicionado.`
+          );
+          return oldNames;
+        }
+      });
+    }
+  };
+
+  // End of Grading Rubric Variables and Logic
 
   const [defaultTags, setDefaultTags] = useState<selectOption[]>([
     {
@@ -108,10 +218,9 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   ]);
 
   const [tags, setTags] = useState<string[]>([]);
-  const [textAnswer, setTextAnswer] = useState("");
+
   const [difficulty, setDifficulty] = useState(2.5);
   const [isShareable, setIsShareable] = useState(true);
-  const weightInputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -166,16 +275,26 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
         options: options,
         gradingRubric: correctOption,
       };
+    } else if (questionType === "text") {
+      questionData = {
+        ...questionData,
+        gradingRubric: gradingRubric,
+      };
     }
 
-    const response = await questionService
-      .createQuestion(questionData, sectionId, +enteredWeight)
-      .then((res) => {
-        fetchQuestions(res.data._id);
-      })
-      .then(() => {
-        close();
-      });
+    const response = await questionService.createQuestion(
+      questionData,
+      sectionId,
+      +enteredWeight
+    );
+
+    if (response.status >= 200 && response.status < 300) {
+      toast.success("Questão criada com sucesso.");
+      fetchQuestions(response.data._id);
+      close();
+    } else {
+      toast.error("Erro ao criar questão.");
+    }
   };
 
   return (
@@ -240,17 +359,12 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               placeholder="Digite o enunciado da questão aqui..."
             />
           </div>
-          <div
-            className={styles.answers}
-            style={{ display: questionType === "" ? "none" : "flex" }}
-          >
+          <div style={{ display: questionType === "" ? "none" : "flex" }}>
             {questionType === "multipleChoice" && (
-              <>
+              <div className={styles.multipleChoiceContainer}>
                 <div className={styles.multipleChoiceHeader}>
                   <h3>Alternativas</h3>
-                  <p>
-                    Marque a alternativa correta
-                  </p>
+                  <p>Marque a alternativa correta</p>
                 </div>
                 {Object.keys(options).map((option, index) => {
                   return (
@@ -287,38 +401,500 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 <button onClick={addOptionHandler}>
                   Adicionar alternativa
                 </button>
-              </>
+              </div>
             )}
             {questionType === "programming" && (
-              <>
-                <h3>Resposta esperada</h3>
-              </>
+              <div className={styles.gradingRubricContainer}>
+              <h3
+                onClick={() => {
+                  console.log(gradingRubric);
+                }}
+              >
+                Critérios de correção
+              </h3>
+              <div className={styles.gradingRubricInput}>
+                <div>
+                  <label htmlFor="gradingRubric">Nome do critério</label>
+                  <input
+                    type="text"
+                    name="gradingRubric"
+                    id="gradingRubric"
+                    placeholder="Digite o nome do critério aqui..."
+                    ref={gradingRubricNameInputRef}
+                  />
+                </div>
+                <button type="button" onClick={gradingRubricNameHandler}>
+                  Adicionar
+                </button>
+              </div>
+              <div className={styles.gradingRubricTable}>
+                {gradingRubricNames.reverse().map((name, index) => (
+                  <form className={styles.gradingRubricCard} key={index}>
+                    <div className={styles.cardHeader}>
+                      <h3>{name}</h3>
+                      <div>
+                        <label htmlFor="total-points">Peso do critério</label>
+                        <input
+                          type="number"
+                          name="total-points"
+                          id="total-points"
+                          ref={totalPointsInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="great-grade-text">Nota máxima</label>
+                        <input
+                          type="text"
+                          name="great-grade-text"
+                          id="great-grade-text"
+                          placeholder="Descreva como alcançar a nota máxima aqui..."
+                          ref={greatGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="greatMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="greatMax"
+                          ref={greatMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="avarege-grade-text">Nota média</label>
+                        <input
+                          type="text"
+                          name="avarege-grade-text"
+                          id="avarege-grade-text"
+                          placeholder="Descreva como alcançar a nota média aqui..."
+                          ref={avaregeGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="avarageMin"
+                          style={{ color: "var(--warning)" }}
+                        >
+                          Min
+                        </label>
+                        <input
+                          type="number"
+                          id="avarageMin"
+                          ref={avarageMinInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="avarageMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="avarageMax"
+                          ref={avarageMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="bad-grade-text">Nota ruim</label>
+                        <input
+                          type="text"
+                          name="bad-grade-text"
+                          id="bad-grade-text"
+                          placeholder="Descreva como alcançar a pior nota aqui..."
+                          ref={badGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="badMin"
+                          style={{ color: "var(--warning)" }}
+                        >
+                          Min
+                        </label>
+                        <input
+                          type="number"
+                          id="badMin"
+                          ref={badMinInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="badMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="badMax"
+                          ref={badMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => saveGradingRubricHandler(name)}
+                    >
+                      {savingGradingRubricLoading ? (
+                        <ThreeDots
+                          color="var(--neutral-0)"
+                          height={20}
+                          width={20}
+                        />
+                      ) : (
+                        "Salvar critério de correção"
+                      )}
+                    </button>
+                  </form>
+                ))}
+              </div>
+            </div>
             )}
             {questionType === "challenge" && (
-              <>
-                <h3>Resposta esperada</h3>
-              </>
+              <div className={styles.gradingRubricContainer}>
+              <h3
+                onClick={() => {
+                  console.log(gradingRubric);
+                }}
+              >
+                Critérios de correção
+              </h3>
+              <div className={styles.gradingRubricInput}>
+                <div>
+                  <label htmlFor="gradingRubric">Nome do critério</label>
+                  <input
+                    type="text"
+                    name="gradingRubric"
+                    id="gradingRubric"
+                    placeholder="Digite o nome do critério aqui..."
+                    ref={gradingRubricNameInputRef}
+                  />
+                </div>
+                <button type="button" onClick={gradingRubricNameHandler}>
+                  Adicionar
+                </button>
+              </div>
+              <div className={styles.gradingRubricTable}>
+                {gradingRubricNames.reverse().map((name, index) => (
+                  <form className={styles.gradingRubricCard} key={index}>
+                    <div className={styles.cardHeader}>
+                      <h3>{name}</h3>
+                      <div>
+                        <label htmlFor="total-points">Peso do critério</label>
+                        <input
+                          type="number"
+                          name="total-points"
+                          id="total-points"
+                          ref={totalPointsInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="great-grade-text">Nota máxima</label>
+                        <input
+                          type="text"
+                          name="great-grade-text"
+                          id="great-grade-text"
+                          placeholder="Descreva como alcançar a nota máxima aqui..."
+                          ref={greatGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="greatMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="greatMax"
+                          ref={greatMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="avarege-grade-text">Nota média</label>
+                        <input
+                          type="text"
+                          name="avarege-grade-text"
+                          id="avarege-grade-text"
+                          placeholder="Descreva como alcançar a nota média aqui..."
+                          ref={avaregeGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="avarageMin"
+                          style={{ color: "var(--warning)" }}
+                        >
+                          Min
+                        </label>
+                        <input
+                          type="number"
+                          id="avarageMin"
+                          ref={avarageMinInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="avarageMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="avarageMax"
+                          ref={avarageMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.criteriaContainer}>
+                      <div className={styles.criteriaInput}>
+                        <label htmlFor="bad-grade-text">Nota ruim</label>
+                        <input
+                          type="text"
+                          name="bad-grade-text"
+                          id="bad-grade-text"
+                          placeholder="Descreva como alcançar a pior nota aqui..."
+                          ref={badGradeTextInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="badMin"
+                          style={{ color: "var(--warning)" }}
+                        >
+                          Min
+                        </label>
+                        <input
+                          type="number"
+                          id="badMin"
+                          ref={badMinInputRef}
+                        />
+                      </div>
+                      <div className={styles.criteriaValues}>
+                        <label
+                          htmlFor="badMax"
+                          style={{ color: "var(--primary-2)" }}
+                        >
+                          Max
+                        </label>
+                        <input
+                          type="number"
+                          id="badMax"
+                          ref={badMaxInputRef}
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => saveGradingRubricHandler(name)}
+                    >
+                      {savingGradingRubricLoading ? (
+                        <ThreeDots
+                          color="var(--neutral-0)"
+                          height={20}
+                          width={20}
+                        />
+                      ) : (
+                        "Salvar critério de correção"
+                      )}
+                    </button>
+                  </form>
+                ))}
+              </div>
+            </div>
             )}
             {questionType === "text" && (
-              <>
-                <h3>Resposta esperada</h3>
-                <ReactQuill
-                  className={styles.optionInput}
-                  theme="bubble"
-                  value={textAnswer}
-                  onChange={setTextAnswer}
-                  style={{
-                    height: "120px",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
+              <div className={styles.gradingRubricContainer}>
+                <h3
+                  onClick={() => {
+                    console.log(gradingRubric);
                   }}
-                  placeholder="Digite a resposta esperada aqui..."
-                />
-              </>
+                >
+                  Critérios de correção
+                </h3>
+                <div className={styles.gradingRubricInput}>
+                  <div>
+                    <label htmlFor="gradingRubric">Nome do critério</label>
+                    <input
+                      type="text"
+                      name="gradingRubric"
+                      id="gradingRubric"
+                      placeholder="Digite o nome do critério aqui..."
+                      ref={gradingRubricNameInputRef}
+                    />
+                  </div>
+                  <button type="button" onClick={gradingRubricNameHandler}>
+                    Adicionar
+                  </button>
+                </div>
+                <div className={styles.gradingRubricTable}>
+                  {gradingRubricNames.reverse().map((name, index) => (
+                    <form className={styles.gradingRubricCard} key={index}>
+                      <div className={styles.cardHeader}>
+                        <h3>{name}</h3>
+                        <div>
+                          <label htmlFor="total-points">Peso do critério</label>
+                          <input
+                            type="number"
+                            name="total-points"
+                            id="total-points"
+                            ref={totalPointsInputRef}
+                          />
+                        </div>
+                      </div>
+
+                      <div className={styles.criteriaContainer}>
+                        <div className={styles.criteriaInput}>
+                          <label htmlFor="great-grade-text">Nota máxima</label>
+                          <input
+                            type="text"
+                            name="great-grade-text"
+                            id="great-grade-text"
+                            placeholder="Descreva como alcançar a nota máxima aqui..."
+                            ref={greatGradeTextInputRef}
+                          />
+                        </div>
+                        <div className={styles.criteriaValues}>
+                          <label
+                            htmlFor="greatMax"
+                            style={{ color: "var(--primary-2)" }}
+                          >
+                            Max
+                          </label>
+                          <input
+                            type="number"
+                            id="greatMax"
+                            ref={greatMaxInputRef}
+                          />
+                        </div>
+                      </div>
+
+                      <div className={styles.criteriaContainer}>
+                        <div className={styles.criteriaInput}>
+                          <label htmlFor="avarege-grade-text">Nota média</label>
+                          <input
+                            type="text"
+                            name="avarege-grade-text"
+                            id="avarege-grade-text"
+                            placeholder="Descreva como alcançar a nota média aqui..."
+                            ref={avaregeGradeTextInputRef}
+                          />
+                        </div>
+                        <div className={styles.criteriaValues}>
+                          <label
+                            htmlFor="avarageMin"
+                            style={{ color: "var(--warning)" }}
+                          >
+                            Min
+                          </label>
+                          <input
+                            type="number"
+                            id="avarageMin"
+                            ref={avarageMinInputRef}
+                          />
+                        </div>
+                        <div className={styles.criteriaValues}>
+                          <label
+                            htmlFor="avarageMax"
+                            style={{ color: "var(--primary-2)" }}
+                          >
+                            Max
+                          </label>
+                          <input
+                            type="number"
+                            id="avarageMax"
+                            ref={avarageMaxInputRef}
+                          />
+                        </div>
+                      </div>
+
+                      <div className={styles.criteriaContainer}>
+                        <div className={styles.criteriaInput}>
+                          <label htmlFor="bad-grade-text">Nota ruim</label>
+                          <input
+                            type="text"
+                            name="bad-grade-text"
+                            id="bad-grade-text"
+                            placeholder="Descreva como alcançar a pior nota aqui..."
+                            ref={badGradeTextInputRef}
+                          />
+                        </div>
+                        <div className={styles.criteriaValues}>
+                          <label
+                            htmlFor="badMin"
+                            style={{ color: "var(--warning)" }}
+                          >
+                            Min
+                          </label>
+                          <input
+                            type="number"
+                            id="badMin"
+                            ref={badMinInputRef}
+                          />
+                        </div>
+                        <div className={styles.criteriaValues}>
+                          <label
+                            htmlFor="badMax"
+                            style={{ color: "var(--primary-2)" }}
+                          >
+                            Max
+                          </label>
+                          <input
+                            type="number"
+                            id="badMax"
+                            ref={badMaxInputRef}
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => saveGradingRubricHandler(name)}
+                      >
+                        {savingGradingRubricLoading ? (
+                          <ThreeDots
+                            color="var(--neutral-0)"
+                            height={20}
+                            width={20}
+                          />
+                        ) : (
+                          "Salvar critério de correção"
+                        )}
+                      </button>
+                    </form>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
           <div className={styles.contentBox}>
-            <h3>Tags</h3>
+            <h3 onClick={() => console.log(gradingRubricNames)}>Tags</h3>
             <CreatableSelect
               isMulti
               isClearable

@@ -110,8 +110,6 @@ const CreateInvitation = () => {
 
     const response = await examService.sendInvitation(examId, invitationData);
 
-    console.log(response)
-
     if (response.status >= 200 && response.status < 300) {
       toast.success("Convite enviado com sucesso!");
       setInvitationLoading(false);

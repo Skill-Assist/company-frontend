@@ -96,7 +96,8 @@
   }
 }
 
-.answers {
+.multipleChoiceContainer {
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
@@ -220,11 +221,173 @@
   }
 }
 
-.row {
-  margin: 10px 0;
+.gradingRubricContainer {
+  width: 100%;
+  margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
+
+  h3 {
+    color: var(--secondary);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  button{
+    align-self: flex-end;
+    width: 200px;
+    height: 30px;
+    margin: 5px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 300ms;
+    background-color: var(--primary);
+    color: var(--neutral-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      scale: 1.05;
+    }
+  }
+}
+
+.gradingRubricInput {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  gap: 5px;
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+
+    label {
+      color: var(--secondary-2);
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--neutral-100);
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: var(--neutral-50);
+    }
+  }
+
+  button {
+    border: none;
+    white-space: nowrap;
+    border-radius: 10px;
+    padding: 4px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--neutral-0);
+    background-color: var(--primary);
+    margin: 0 0 5px 15px;
+    transition: 300ms;
+    cursor: pointer;
+
+    &:hover {
+      scale: 1.05;
+    }
+
+    &:disabled {
+      color: var(--secondary-2);
+      background-color: var(--neutral-100);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.gradingRubricCard {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: var(--neutral-50);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  margin: 15px 5px;
+
+  h3 {
+    color: var(--secondary-2);
+    font-weight: 500;
+  }
+
+  input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--neutral-200);
+    padding: 2px 5px;
+    width: 50px;
+    margin: 0 5px;
+    font-size: 16px;
+    color: var(--secondary-2);
+    transition: 300ms;
+    cursor: pointer;
+
+    &:focus {
+      color: var(--primary);
+      border-bottom: 1px solid var(--primary);
+    }
+  }
+}
+
+.criteriaContainer {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.criteriaInput {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+
+  input{
+    width: 100%;
+    
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary);
+  }
+}
+
+.criteriaValues {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary);
+    text-align: center;
+    margin-right: 5px;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .footer {

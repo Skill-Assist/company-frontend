@@ -66,7 +66,7 @@ const CreateQuestion: FC<Props> = ({ section }: Props) => {
     setLoadingQuestions(true);
     let sectionQuestions = section.questions;
 
-    if (_id) {
+    if (_id !== undefined) {
       sectionQuestions.push({ id: _id, weight: 0 });
     }
 

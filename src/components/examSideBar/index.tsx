@@ -66,6 +66,8 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
 
     const response = await examService.switchStatus(examData.id, newStatus);
 
+    console.log(response)
+
     if (response.status >= 200 && response.status < 300) {
       toast.success("Status alterado com sucesso!", {
         duration: 3000,

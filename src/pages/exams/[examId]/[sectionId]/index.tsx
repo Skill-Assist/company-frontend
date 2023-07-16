@@ -70,6 +70,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
         sidebar
         sidebarClosed
         header
+        goBack
         headerTitle="Seu Exame"
         contentClassName={styles.p0}
       >

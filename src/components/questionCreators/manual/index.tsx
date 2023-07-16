@@ -248,7 +248,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               <>
                 <div className={styles.multipleChoiceHeader}>
                   <h3>Alternativas</h3>
-                  <p onClick={() => console.log(correctOption)}>
+                  <p>
                     Marque a alternativa correta
                   </p>
                 </div>
@@ -264,9 +264,9 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           onChange={(e) => {
                             setCorrectOption({
                               answer: {
-                                option: e.target.checked ? option  : "",
+                                option: e.target.checked ? option : "",
                               },
-                            })
+                            });
                           }}
                         />
                         <span className={styles.checkmark}></span>
@@ -337,7 +337,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 ...theme,
                 colors: {
                   ...theme.colors,
-                  primary25: "var(--primary-2)",
+                  primary25: "var(--neutral-50)",
                   primary: "var(--primary-2)",
                 },
               })}

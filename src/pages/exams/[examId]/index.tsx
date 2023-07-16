@@ -17,6 +17,7 @@ import styles from "./styles.module.scss";
 import Modal from "@/components/modal";
 import { useRouter } from "next/router";
 import ExamSideBar from "@/components/examSideBar";
+import CreateInvitation from "@/components/CreateInvitation";
 
 interface Props {
   examServerData: Exam;
@@ -41,6 +42,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
   const [examData, setExamData] = useState<Exam>(examServerData);
   const [examEditingloading, setExamEditingLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showSectionsPage, setShowSectionsPage] = useState(false);
   const close = () => setShowModal(false);
   const open = () => setShowModal(true);
 
@@ -77,11 +79,34 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
         contentClassName={styles.p0}
       >
         <div className={styles.container}>
-          <CreateSection
-            sections={examData.__sections__}
-            examId={examData.id}
-            onCreateSection={fetchData}
-          />
+          <div className={styles.content}>
+            <nav>
+              <ul className={styles.stroke}>
+                <li
+                  className={!showSectionsPage ? styles.active : ""}
+                  onClick={() => setShowSectionsPage(false)}
+                >
+                  Candidatos
+                </li>
+                <li
+                  className={showSectionsPage ? styles.active : ""}
+                  onClick={() => setShowSectionsPage(true)}
+                >
+                  Sessões
+                </li>
+              </ul>
+            </nav>
+            {showSectionsPage ? (
+              <CreateSection
+                sections={examData.__sections__}
+                examId={examData.id}
+                onCreateSection={fetchData}
+              />
+            ) : (
+              <CreateInvitation />
+            )}
+          </div>
+
           <motion.div
             className={styles.examInfos}
             variants={dropIn}
@@ -94,7 +119,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
         </div>
         <Toaster />
       </Layout>
-      
+
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {showModal && (
           <Modal

@@ -96,6 +96,30 @@ const examService = {
       return error.response;
     }
   },
+
+  sendInvitation: async (
+    examId: string,
+    invitation: {
+      email: string[];
+      expirationInHours: number;
+    }
+  ) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${API_URL}/exam/sendInvitations?id=${examId}`,
+        invitation,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      return error.response;
+    }
+  },
 };
 
 export default examService;

@@ -2,10 +2,8 @@ import { FC, useEffect, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
-import { BiPencil } from "react-icons/bi";
-import { TbInfoSquareRounded } from "react-icons/tb";
-import { TailSpin, ThreeDots } from "react-loader-spinner";
-import toast, { Toaster } from "react-hot-toast";
+import { TailSpin } from "react-loader-spinner";
+import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
 import CreateSection from "@/components/createSection";
@@ -117,7 +115,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
             <ExamSideBar examData={examData} open={open} />
           </motion.div>
         </div>
-        <Toaster />
+        
       </Layout>
 
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>

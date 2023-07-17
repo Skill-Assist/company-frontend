@@ -1,11 +1,9 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
-import { BiPencil } from "react-icons/bi";
-import { TbInfoSquareRounded } from "react-icons/tb";
-import { TailSpin, ThreeDots } from "react-loader-spinner";
-import toast, { Toaster } from "react-hot-toast";
+import { TailSpin  } from "react-loader-spinner";
+import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
 import CreateQuestion from "@/components/createQuestion";
@@ -91,7 +89,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
             />
           </motion.div>
         </div>
-        <Toaster />
+        
       </Layout>
       
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>

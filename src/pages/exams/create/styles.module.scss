@@ -151,4 +151,8 @@
   justify-content: space-around;
   margin-top: 20px;
 
+  button:last-child{
+    background-color: var(--primary)!important;
+    color: var(--neutral-0)!important;
+  }
 }

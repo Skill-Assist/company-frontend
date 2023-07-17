@@ -5,15 +5,17 @@
   padding: 0 10px;
 }
 
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px 0;
   cursor: pointer;
-  div{
+
+  div {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 15px;
     width: min-content;
   }
@@ -40,8 +42,9 @@
   overflow-y: hidden;
   transition: all 400ms ease;
 
-  p{
-    color: var(--secondary-2);
+  p,
+  span {
+    color: var(--secondary-2) !important;
   }
 }
 
@@ -139,4 +142,33 @@
 
 .rotate {
   transform: rotate(180deg);
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+
+  h3 {
+    color: var(--secondary-2);
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+
+.tagsContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    background-color: var(--neutral-50);
+    width: fit-content;
+    padding: 5px 10px;
+  }
 }

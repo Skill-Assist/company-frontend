@@ -10,6 +10,7 @@ import { User } from "@/types/user";
 import styles from "./styles.module.scss";
 import { Question } from "@/types/question";
 import { toast } from "react-hot-toast";
+import { AiFillTag } from "react-icons/ai";
 
 interface Props {
   question: Question;
@@ -71,6 +72,19 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
                 );
               })}
             </>
+          </div>
+        )}
+        {question.tags && question.tags?.length > 0 && (
+          <div className={styles.tags}>
+            <h3>Tags</h3>
+            <div className={styles.tagsContainer}>
+              {question.tags.map((tag, index) => (
+                <div>
+                  <AiFillTag size={20} color="var(--secondary-2)" />
+                  <p key={index}>{tag}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

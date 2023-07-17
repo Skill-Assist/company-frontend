@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineQuestionCircle } from "react-icons/ai";
 
-import CreateSectionPlaceholder from "@/components/placeholders/createSectionPlaceholder";
+import CreateSectionPlaceholder from "../placeholders/createSectionPlaceholder";
 
 import sectionService from "@/services/sectionService";
 

@@ -263,7 +263,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     let questionData: Question = {
       type: questionType,
       statement,
-      // tags: ["tag-test"],
+      tags,
       difficulty,
       isShareable,
       gradingRubric: {},

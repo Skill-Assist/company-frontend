@@ -57,9 +57,16 @@ const CreateQuestion: FC<Props> = ({ section }: Props) => {
 
   const fetchQuestions = async (_id?: string) => {
     setLoadingQuestions(true);
-    let sectionQuestions = section.questions;
+    let sectionQuestions: {
+      id: string;
+      weight: number;
+    }[] = [];
 
-    if (typeof _id === "string") {
+    if (section.questions && section.questions.length > 0) {
+      sectionQuestions = section.questions;
+    }
+
+    if (typeof _id === "string" && _id !== "" && _id !== undefined) {
       sectionQuestions.push({ id: _id, weight: 0 });
     }
 

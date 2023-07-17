@@ -42,7 +42,7 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
   const [examData, setExamData] = useState<Exam>(examServerData);
   const [examEditingloading, setExamEditingLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showSectionsPage, setShowSectionsPage] = useState(false);
+  const [showSectionsPage, setShowSectionsPage] = useState(true);
   const close = () => setShowModal(false);
   const open = () => setShowModal(true);
 
@@ -83,16 +83,16 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
             <nav>
               <ul className={styles.stroke}>
                 <li
-                  className={!showSectionsPage ? styles.active : ""}
-                  onClick={() => setShowSectionsPage(false)}
-                >
-                  Candidatos
-                </li>
-                <li
                   className={showSectionsPage ? styles.active : ""}
                   onClick={() => setShowSectionsPage(true)}
                 >
                   Sessões
+                </li>
+                <li
+                  className={!showSectionsPage ? styles.active : ""}
+                  onClick={() => setShowSectionsPage(false)}
+                >
+                  Candidatos
                 </li>
               </ul>
             </nav>

@@ -3,8 +3,8 @@ import { FC, useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 
 import styles from "./styles.module.scss";
-import Image from "next/image";
-import EditIcon from "@mui/icons-material/Edit";
+import { BiPencil } from "react-icons/bi";
+
 
 type Company = {
   name: string;
@@ -87,14 +87,14 @@ const ExamCardSample: FC<Props> = ({
             }
           {
             hoverPhoto && <label className={styles.editPhoto} >
-              <EditIcon />
+              <BiPencil />
               <input type="file" accept="image/*" onChange={(e) => changePhoto(e)}/>
             </label>
           }
             */}
         </div>
         <div className={styles.editIcon}>
-          <EditIcon
+          <BiPencil
             onMouseEnter={() => setHoverColor(true)}
             onMouseLeave={() => setHoverColor(false)}
             onClick={() => setShowPicker(true)}

@@ -1,9 +1,9 @@
+import { FC } from "react";
 import { useLottie } from "lottie-react";
 
 import LookingMan from "@public/lottie/looking.json";
 
 import styles from "./styles.module.scss";
-import { FC } from "react";
 
 interface Props {
   onClick: () => void;

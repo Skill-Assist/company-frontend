@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
-import EditIcon from "@mui/icons-material/Edit";
+import { BiPencil } from "react-icons/bi";
 import Mask from "@/utils/mask";
 
 interface InputField {
@@ -95,7 +95,7 @@ const InputField: FC<InputField> = ({
     <div className={styles.inputField}>
       <div className={styles.titleField}>
         <h3>{title}</h3>{" "}
-        {editable && <EditIcon onClick={() => setEdit(true)} />}
+        {editable && <BiPencil onClick={() => setEdit(true)} />}
       </div>
       {editable && edit ? (
         generateField()

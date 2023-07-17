@@ -79,7 +79,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
             <h3>Tags</h3>
             <div className={styles.tagsContainer}>
               {question.tags.map((tag, index) => (
-                <div>
+                <div key={index}>
                   <AiFillTag size={20} color="var(--secondary-2)" />
                   <p key={index}>{tag}</p>
                 </div>

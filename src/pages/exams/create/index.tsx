@@ -294,21 +294,38 @@ const CreateExam: FC = () => {
                     />
                   </div>
                 </div>
-                <button type="submit" form="update">
-                  {loading ? (
-                    <ThreeDots
-                      height="15"
-                      width="15"
-                      radius="9"
-                      color="var(--primary)!important"
-                      ariaLabel="three-dots-loading"
-                      wrapperStyle={{}}
-                      visible={true}
-                    />
-                  ) : (
-                    "Finalizar"
-                  )}
-                </button>
+                <div className={styles.skipContainar}>
+                  <button type="submit" form="update">
+                    {loading ? (
+                      <ThreeDots
+                        height="15"
+                        width="15"
+                        radius="9"
+                        color="var(--primary)!important"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        visible={true}
+                      />
+                    ) : (
+                      "Skip"
+                    )}
+                  </button>
+                  <button type="submit" form="update">
+                    {loading ? (
+                      <ThreeDots
+                        height="15"
+                        width="15"
+                        radius="9"
+                        color="var(--primary)!important"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        visible={true}
+                      />
+                    ) : (
+                      "Finalizar"
+                    )}
+                  </button>
+                </div>
               </form>
             </motion.div>
           )}

@@ -112,38 +112,46 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
   const [gradingRubric, setGradingRubric] = useState<CriteriaObject>({});
 
-  const totalPointsInputRef = useRef<HTMLInputElement>(null);
-  const greatGradeTextInputRef = useRef<HTMLInputElement>(null);
-  const greatMaxInputRef = useRef<HTMLInputElement>(null);
-  const avaregeGradeTextInputRef = useRef<HTMLInputElement>(null);
-  const avarageMinInputRef = useRef<HTMLInputElement>(null);
-  const avarageMaxInputRef = useRef<HTMLInputElement>(null);
-  const badGradeTextInputRef = useRef<HTMLInputElement>(null);
-  const badMinInputRef = useRef<HTMLInputElement>(null);
-  const badMaxInputRef = useRef<HTMLInputElement>(null);
-
   const saveGradingRubricHandler = (name: string) => {
     setSavingGradingRubricLoading(true);
-    const totalPoints = totalPointsInputRef.current?.value;
-    const greatGradeText = greatGradeTextInputRef.current?.value;
-    const greatMax = greatMaxInputRef.current?.value;
-    const avaregeGradeText = avaregeGradeTextInputRef.current?.value;
-    const avarageMin = avarageMinInputRef.current?.value;
-    const avarageMax = avarageMaxInputRef.current?.value;
-    const badGradeText = badGradeTextInputRef.current?.value;
-    const badMin = badMinInputRef.current?.value;
-    const badMax = badMaxInputRef.current?.value;
+    const totalPoints = document.getElementById(
+      `total-points-${name}`
+    ) as HTMLInputElement;
+    const greatGradeText = document.getElementById(
+      `great-grade-text-${name}`
+    ) as HTMLInputElement;
+    const greatMax = document.getElementById(
+      `great-max-${name}`
+    ) as HTMLInputElement;
+    const avaregeGradeText = document.getElementById(
+      `avarage-grade-text-${name}`
+    ) as HTMLInputElement;
+    const avarageMin = document.getElementById(
+      `avarage-min-${name}`
+    ) as HTMLInputElement;
+    const avarageMax = document.getElementById(
+      `avarage-max-${name}`
+    ) as HTMLInputElement;
+    const badGradeText = document.getElementById(
+      `bad-grade-text-${name}`
+    ) as HTMLInputElement;
+    const badMin = document.getElementById(
+      `bad-min-${name}`
+    ) as HTMLInputElement;
+    const badMax = document.getElementById(
+      `bad-max-${name}`
+    ) as HTMLInputElement;
 
     if (
-      !totalPoints ||
-      !greatGradeText ||
-      !greatMax ||
-      !avaregeGradeText ||
-      !avarageMin ||
-      !avarageMax ||
-      !badGradeText ||
-      !badMin ||
-      !badMax
+      !totalPoints.value ||
+      !greatGradeText.value ||
+      !greatMax.value ||
+      !avaregeGradeText.value ||
+      !avarageMin.value ||
+      !avarageMax.value ||
+      !badGradeText.value ||
+      !badMin.value ||
+      !badMax.value
     ) {
       toast.error("Preencha todos os campos.");
       setTimeout(() => {
@@ -153,10 +161,13 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     }
 
     const newCriteria: Criteria = {
-      total_points: +totalPoints,
-      [greatGradeText]: +greatMax,
-      [avaregeGradeText]: { min: +avarageMin, max: +avarageMax },
-      [badGradeText]: { min: +badMin, max: +badMax },
+      total_points: +totalPoints.value,
+      [greatGradeText.value]: +greatMax.value,
+      [avaregeGradeText.value]: {
+        min: +avarageMin.value,
+        max: +avarageMax.value,
+      },
+      [badGradeText.value]: { min: +badMin.value, max: +badMax.value },
     };
 
     setGradingRubric((oldGradingRubric) => {
@@ -394,7 +405,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               }}
             />
           </div>
-          <div className={styles.footer}>
+          <div className={styles.optionalInfos}>
             <div>
               <h4>Nível de Dificuldade</h4>
               <input
@@ -497,117 +508,101 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       <div className={styles.cardHeader}>
                         <h3>{name}</h3>
                         <div>
-                          <label htmlFor="total-points">Peso do critério</label>
+                          <label htmlFor={`total-points-${name}`}>
+                            Peso do critério
+                          </label>
                           <input
                             type="number"
                             name="total-points"
-                            id="total-points"
-                            ref={totalPointsInputRef}
+                            id={`total-points-${name}`}
                           />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="great-grade-text">Nota máxima</label>
+                          <label htmlFor={`great-grade-text-${name}`}>
+                            Nota máxima
+                          </label>
                           <input
                             type="text"
                             name="great-grade-text"
-                            id="great-grade-text"
+                            id={`great-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota máxima aqui..."
-                            ref={greatGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="greatMax"
+                            htmlFor={`great-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="greatMax"
-                            ref={greatMaxInputRef}
-                          />
+                          <input type="number" id={`great-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="avarege-grade-text">Nota média</label>
+                          <label htmlFor={`avarage-grade-text-${name}`}>
+                            Nota média
+                          </label>
                           <input
                             type="text"
                             name="avarege-grade-text"
-                            id="avarege-grade-text"
+                            id={`avarage-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota média aqui..."
-                            ref={avaregeGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMin"
+                            htmlFor={`avarage-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMin"
-                            ref={avarageMinInputRef}
-                          />
+                          <input type="number" id={`avarage-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMax"
+                            htmlFor={`avarage-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMax"
-                            ref={avarageMaxInputRef}
-                          />
+                          <input type="number" id={`avarage-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="bad-grade-text">Nota ruim</label>
+                          <label htmlFor={`bad-grade-text-${name}`}>
+                            Nota ruim
+                          </label>
                           <input
                             type="text"
                             name="bad-grade-text"
-                            id="bad-grade-text"
+                            id={`bad-grade-text-${name}`}
                             placeholder="Descreva como alcançar a pior nota aqui..."
-                            ref={badGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMin"
+                            htmlFor={`bad-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="badMin"
-                            ref={badMinInputRef}
-                          />
+                          <input type="number" id={`bad-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMax"
+                            htmlFor={`bad-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="badMax"
-                            ref={badMaxInputRef}
-                          />
+                          <input type="number" id={`bad-max-${name}`} />
                         </div>
                       </div>
 
@@ -660,117 +655,101 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       <div className={styles.cardHeader}>
                         <h3>{name}</h3>
                         <div>
-                          <label htmlFor="total-points">Peso do critério</label>
+                          <label htmlFor={`total-points-${name}`}>
+                            Peso do critério
+                          </label>
                           <input
                             type="number"
                             name="total-points"
-                            id="total-points"
-                            ref={totalPointsInputRef}
+                            id={`total-points-${name}`}
                           />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="great-grade-text">Nota máxima</label>
+                          <label htmlFor={`great-grade-text-${name}`}>
+                            Nota máxima
+                          </label>
                           <input
                             type="text"
                             name="great-grade-text"
-                            id="great-grade-text"
+                            id={`great-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota máxima aqui..."
-                            ref={greatGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="greatMax"
+                            htmlFor={`great-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="greatMax"
-                            ref={greatMaxInputRef}
-                          />
+                          <input type="number" id={`great-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="avarege-grade-text">Nota média</label>
+                          <label htmlFor={`avarage-grade-text-${name}`}>
+                            Nota média
+                          </label>
                           <input
                             type="text"
                             name="avarege-grade-text"
-                            id="avarege-grade-text"
+                            id={`avarage-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota média aqui..."
-                            ref={avaregeGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMin"
+                            htmlFor={`avarage-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMin"
-                            ref={avarageMinInputRef}
-                          />
+                          <input type="number" id={`avarage-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMax"
+                            htmlFor={`avarage-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMax"
-                            ref={avarageMaxInputRef}
-                          />
+                          <input type="number" id={`avarage-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="bad-grade-text">Nota ruim</label>
+                          <label htmlFor={`bad-grade-text-${name}`}>
+                            Nota ruim
+                          </label>
                           <input
                             type="text"
                             name="bad-grade-text"
-                            id="bad-grade-text"
+                            id={`bad-grade-text-${name}`}
                             placeholder="Descreva como alcançar a pior nota aqui..."
-                            ref={badGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMin"
+                            htmlFor={`bad-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="badMin"
-                            ref={badMinInputRef}
-                          />
+                          <input type="number" id={`bad-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMax"
+                            htmlFor={`bad-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="badMax"
-                            ref={badMaxInputRef}
-                          />
+                          <input type="number" id={`bad-max-${name}`} />
                         </div>
                       </div>
 
@@ -823,117 +802,101 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       <div className={styles.cardHeader}>
                         <h3>{name}</h3>
                         <div>
-                          <label htmlFor="total-points">Peso do critério</label>
+                          <label htmlFor={`total-points-${name}`}>
+                            Peso do critério
+                          </label>
                           <input
                             type="number"
                             name="total-points"
-                            id="total-points"
-                            ref={totalPointsInputRef}
+                            id={`total-points-${name}`}
                           />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="great-grade-text">Nota máxima</label>
+                          <label htmlFor={`great-grade-text-${name}`}>
+                            Nota máxima
+                          </label>
                           <input
                             type="text"
                             name="great-grade-text"
-                            id="great-grade-text"
+                            id={`great-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota máxima aqui..."
-                            ref={greatGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="greatMax"
+                            htmlFor={`great-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="greatMax"
-                            ref={greatMaxInputRef}
-                          />
+                          <input type="number" id={`great-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="avarege-grade-text">Nota média</label>
+                          <label htmlFor={`avarage-grade-text-${name}`}>
+                            Nota média
+                          </label>
                           <input
                             type="text"
                             name="avarege-grade-text"
-                            id="avarege-grade-text"
+                            id={`avarage-grade-text-${name}`}
                             placeholder="Descreva como alcançar a nota média aqui..."
-                            ref={avaregeGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMin"
+                            htmlFor={`avarage-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMin"
-                            ref={avarageMinInputRef}
-                          />
+                          <input type="number" id={`avarage-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="avarageMax"
+                            htmlFor={`avarage-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="avarageMax"
-                            ref={avarageMaxInputRef}
-                          />
+                          <input type="number" id={`avarage-max-${name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor="bad-grade-text">Nota ruim</label>
+                          <label htmlFor={`bad-grade-text-${name}`}>
+                            Nota ruim
+                          </label>
                           <input
                             type="text"
                             name="bad-grade-text"
-                            id="bad-grade-text"
+                            id={`bad-grade-text-${name}`}
                             placeholder="Descreva como alcançar a pior nota aqui..."
-                            ref={badGradeTextInputRef}
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMin"
+                            htmlFor={`bad-min-${name}`}
                             style={{ color: "var(--warning)" }}
                           >
                             Min
                           </label>
-                          <input
-                            type="number"
-                            id="badMin"
-                            ref={badMinInputRef}
-                          />
+                          <input type="number" id={`bad-min-${name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor="badMax"
+                            htmlFor={`bad-max-${name}`}
                             style={{ color: "var(--primary-2)" }}
                           >
                             Max
                           </label>
-                          <input
-                            type="number"
-                            id="badMax"
-                            ref={badMaxInputRef}
-                          />
+                          <input type="number" id={`bad-max-${name}`} />
                         </div>
                       </div>
 

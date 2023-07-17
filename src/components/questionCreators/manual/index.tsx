@@ -62,7 +62,7 @@ interface selectOption {
 
 interface Props {
   close: () => void;
-  fetchQuestions: (_id: string) => Promise<void>;
+  fetchQuestions: () => Promise<void>;
 }
 
 interface Criteria {
@@ -301,7 +301,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
     if (response.status >= 200 && response.status < 300) {
       toast.success("Questão criada com sucesso.");
-      fetchQuestions(response.data._id);
+      fetchQuestions();
       close();
     } else {
       toast.error("Erro ao criar questão.");

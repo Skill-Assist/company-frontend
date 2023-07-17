@@ -58,6 +58,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
 
       if (response.status >= 200 && response.status < 300) {
         setSectionData(response.data);
+        return response.data;
       } else {
         toast.error("Erro ao buscar seção!");
       }
@@ -75,7 +76,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
         contentClassName={styles.p0}
       >
         <div className={styles.container}>
-          <CreateQuestion section={sectionData} />
+          <CreateQuestion section={sectionData} fetchOwnSection={fetchOwnSection}/>
           <motion.div
             className={styles.sectionInfos}
             variants={dropIn}

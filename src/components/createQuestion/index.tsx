@@ -15,6 +15,7 @@ import styles from "./styles.module.scss";
 
 interface Props {
   section: Section;
+  fetchOwnSection: () => any;
 }
 
 const dropIn = {
@@ -38,7 +39,7 @@ const dropIn = {
   },
 };
 
-const CreateQuestion: FC<Props> = ({ section }: Props) => {
+const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -55,22 +56,11 @@ const CreateQuestion: FC<Props> = ({ section }: Props) => {
     setModalContent(content);
   };
 
-  const fetchQuestions = async (_id?: string) => {
+  const fetchQuestions = async () => {
     setLoadingQuestions(true);
-    let sectionQuestions: {
-      id: string;
-      weight: number;
-    }[] = [];
+    const sectionData = await fetchOwnSection();
 
-    if (section.questions && section.questions.length > 0) {
-      sectionQuestions = section.questions;
-    }
-
-    if (typeof _id === "string" && _id !== "" && _id !== undefined) {
-      sectionQuestions.push({ id: _id, weight: 0 });
-    }
-
-    const response = await questionService.getAllQuestions(sectionQuestions);
+    const response = await questionService.getAllQuestions(sectionData.questions);
 
     if (
       response === undefined ||

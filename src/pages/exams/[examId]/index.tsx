@@ -115,7 +115,6 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
             <ExamSideBar examData={examData} open={open} />
           </motion.div>
         </div>
-        
       </Layout>
 
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
@@ -161,22 +160,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { token } = req.cookies;
   const { examId } = context.params as { examId: string };
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/exam/findOne?key=id&value=${examId}&relations=sections&map=true`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/exam/findOne?key=id&value=${examId}&relations=sections&map=true`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    return {
+      props: {
+        examServerData: data,
       },
+    };
+  } catch (error: any) {
+    const statusCode = error.response.data.statusCode;
+    const message = error.response.data.message;
+
+    if (statusCode === 418 || message.includes("Invalid token")) {
+      window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
     }
-  );
-
-  const data = await response.json();
-
-  return {
-    props: {
-      examServerData: data,
-    },
-  };
+    return error.response;
+  }
 };
 
 export default ExamPage;

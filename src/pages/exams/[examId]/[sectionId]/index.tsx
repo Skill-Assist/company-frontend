@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
-import { TailSpin  } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
@@ -74,7 +74,10 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
         contentClassName={styles.p0}
       >
         <div className={styles.container}>
-          <CreateQuestion section={sectionData} fetchOwnSection={fetchOwnSection}/>
+          <CreateQuestion
+            section={sectionData}
+            fetchOwnSection={fetchOwnSection}
+          />
           <motion.div
             className={styles.sectionInfos}
             variants={dropIn}
@@ -89,9 +92,8 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
             />
           </motion.div>
         </div>
-        
       </Layout>
-      
+
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {showModal && (
           <Modal
@@ -135,22 +137,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { token } = req.cookies;
   const { sectionId } = context.params as { sectionId: string };
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/section/findOne?key=id&value=${sectionId}&map=true`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/section/findOne?key=id&value=${sectionId}&map=true`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+    
+    return {
+      props: {
+        sectionServerData: data,
       },
+    };
+  } catch (error: any) {
+    const statusCode = error.response.data.statusCode;
+    const message = error.response.data.message;
+
+    if (statusCode === 418 || message.includes("Invalid token")) {
+      window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
     }
-  );
-
-  const data = await response.json();
-
-  return {
-    props: {
-      sectionServerData: data,
-    },
-  };
+    return error.response;
+  }
 };
 
 export default SectionPage;

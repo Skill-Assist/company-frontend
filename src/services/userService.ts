@@ -14,6 +14,18 @@ const userService = {
       const profile = await axios.get(`${API_URL}/user/profile`, config);
       return profile.data;
     } catch (error: any) {
+      const statusCode = error.response.data.statusCode;
+      const message = error.response.data.message;
+
+      if (statusCode === 418 || message.includes("Invalid token")) {
+        cookie.remove("token");
+        toast.error("Sua sessão expirou. Faça login novamente", {
+          icon: "⏱️",
+        });
+        setTimeout(() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+        }, 2000);
+      }
       return error.response;
     }
   },
@@ -32,6 +44,18 @@ const userService = {
       );
       return response;
     } catch (error: any) {
+      const statusCode = error.response.data.statusCode;
+      const message = error.response.data.message;
+
+      if (statusCode === 418 || message.includes("Invalid token")) {
+        cookie.remove("token");
+        toast.error("Sua sessão expirou. Faça login novamente", {
+          icon: "⏱️",
+        });
+        setTimeout(() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+        }, 2000);
+      }
       return error.response;
     }
   },

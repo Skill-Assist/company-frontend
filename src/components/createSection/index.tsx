@@ -1,18 +1,18 @@
 import { FC, FormEvent, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineQuestionCircle } from "react-icons/ai";
 
-import CreateSectionPlaceholder from "../placeholders/createSectionPlaceholder";
-
-import { Section } from "@/types/section";
+import CreateSectionPlaceholder from "@/components/placeholders/createSectionPlaceholder";
 
 import sectionService from "@/services/sectionService";
 
+import { Section } from "@/types/section";
+
 import styles from "./styles.module.scss";
-import Link from "next/link";
 
 interface Props {
   sections: Section[] | undefined;

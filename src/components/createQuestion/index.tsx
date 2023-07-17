@@ -1,24 +1,17 @@
-import { FC, FormEvent, useState, useEffect } from "react";
-import { Tooltip } from "@nextui-org/react";
+import { FC, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "react-hot-toast";
-import { BsFillTrashFill } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineQuestionCircle } from "react-icons/ai";
+import CreateQuestionPlaceholder from "@/components/placeholders/createQuestionPlaceholder";
 
-import CreateSectionPlaceholder from "../placeholders/createSectionPlaceholder";
+import QuestionCard from "@/components/questionCard";
+import ManualCreator from "@/components/questionCreators/manual";
+import Modal from "@/components/modal";
+
+import questionService from "@/services/questionService";
 
 import { Section } from "@/types/section";
-
-import sectionService from "@/services/sectionService";
+import { Question } from "@/types/question";
 
 import styles from "./styles.module.scss";
-import Link from "next/link";
-import CreateQuestionPlaceholder from "../placeholders/createQuestionPlaceholder";
-import Modal from "../modal";
-import ManualCreator from "../questionCreators/manual";
-import { Question } from "@/types/question";
-import questionService from "@/services/questionService";
-import QuestionCard from "../questionCard";
 
 interface Props {
   section: Section;

@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiPencil } from "react-icons/bi";
 import { TbInfoSquareRounded } from "react-icons/tb";
@@ -10,14 +11,13 @@ import Layout from "@/components/layout";
 import CreateSection from "@/components/createSection";
 
 import examService from "@/services/examService";
+import Modal from "@/components/modal";
+import ExamSideBar from "@/components/examSideBar";
+import CreateInvitation from "@/components/CreateInvitation";
 
 import { Exam } from "@/types/exam";
 
 import styles from "./styles.module.scss";
-import Modal from "@/components/modal";
-import { useRouter } from "next/router";
-import ExamSideBar from "@/components/examSideBar";
-import CreateInvitation from "@/components/CreateInvitation";
 
 interface Props {
   examServerData: Exam;

@@ -6,17 +6,6 @@ import {
   ChangeEvent,
   useEffect,
 } from "react";
-
-import {
-  Table,
-  Row,
-  Col,
-  Tooltip,
-  User,
-  Text,
-  StyledBadge,
-  useAsyncList,
-} from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
@@ -26,7 +15,7 @@ import examService from "@/services/examService";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 
-const CreateInvitation = () => {
+const InvitationContainer = () => {
   const [invitationLoading, setInvitationLoading] = useState(false);
 
   const [emails, setEmails] = useState<string[]>([]);
@@ -296,4 +285,4 @@ const CreateInvitation = () => {
   );
 };
 
-export default CreateInvitation;
+export default InvitationContainer;

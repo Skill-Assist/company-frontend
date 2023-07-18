@@ -16,7 +16,7 @@ type Props = {
   setShow: (show: boolean) => void;
 };
 
-const Sidebar: FC<Props> = ({
+const MainSidebar: FC<Props> = ({
   active,
   show,
   setShow,
@@ -91,4 +91,4 @@ const Sidebar: FC<Props> = ({
   );
 };
 
-export default Sidebar;
+export default MainSidebar;

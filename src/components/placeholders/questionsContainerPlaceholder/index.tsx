@@ -9,7 +9,7 @@ interface Props {
   open: (content: "manual" | "wizard" | "ai") => void;
 }
 
-const CreateQuestionPlaceholder: FC<Props> = ({ open }: Props) => {
+const QuestionsContainerPlaceholder: FC<Props> = ({ open }: Props) => {
   const options = {
     animationData: LookingMan,
     loop: true,
@@ -41,4 +41,4 @@ const CreateQuestionPlaceholder: FC<Props> = ({ open }: Props) => {
   );
 };
 
-export default CreateQuestionPlaceholder;
+export default QuestionsContainerPlaceholder;

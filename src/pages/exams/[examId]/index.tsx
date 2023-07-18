@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
@@ -6,10 +6,10 @@ import { TailSpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
-import CreateSection from "@/components/createSection";
+import SectionsContainer from "@/components/viewContainers/sectionsContainer";
 import Modal from "@/components/modal";
-import ExamSideBar from "@/components/examSideBar";
-import CreateInvitation from "@/components/createInvitation";
+import ExamSideBar from "@/components/sidebars/examSideBar";
+import InvitationContainer from "@/components/viewContainers/invitationContainer";
 
 import examService from "@/services/examService";
 
@@ -95,13 +95,13 @@ const ExamPage: FC<Props> = ({ examServerData }: Props) => {
               </ul>
             </nav>
             {showSectionsPage ? (
-              <CreateSection
+              <SectionsContainer
                 sections={examData.__sections__}
                 examId={examData.id}
                 onCreateSection={fetchData}
               />
             ) : (
-              <CreateInvitation />
+              <InvitationContainer />
             )}
           </div>
 

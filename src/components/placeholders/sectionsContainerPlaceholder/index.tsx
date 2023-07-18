@@ -9,7 +9,7 @@ interface Props {
   onClick: () => void;
 }
 
-const CreateSectionPlaceholder: FC<Props> = ({onClick}: Props) => {
+const SectionsContainerPlaceholder: FC<Props> = ({onClick}: Props) => {
   const options = {
     animationData: LookingMan,
     loop: true,
@@ -33,4 +33,4 @@ const CreateSectionPlaceholder: FC<Props> = ({onClick}: Props) => {
   );
 };
 
-export default CreateSectionPlaceholder;
+export default SectionsContainerPlaceholder;

@@ -23,7 +23,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
   return (
     <div className={styles.cardContainer}>
       <div className={styles.header} onClick={() => setOpen((open) => !open)}>
-        <h3>Questão {index + 1}</h3>
+        <h3>Questão {index}</h3>
         <div>
           <BsFillTrashFill
             className={styles.deleteIcon}

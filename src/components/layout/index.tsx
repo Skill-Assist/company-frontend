@@ -1,6 +1,6 @@
 import { ReactNode, FC, useState } from "react";
 
-import Sidebar from "../sidebar";
+import MainSidebar from "../sidebars/mainSidebar";
 import Header from "../header";
 
 import styles from "./styles.module.scss";
@@ -31,7 +31,7 @@ const Layout: FC<Props> = ({
   return (
     <div className={styles.container}>
       {sidebar && (
-        <Sidebar
+        <MainSidebar
           active={active}
           show={show}
           setShow={setShow}

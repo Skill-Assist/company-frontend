@@ -6,7 +6,8 @@ import { TailSpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
-import CreateQuestion from "@/components/createQuestion";
+import QuestionsContainer from "@/components/viewContainers/questionsContainer";
+import SectionSideBar from "@/components/sidebars/sectionSideBar";
 import Modal from "@/components/modal";
 
 import sectionService from "@/services/sectionService";
@@ -14,7 +15,6 @@ import sectionService from "@/services/sectionService";
 import { Section } from "@/types/section";
 
 import styles from "./styles.module.scss";
-import SectionSideBar from "@/components/sectionSideBar";
 
 interface Props {
   sectionServerData: Section;
@@ -74,8 +74,7 @@ const SectionPage: FC<Props> = ({ sectionServerData }: Props) => {
         contentClassName={styles.p0}
       >
         <div className={styles.container}>
-          <CreateQuestion
-            section={sectionData}
+          <QuestionsContainer
             fetchOwnSection={fetchOwnSection}
           />
           <motion.div

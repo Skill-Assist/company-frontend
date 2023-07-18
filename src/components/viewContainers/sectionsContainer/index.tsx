@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineQuestionCircle } from "react-icons/ai";
 
-import CreateSectionPlaceholder from "../placeholders/createSectionPlaceholder";
+import SectionsContainerPlaceholder from "../../placeholders/sectionsContainerPlaceholder";
 
 import sectionService from "@/services/sectionService";
 
@@ -41,7 +41,7 @@ const dropIn = {
   },
 };
 
-const CreateSection: FC<Props> = ({
+const SectionsContainer: FC<Props> = ({
   examId,
   sections,
   onCreateSection,
@@ -156,14 +156,16 @@ const CreateSection: FC<Props> = ({
                       </div>
                     </div>
                     <div className={styles.buttonContainer}>
-                      <Link href={`/exams/${examId}/${section.id}`}>Ver Sessão</Link>
+                      <Link href={`/exams/${examId}/${section.id}`}>
+                        Ver Sessão
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
               );
             })}
 
-            {/* FORMULÁRIO DE NOVA SECTION */}
+          {/* FORMULÁRIO DE NOVA SECTION */}
           {newSection && (
             <motion.div
               className={styles.section}
@@ -267,7 +269,7 @@ const CreateSection: FC<Props> = ({
             animate="visible"
             exit="exit"
           >
-            <CreateSectionPlaceholder onClick={() => setNewSection(true)} />
+            <SectionsContainerPlaceholder onClick={() => setNewSection(true)} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -275,4 +277,4 @@ const CreateSection: FC<Props> = ({
   );
 };
 
-export default CreateSection;
+export default SectionsContainer;

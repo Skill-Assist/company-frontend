@@ -1,20 +1,18 @@
 import { FC, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import CreateQuestionPlaceholder from "@/components/placeholders/createQuestionPlaceholder";
 
+import QuestionsContainerPlaceholder from "@/components/placeholders/questionsContainerPlaceholder";
 import QuestionCard from "@/components/questionCard";
 import ManualCreator from "@/components/questionCreators/manual";
 import Modal from "@/components/modal";
 
 import questionService from "@/services/questionService";
 
-import { Section } from "@/types/section";
 import { Question } from "@/types/question";
 
 import styles from "./styles.module.scss";
 
 interface Props {
-  section: Section;
   fetchOwnSection: () => any;
 }
 
@@ -39,7 +37,7 @@ const dropIn = {
   },
 };
 
-const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
+const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -60,20 +58,17 @@ const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
     setLoadingQuestions(true);
     const sectionData = await fetchOwnSection();
 
-    console.log("fetching")
-    
     if (sectionData.questions && sectionData.questions.length > 0) {
       const response = await questionService.getAllQuestions(
         sectionData.questions
-        );
-        console.log(response)
+      );
 
-      if (response.status >= 200 && response.status < 300) {
-        setQuestions(response.data);
-        setLoadingQuestions(false);
-      } else {
+      if (response.status >= 400) {
         setLoadingQuestions(false);
         setQuestions([]);
+      } else {
+        setQuestions(response.reverse());
+        setLoadingQuestions(false);
       }
     } else {
       setLoadingQuestions(false);
@@ -88,29 +83,31 @@ const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.sectionsContainer}>
-          {questions && questions.length > 0 && (
-            <div className={styles.stroke}>
-              <button onClick={() => open("manual")}>Manual</button>
-              <button onClick={() => open("wizard")}>Wizard</button>
-              <button onClick={() => open("ai")}>IA</button>
-            </div>
-          )}
-
-          {/* MAP DE SECTIONS EXISTENTES */}
+        {questions && questions.length > 0 && (
+          <div className={styles.stroke}>
+            <button onClick={() => open("manual")}>Manual</button>
+            <button onClick={() => open("wizard")}>Wizard</button>
+            <button onClick={() => open("ai")}>IA</button>
+          </div>
+        )}
+        <div className={styles.questionContainer}>
+          {/* MAP DE QUESTIONS EXISTENTES */}
           {!loadingQuestions &&
             questions.length > 0 &&
             questions.map((question, index) => {
               return (
                 <motion.div
-                  className={styles.section}
+                  className={styles.question}
                   variants={dropIn}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
                   key={index}
                 >
-                  <QuestionCard question={question} index={index} />
+                  <QuestionCard
+                    question={question}
+                    index={+questions.length - index}
+                  />
                 </motion.div>
               );
             })}
@@ -130,7 +127,7 @@ const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
               animate="visible"
               exit="exit"
             >
-              <CreateQuestionPlaceholder open={open} />
+              <QuestionsContainerPlaceholder open={open} />
             </motion.div>
           </AnimatePresence>
         )}
@@ -157,4 +154,4 @@ const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
   );
 };
 
-export default CreateQuestion;
+export default QuestionsContainer;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import cookie from "react-cookies";
+import { toast } from "react-hot-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 

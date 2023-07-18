@@ -80,7 +80,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const [questionType, setQuestionType] = useState<
     "challenge" | "programming" | "multipleChoice" | "text" | ""
   >("");
-  const weightInputRef = useRef<HTMLInputElement>(null);
+  const [questionWeight, setQuestionWeight] = useState<1 | 2 | 3 | "">("");
   const [statement, setStatement] = useState("");
 
   // Multiple Choice Variables and Logic
@@ -207,6 +207,15 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     }
   };
 
+  const deletegradingRubricNameHandler = (name: string) => {
+    setGradingRubricNames((oldNames) => {
+      const newNames = [...oldNames];
+      const index = newNames.findIndex((n) => n === name);
+      newNames.splice(index, 1);
+      return newNames;
+    });
+  };
+
   // End of Grading Rubric Variables and Logic
 
   const [defaultTags, setDefaultTags] = useState<selectOption[]>([
@@ -260,13 +269,12 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
   const handleCreateQuestion = async () => {
     const sectionId = router.query.sectionId;
-    const enteredWeight = weightInputRef.current?.value;
 
     if (!sectionId || typeof sectionId !== "string") {
       return;
     }
 
-    if (!enteredWeight) {
+    if (questionWeight === "") {
       toast.error("Preencha o peso da questão.");
       return;
     }
@@ -296,7 +304,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     const response = await questionService.createQuestion(
       questionData,
       sectionId,
-      +enteredWeight
+      +questionWeight
     );
 
     if (response.status >= 200 && response.status < 300) {
@@ -351,12 +359,18 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
           </div>
           <div>
             <h3>Peso da questão</h3>
-            <input
-              ref={weightInputRef}
-              type="number"
-              min={1}
-              placeholder="0.0"
-            />
+            <select
+              name="questionWeight"
+              id="questionWeight"
+              onChange={(e) => {
+                setQuestionWeight(e.target.value as 1 | 2 | 3 | "");
+              }}
+            >
+              <option value="">Peso da questão</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
           </div>
         </div>
         <div className={styles.contentBody}>
@@ -774,13 +788,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             )}
             {questionType === "text" && (
               <div className={styles.gradingRubricContainer}>
-                <h3
-                  onClick={() => {
-                    console.log(gradingRubric);
-                  }}
-                >
-                  Critérios de correção
-                </h3>
+                <h3>Critérios de correção</h3>
                 <div className={styles.gradingRubricInput}>
                   <div>
                     <label htmlFor="gradingRubric">Nome do critério</label>
@@ -788,7 +796,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       type="text"
                       name="gradingRubric"
                       id="gradingRubric"
-                      placeholder="Digite o nome do critério aqui..."
+                      placeholder='Por exemplo: "Coerência e coesão", "Gramática", "Conteúdo"'
                       ref={gradingRubricNameInputRef}
                     />
                   </div>
@@ -900,20 +908,29 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => saveGradingRubricHandler(name)}
-                      >
-                        {savingGradingRubricLoading ? (
-                          <ThreeDots
-                            color="var(--neutral-0)"
-                            height={20}
-                            width={20}
-                          />
-                        ) : (
-                          "Salvar critério de correção"
-                        )}
-                      </button>
+                      <div className={styles.gradingRubricActions}>
+                        <button
+                          type="button"
+                          onClick={() => deletegradingRubricNameHandler(name)}
+                        >
+                          Deletar critério de correção
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => saveGradingRubricHandler(name)}
+                        >
+                          {savingGradingRubricLoading ? (
+                            <ThreeDots
+                              color="var(--neutral-0)"
+                              height={20}
+                              width={20}
+                            />
+                          ) : (
+                            "Salvar critério de correção"
+                          )}
+                        </button>
+                      </div>
                     </form>
                   ))}
                 </div>

@@ -7,11 +7,11 @@ import toast from "react-hot-toast";
 
 import Layout from "@/components/layout";
 import CreateSection from "@/components/createSection";
-
-import examService from "@/services/examService";
 import Modal from "@/components/modal";
 import ExamSideBar from "@/components/examSideBar";
-import CreateInvitation from "@/components/CreateInvitation";
+import CreateInvitation from "@/components/createInvitation";
+
+import examService from "@/services/examService";
 
 import { Exam } from "@/types/exam";
 

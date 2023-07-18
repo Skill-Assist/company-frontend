@@ -245,26 +245,6 @@
     font-weight: 500;
     margin-bottom: 10px;
   }
-
-  button {
-    width: 200px;
-    height: 30px;
-    margin: 5px 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 300ms;
-    background-color: var(--primary);
-    color: var(--neutral-50);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      scale: 1.05;
-    }
-  }
 }
 
 .gradingRubricInput {
@@ -361,9 +341,41 @@
       border-bottom: 1px solid var(--primary);
     }
   }
+}
 
-  button{
-    align-self: center;
+.gradingRubricActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  button {
+    width: 200px;
+    height: 30px;
+    margin: 5px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 300ms;
+    background-color: var(--primary);
+    color: var(--neutral-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:first-child {
+      background-color: var(--neutral-100);
+      color: var(--secondary-2);
+    }
+
+    &:first-child:hover {
+      background-color: var(--warning);
+      color: var(--neutral-0);
+    }
+
+    &:hover {
+      scale: 1.05;
+    }
   }
 }
 

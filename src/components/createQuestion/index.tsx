@@ -60,17 +60,24 @@ const CreateQuestion: FC<Props> = ({ section, fetchOwnSection }: Props) => {
     setLoadingQuestions(true);
     const sectionData = await fetchOwnSection();
 
-    const response = await questionService.getAllQuestions(sectionData.questions);
+    console.log("fetching")
+    
+    if (sectionData.questions && sectionData.questions.length > 0) {
+      const response = await questionService.getAllQuestions(
+        sectionData.questions
+        );
+        console.log(response)
 
-    if (
-      response === undefined ||
-      response === null ||
-      response.status === (400 || 500 || 404 || 401)
-    ) {
-      setLoadingQuestions(false);
+      if (response.status >= 200 && response.status < 300) {
+        setQuestions(response.data);
+        setLoadingQuestions(false);
+      } else {
+        setLoadingQuestions(false);
+        setQuestions([]);
+      }
     } else {
-      setQuestions(response);
       setLoadingQuestions(false);
+      setQuestions([]);
     }
   };
 

@@ -4,14 +4,27 @@ import {
   KeyboardEvent,
   ClipboardEvent,
   ChangeEvent,
+  useEffect,
 } from "react";
+
+import {
+  Table,
+  Row,
+  Col,
+  Tooltip,
+  User,
+  Text,
+  StyledBadge,
+  useAsyncList,
+} from "@nextui-org/react";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
 
 import examService from "@/services/examService";
 
 import styles from "./styles.module.scss";
-import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const CreateInvitation = () => {
   const [invitationLoading, setInvitationLoading] = useState(false);
@@ -110,6 +123,8 @@ const CreateInvitation = () => {
 
     const response = await examService.sendInvitation(examId, invitationData);
 
+    console.log(response);
+
     if (response.status >= 200 && response.status < 300) {
       toast.success("Convite enviado com sucesso!");
       setInvitationLoading(false);
@@ -122,30 +137,65 @@ const CreateInvitation = () => {
     }
   };
 
+  useEffect(() => {
+    const examId = router.query.examId;
+
+    if (examId || typeof examId === "string") {
+      const fetchInvitations = async () => {
+        const examId = router.query.examId;
+
+        if (examId && typeof examId === "string") {
+          const response = await examService.getInvitation(examId);
+
+          console.log(response);
+        }
+      };
+
+      fetchInvitations();
+    }
+  }, []);
+
   return (
     <div className={styles.container}>
-      <div className={styles.invitationContainer}>
-        <div>
-          <div>
-            <label>Convidar</label>
+      <div className={styles.header}>
+        <div className={styles.field}>
+          <label htmlFor="emails">E-mails</label>
+          <div className={styles.emailContainer}>
+            <div className={styles.emailsList}>
+              {emails.map((email) => (
+                <div key={email}>
+                  {email}
+                  <button type="button" onClick={() => handleDelete(email)}>
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
             <input
               value={value}
-              placeholder='Digite ou cole os e-mail e pressione "Enter"'
+              placeholder='Insira os e-mail e pressione "Enter"'
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               onPaste={handlePaste}
+              id="emails"
             />
           </div>
-          <div>
+          {error && <p className={styles.error}>{error}</p>}
+        </div>
+        <div className={styles.headerSecondLine}>
+          <div className={styles.field}>
             <label htmlFor="expirationInHours">Expiração do convite</label>
             <input
-              type="number"
-              name="expirationInHours"
               id="expirationInHours"
-              placeholder="Em quantas horas esse convite expira?"
+              type="number"
+              min="1"
+              max="24"
+              className={styles.expirationInHoursInput}
+              placeholder="Digite o número de horas para expiração do convite"
               ref={expirationInHoursInputRef}
             />
           </div>
+
           <button
             onClick={invitationHandler}
             disabled={emails.length === 0 ? true : false}
@@ -166,17 +216,81 @@ const CreateInvitation = () => {
             )}
           </button>
         </div>
-        {error && <p>{error}</p>}
       </div>
-      <div className={styles.emailsList}>
-        {emails.map((email) => (
-          <div key={email}>
-            {email}
-            <button type="button" onClick={() => handleDelete(email)}>
-              &times;
-            </button>
-          </div>
-        ))}
+
+      <div className={styles.content}>
+        <h2>Lista de candidatos</h2>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div className={styles.userTd}>
+                  <Image src="/user.png" alt="avatar" width={40} height={40} />
+                  <div>
+                    <p>Sarah Doe</p>
+                    <span>sarah.doe@example.com</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p className={styles.status}>Aprovado</p>
+              </td>
+              <td>
+                <div className={styles.rowActions}>
+                  <button type="button">Reenviar Convite</button>
+                  <button type="button">Ver</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div className={styles.userTd}>
+                  <Image src="/user.png" alt="avatar" width={40} height={40} />
+                  <div>
+                    <p>James Smith</p>
+                    <span>james.smith@example.com</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p className={styles.status}>Aprovado</p>
+              </td>
+              <td>
+                <div className={styles.rowActions}>
+                  <button disabled type="button">Reenviar Convite</button>
+                  <button type="button">Ver</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div className={styles.userTd}>
+                  <Image src="/user.png" alt="avatar" width={40} height={40} />
+                  <div>
+                    <p>Jane Doe</p>
+                    <span>jane.doe@example.com</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p className={styles.status}>Aprovado</p>
+              </td>
+              <td>
+                <div className={styles.rowActions}>
+                  <button type="button">Reenviar Convite</button>
+                  <button type="button">Ver</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

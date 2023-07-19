@@ -494,13 +494,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             )}
             {questionType === "programming" && (
               <div className={styles.gradingRubricContainer}>
-                <h3
-                  onClick={() => {
-                    console.log(gradingRubric);
-                  }}
-                >
-                  Critérios de correção
-                </h3>
+                <h3>Critérios de correção</h3>
                 <div className={styles.gradingRubricInput}>
                   <div>
                     <label htmlFor="gradingRubric">Nome do critério</label>
@@ -508,7 +502,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       type="text"
                       name="gradingRubric"
                       id="gradingRubric"
-                      placeholder="Digite o nome do critério aqui..."
+                      placeholder='Por exemplo: "Clean Code", "Deploy", "Acurácia"'
                       ref={gradingRubricNameInputRef}
                     />
                   </div>
@@ -620,20 +614,29 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => saveGradingRubricHandler(name)}
-                      >
-                        {savingGradingRubricLoading ? (
-                          <ThreeDots
-                            color="var(--neutral-0)"
-                            height={20}
-                            width={20}
-                          />
-                        ) : (
-                          "Salvar critério de correção"
-                        )}
-                      </button>
+                      <div className={styles.gradingRubricActions}>
+                        <button
+                          type="button"
+                          onClick={() => deletegradingRubricNameHandler(name)}
+                        >
+                          Deletar critério de correção
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => saveGradingRubricHandler(name)}
+                        >
+                          {savingGradingRubricLoading ? (
+                            <ThreeDots
+                              color="var(--neutral-0)"
+                              height={20}
+                              width={20}
+                            />
+                          ) : (
+                            "Salvar critério de correção"
+                          )}
+                        </button>
+                      </div>
                     </form>
                   ))}
                 </div>
@@ -641,13 +644,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             )}
             {questionType === "challenge" && (
               <div className={styles.gradingRubricContainer}>
-                <h3
-                  onClick={() => {
-                    console.log(gradingRubric);
-                  }}
-                >
-                  Critérios de correção
-                </h3>
+                <h3>Critérios de correção</h3>
                 <div className={styles.gradingRubricInput}>
                   <div>
                     <label htmlFor="gradingRubric">Nome do critério</label>
@@ -655,7 +652,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       type="text"
                       name="gradingRubric"
                       id="gradingRubric"
-                      placeholder="Digite o nome do critério aqui..."
+                      placeholder='Por exemplo: "Clean Code", "Deploy", "Acurácia"'
                       ref={gradingRubricNameInputRef}
                     />
                   </div>
@@ -767,20 +764,29 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => saveGradingRubricHandler(name)}
-                      >
-                        {savingGradingRubricLoading ? (
-                          <ThreeDots
-                            color="var(--neutral-0)"
-                            height={20}
-                            width={20}
-                          />
-                        ) : (
-                          "Salvar critério de correção"
-                        )}
-                      </button>
+                      <div className={styles.gradingRubricActions}>
+                        <button
+                          type="button"
+                          onClick={() => deletegradingRubricNameHandler(name)}
+                        >
+                          Deletar critério de correção
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => saveGradingRubricHandler(name)}
+                        >
+                          {savingGradingRubricLoading ? (
+                            <ThreeDots
+                              color="var(--neutral-0)"
+                              height={20}
+                              width={20}
+                            />
+                          ) : (
+                            "Salvar critério de correção"
+                          )}
+                        </button>
+                      </div>
                     </form>
                   ))}
                 </div>

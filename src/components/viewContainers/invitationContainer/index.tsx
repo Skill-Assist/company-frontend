@@ -8,7 +8,10 @@ import {
 } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
+import { Tooltip } from "@nextui-org/react";
 import { ThreeDots } from "react-loader-spinner";
+import { AiOutlineReload, AiOutlineSend } from "react-icons/ai";
+import { GiNotebook } from "react-icons/gi";
 
 import examService from "@/services/examService";
 
@@ -212,9 +215,19 @@ const InvitationContainer = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Nome</th>
-              <th>Status</th>
-              <th>Ações</th>
+              <th>
+                <span>Nome</span>
+              </th>
+              <th>
+                <span style={{ justifySelf: "center", marginRight: "18px" }}>
+                  Status
+                </span>
+              </th>
+              <th>
+                <span style={{ justifySelf: "center", marginRight: "18px" }}>
+                  Ações
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -228,53 +241,26 @@ const InvitationContainer = () => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td style={{ justifyContent: "center" }}>
                 <p className={styles.status}>Aprovado</p>
               </td>
               <td>
                 <div className={styles.rowActions}>
-                  <button type="button">Reenviar Convite</button>
-                  <button type="button">Ver</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div className={styles.userTd}>
-                  <Image src="/user.png" alt="avatar" width={40} height={40} />
-                  <div>
-                    <p>James Smith</p>
-                    <span>james.smith@example.com</span>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p className={styles.status}>Aprovado</p>
-              </td>
-              <td>
-                <div className={styles.rowActions}>
-                  <button disabled type="button">Reenviar Convite</button>
-                  <button type="button">Ver</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div className={styles.userTd}>
-                  <Image src="/user.png" alt="avatar" width={40} height={40} />
-                  <div>
-                    <p>Jane Doe</p>
-                    <span>jane.doe@example.com</span>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p className={styles.status}>Aprovado</p>
-              </td>
-              <td>
-                <div className={styles.rowActions}>
-                  <button type="button">Reenviar Convite</button>
-                  <button type="button">Ver</button>
+                  <Tooltip content={"Reenviar convite"}>
+                    <button type="button">
+                      <AiOutlineReload fill="var(--alert)" size={25} />
+                    </button>
+                  </Tooltip>
+                  <Tooltip content="Gerar Correção">
+                    <button disabled type="button">
+                      <GiNotebook fill="var(--primary-2)" size={25} />
+                    </button>
+                  </Tooltip>
+                  <Tooltip content="Visualizar candidato">
+                    <button type="button">
+                      <AiOutlineSend fill="var(--primary)" size={25} />
+                    </button>
+                  </Tooltip>
                 </div>
               </td>
             </tr>

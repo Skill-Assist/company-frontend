@@ -124,6 +124,8 @@ const CreateExam: FC = () => {
 
     const response = await examService.updateExam(updatedExam, Number(examId));
 
+    console.log(response)
+
     if (response.status >= 200 && response.status < 300) {
       setLoading(false);
       setStep(2);
@@ -160,6 +162,8 @@ const CreateExam: FC = () => {
                     labelPlaceholder="Título do exame"
                     type="text"
                     aria-label="title-input"
+                    minLength={3}
+                    maxLength={20}
                   />
                 </div>
                 <div className={styles.row}>
@@ -307,7 +311,7 @@ const CreateExam: FC = () => {
                         visible={true}
                       />
                     ) : (
-                      "Skip"
+                      "Pular"
                     )}
                   </button>
                   <button type="submit" form="update">

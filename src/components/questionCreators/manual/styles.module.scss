@@ -423,6 +423,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  h3{
+    text-transform: capitalize;
+  }
 }
 
 .optionalInfos {
@@ -520,4 +524,19 @@
 .submit {
   background-color: var(--primary);
   color: var(--neutral-50);
+}
+
+.techOptions {
+  margin-top: 15px;
+
+  ul {
+    display: flex;
+    gap: 15px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
 }

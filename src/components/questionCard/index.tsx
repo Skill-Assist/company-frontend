@@ -2,11 +2,6 @@ import { FC, useState } from "react";
 import { BsArrowDown, BsFillTrashFill } from "react-icons/bs";
 import parse from "html-react-parser";
 
-import ExamCard from "@/components/examCard";
-
-import { Exam } from "@/types/exam";
-import { User } from "@/types/user";
-
 import styles from "./styles.module.scss";
 import { Question } from "@/types/question";
 import { toast } from "react-hot-toast";

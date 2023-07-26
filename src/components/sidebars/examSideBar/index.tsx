@@ -66,7 +66,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
 
     const response = await examService.switchStatus(examData.id, newStatus);
 
-    console.log(response)
+    console.log(response);
 
     if (response.status >= 200 && response.status < 300) {
       toast.success("Status alterado com sucesso!", {
@@ -75,8 +75,36 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
       });
       setToggleStatusLoading(false);
       setDisabledBtn(true);
+    } else if (
+      response.data.message === "Exam has no sections. Process was aborted."
+    ) {
+      toast.error("O exame precisa ter sessões", {
+        duration: 3000,
+        position: "top-right",
+      });
+      setToggleStatusLoading(false);
+      setDisabledBtn(false);
+    } else if (
+      response.data.message === "Exam has sections without questions. Process was aborted."
+    ) {
+      toast.error("As sessões precisam ter questões", {
+        duration: 3000,
+        position: "top-right",
+      });
+      setToggleStatusLoading(false);
+      setDisabledBtn(false);
+    } else if (
+      response.data.message ===
+      "Switching exam status to draft or archived is not implemented yet."
+    ) {
+      toast.loading("Feature em desenvolvimento", {
+        duration: 3000,
+        position: "top-right",
+      });
+      setToggleStatusLoading(false);
+      setDisabledBtn(false);
     } else {
-      toast.error("Erro ao alterar status!", {
+      toast.error("Erro em atualizar o status", {
         duration: 3000,
         position: "top-right",
       });

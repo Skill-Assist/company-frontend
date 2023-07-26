@@ -1,3 +1,4 @@
+import { SectionToAnswerSheet } from "@/types/sectionToAnswerSheet";
 import axios from "axios";
 import cookie from "react-cookies";
 import { toast } from "react-hot-toast";
@@ -96,6 +97,46 @@ const sectionService = {
         config
       );
       return response;
+    } catch (error: any) {
+      const statusCode = error.response.data.statusCode;
+      const message = error.response.data.message;
+
+      if (statusCode === 418 || message.includes("Invalid token")) {
+        cookie.remove("token");
+        toast.error("Sua sessão expirou. Faça login novamente", {
+          icon: "⏱️",
+        });
+        setTimeout(() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+        }, 2000);
+      }
+      return error.response;
+    }
+  },
+
+  getSectionsToAnswerSheet: async (
+    sectionToAnswerSheets: SectionToAnswerSheet[]
+  ) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    };
+    try {
+      const sectionToAnswerSheetRequests = sectionToAnswerSheets.map(
+        async (sectionToAnswerSheet) => {
+          const sectionToAnswerSheetResponse = await axios.get(
+            `${API_URL}/section-to-answer-sheet/findOne?key=id&value=${sectionToAnswerSheet.id}&relations=answers,section,answerSheet&map=true`,
+            config
+          );
+          return sectionToAnswerSheetResponse.data;
+        }
+      );
+
+      const sectionToAnswerSheetRequestsResponse = await Promise.all(
+        sectionToAnswerSheetRequests
+      );
+      return sectionToAnswerSheetRequestsResponse;
     } catch (error: any) {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;

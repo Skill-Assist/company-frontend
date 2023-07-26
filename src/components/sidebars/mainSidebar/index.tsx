@@ -7,7 +7,6 @@ import Image from "next/image";
 import Logo from "@public/logo.svg";
 import DashboardIcon from "@public/icons/dashboard.svg";
 import ExamsIcon from "@public/icons/exams.svg";
-import ResultsIcon from "@public/icons/result.svg";
 import SupportIcon from "@public/icons/support.svg";
 
 type Props = {
@@ -31,11 +30,6 @@ const MainSidebar: FC<Props> = ({
       icon: ExamsIcon,
       text: "Seus Testes",
       url: "/exams",
-    },
-    {
-      icon: ResultsIcon,
-      text: "Resultados",
-      url: "/results",
     },
     {
       icon: SupportIcon,

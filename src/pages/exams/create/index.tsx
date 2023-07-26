@@ -344,7 +344,7 @@ const CreateExam: FC = () => {
               <div className={styles.finishingView}>
                 <div>
                   <div className={styles.intro}>
-                    <h1>Perfeito! Exame já criado!.</h1>
+                    <h1>Perfeito! <br /> Exame já criado!</h1>
                     <p>
                       O que acha da gente começar a criar a sessões do seu
                       exame?

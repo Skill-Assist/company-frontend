@@ -1,6 +1,5 @@
 import { FC, ReactNode } from "react";
 import { motion } from "framer-motion";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import Backdrop from "./backdrop";
 

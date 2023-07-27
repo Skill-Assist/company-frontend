@@ -10,6 +10,7 @@ import { BiLogOut } from "react-icons/bi";
 
 import styles from "./styles.module.scss";
 import { User } from "@/types/user";
+import userService from "@/services/userService";
 
 type Props = {
   title?: string;
@@ -31,8 +32,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
   }, []);
 
   const logout = () => {
-    cookies.remove("token");
-    router.push(`${process.env.NEXT_PUBLIC_LOGIN_URL}`);
+    userService.logout();
   };
 
   const useOutsideAlerter = (ref: RefObject<HTMLDivElement>) => {

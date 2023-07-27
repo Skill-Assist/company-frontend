@@ -3,17 +3,23 @@ import { BsArrowDown } from "react-icons/bs";
 import { AnimatePresence } from "framer-motion";
 import parse from "html-react-parser";
 import { TailSpin } from "react-loader-spinner";
-import { AiFillTag, AiOutlineCloseCircle } from "react-icons/ai";
+import {
+  AiFillTag,
+  AiOutlineCloseCircle,
+  AiOutlineCloudDownload,
+} from "react-icons/ai";
+import Editor from "@monaco-editor/react";
+import { toast } from "react-hot-toast";
 
 import Modal from "../modal";
 
 import { Answer } from "@/types/answer";
 import { Question } from "@/types/question";
+import { Section } from "@/types/section";
 
 import questionService from "@/services/questionService";
 
 import styles from "./styles.module.scss";
-import { Section } from "@/types/section";
 
 interface Props {
   section: Partial<Section>;
@@ -98,11 +104,16 @@ const ScoredSection: FC<Props> = ({
                 </div>
               );
             })}
-        <div className={styles.sectionData}>
-          <p>{section.name}</p>
-          <p style={{ justifySelf: "center" }}> Peso da seção: {section.weight && +section.weight * 100 + "%"}</p>
-          <p style={{ justifySelf: "center" }}>Nota da seção: {+sectionScore * 10}</p>
-        </div>
+          <div className={styles.sectionData}>
+            <p>{section.name}</p>
+            <p style={{ justifySelf: "center" }}>
+              {" "}
+              Peso da seção: {section.weight && +section.weight * 100 + "%"}
+            </p>
+            <p style={{ justifySelf: "center" }}>
+              Nota da seção: {+sectionScore * 10}
+            </p>
+          </div>
         </div>
       </div>
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
@@ -191,14 +202,68 @@ const ScoredSection: FC<Props> = ({
                 <hr />
                 <div className={styles.answerContent}>
                   <h3>Resposta do usuário</h3>
-                  <p>{rows[modalContent.index].content}</p>
-                  <h3>{modalContent.question.type === "multipleChoice" ? "Alternativa Correta" : "Feedback"}</h3>
                   <p>
-                    {rows[modalContent.index].aiFeedback
-                      ? <pre>
-                        {rows[modalContent.index].aiFeedback}
-                      </pre>
-                      : "Sem feedback"}
+                    {modalContent.question.type === "multipleChoice" &&
+                    modalContent.question.options ? (
+                      modalContent.question.options[
+                        rows[modalContent.index].content
+                      ]
+                    ) : modalContent.question.type === "challenge" ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        Download do arquivo{" "}
+                        <AiOutlineCloudDownload
+                          fill="var(--secondary-2)"
+                          size={20}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            toast.loading("Feature em desenvolvimento", {
+                              duration: 3000,
+                              position: "top-right",
+                            });
+                          }}
+                        />
+                      </div>
+                    ) : modalContent.question.type === "programming" ? (
+                      <>
+                        <Editor
+                          language={"javascript"}
+                          theme="vs-dark"
+                          value={rows[modalContent.index].content}
+                          options={{
+                            readOnly: true,
+                            minimap: {
+                              enabled: false,
+                            },
+                          }}
+                          height="300px"
+                        />
+                      </>
+                    ) : (
+                      rows[modalContent.index].content
+                    )}
+                  </p>
+                  <h3>
+                    {modalContent.question.type === "multipleChoice"
+                      ? "Alternativa Correta"
+                      : "Feedback"}
+                  </h3>
+                  <p>
+                    {modalContent.question.type === "multipleChoice" &&
+                    modalContent.question.options ? (
+                      modalContent.question.options[
+                        modalContent.question.gradingRubric.answer.option
+                      ]
+                    ) : rows[modalContent.index].aiFeedback ? (
+                      <pre>{rows[modalContent.index].aiFeedback}</pre>
+                    ) : (
+                      "Sem feedback"
+                    )}
                   </p>
                 </div>
               </div>

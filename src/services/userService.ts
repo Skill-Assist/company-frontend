@@ -5,6 +5,12 @@ import { toast } from "react-hot-toast";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const userService = {
+  logout: () => {
+    cookie.remove("token");
+    cookie.remove("show_skill_assist_announcement");
+    window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+  },
+
   getProfile: async () => {
     let config = {
       headers: {
@@ -30,6 +36,7 @@ const userService = {
       return error.response;
     }
   },
+  
   update: async (data: any) => {
     let config = {
       headers: {

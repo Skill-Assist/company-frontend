@@ -1,162 +1,62 @@
-import { FC, useEffect, useState } from "react";
-import styles from "./styles.module.scss";
-
-import Layout from "@/components/layout";
+import { FC } from "react";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 
-import InputField from "@/components/inputField";
-import ExamCardSample from "@/components/examCardSample";
+import Layout from "@/components/layout";
 
-import s3Service from "@/services/s3Service";
-import { flushSync } from "react-dom";
-import userService from "@/services/userService";
-import { toast } from "react-hot-toast";
+import { User } from "@/types/user";
 
-type Profile = {
-  id: string;
-  name: string;
-  email: string;
-  mobilePhone: string | null;
-  nationalId: string | null;
-  roles: string[];
-  color: string;
-  logo: string | null;
-};
+import styles from "./styles.module.scss";
 
-const Profile: FC = () => {
-  const [file, setFile] = useState<any>();
-  const [fields, setFields] = useState<Profile>({
-    id: "",
-    name: "",
-    email: "",
-    mobilePhone: "",
-    nationalId: null,
-    roles: ["recruiter"],
-    color: "#ff0000",
-    logo: null,
-  });
+interface Props {
+  user: User;
+}
 
-  const getProfile = async () => {
-    const response = await userService.getProfile();
-
-    if (response.status >= 200 && response.status < 300) {
-      setFields(response.data);
-    } else {
-      toast.error("Erro ao buscar perfil!");
-    }
-  };
-
-  const handleChange = async (data: any) => {
-    const response = await userService.update(data);
-    const key = Object.getOwnPropertyNames(data)[0];
-
-    if (response.status >= 200 && response.status < 300) {
-      flushSync(() => {
-        setFields({ ...fields, [key]: data[key] });
-      }, []);
-    } else {
-      toast.error("Erro ao atualizar perfil!");
-    }
-  };
-
-  const uploadToS3 = async () => {
-    const response = await s3Service.uploadFile(fields.id, file);
-    handleChange({ logo: response.data });
-  };
-
-  useEffect(() => {
-    if (file && fields.id) {
-      uploadToS3();
-    }
-  }, [file]);
-
-  useEffect(() => {
-    getProfile();
-  }, []);
-
+const Profile: FC<Props> = ({user}: Props) => {
   return (
-    <Layout sidebar header headerTitle="Perfil" active={0}>
-      <div className={styles.profile}>
-        {/* <Image
-          className={styles.profilePhoto}
-          src={Photo}
-          alt="Profile Image"
-          width={140}
-          height={140}
-        /> */}
-
-        <div className={styles.grid}>
-          <div className={styles.inputContainer}>
-            <InputField
-              title="Empresa"
-              editable
-              type="input"
-              placeholder={fields.name ? "" : "Não adicionado"}
-              value={fields.name}
-              changeValue={(value) => handleChange({ name: value })}
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <InputField
-              title="E-mail"
-              placeholder={fields.email ? "" : "Não adicionado"}
-              value={fields.email}
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <InputField
-              title="Telefone"
-              editable
-              type="input"
-              regex="phone"
-              placeholder={fields.mobilePhone ? "" : "Não adicionado"}
-              value={fields.mobilePhone ? fields.mobilePhone : ""}
-              changeValue={(value) => handleChange({ mobilePhone: value })}
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <InputField
-              title="CNPJ"
-              editable
-              regex="cnpj"
-              type="input"
-              placeholder={fields.nationalId ? "" : "Não adicionado"}
-              value={fields.nationalId ? String(fields.nationalId) : ""}
-              changeValue={(value) => handleChange({ nationalId: value })}
-            />
-          </div>
-
-          <div className={styles.inputContainer}>
-            <InputField
-              title="Cargo"
-              placeholder={fields.roles ? "" : "Sem cargo"}
-              value={
-                fields.roles[0] == "recruiter" ? "Recrutador" : "Candidato"
-              }
-            />
+    <Layout
+      header
+      sidebar
+      sidebarClosed
+      goBack
+      headerTitle="Profile"
+      contentClassName={styles.p0}
+    >
+      <header className={styles.header}>
+        <div className={styles.bannner}/>
+        <div className={styles.mainInfos}>
+          <Image src={user.logo} height={100} width={100} alt="profile_picture" />
+          <div>
+            <h2>{user.name}</h2>
+            <span>{user.email}</span>
           </div>
         </div>
-
-        <div className={styles.line}></div>
-
-        <h3 className={styles.title}>Personalizar</h3>
-
-        <ExamCardSample
-          company={{
-            name: fields.name,
-            color: fields.color,
-            logo: fields.logo,
-          }}
-          title="Exemplo de Teste"
-          changePhoto={(file: any) => setFile(file.target.files[0])}
-          changeColor={(color: string) => handleChange({ color: color })}
-        />
-      </div>
+      </header>
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const { token } = req.cookies;
+
+  const userResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const user = await userResponse.json();
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
+
 
 export default Profile;

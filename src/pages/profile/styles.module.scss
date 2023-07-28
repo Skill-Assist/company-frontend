@@ -1,34 +1,42 @@
-.profile {
-  margin: 16px 32px;
+.p0 {
+  padding: 0 !important;
+}
 
-  .profilePhoto {
-    margin-bottom: 30px;
-    border: solid 2px black;
+.bannner {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(-90deg, var(--primary) 0%, var(--primary-2) 100%);
+}
+
+.mainInfos {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+  margin-top: -40px;
+  gap: 10px;
+
+  img {
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
+    border: 2px solid var(--neutral-0);
   }
 
-  .grid {
-    width: max-content;
-    display: grid;
-    column-gap: 60px;
-    grid-template-columns: repeat(2, 1fr);
-    
-    .inputContainer {
-      margin-left: 16px;
-      margin-bottom: 30px;
+  div {
+    transform: translateY(10px);
+
+    h2 {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--secondary-2);
+      transform: translateY(5px)!important;
     }
-  }
 
-  .line {
-    width: 80%;
-    max-width: 600px;
-    margin-left: 16px;
-    height: 1px;
-    background-color: #E5E8EB;
-  }
-
-  .title {
-    margin: 30px 0;
-    margin-left: 16px;
+    span {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--secondary-2);
+      font-weight: 500;
+    }
   }
 }

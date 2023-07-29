@@ -19,7 +19,7 @@ const userService = {
     };
     try {
       const profile = await axios.get(`${API_URL}/user/profile`, config);
-      return profile.data;
+      return profile;
     } catch (error: any) {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;

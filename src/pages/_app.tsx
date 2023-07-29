@@ -26,9 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
           router.push(`${process.env.NEXT_PUBLIC_LOGIN_URL}`);
         }
 
-        localStorage.setItem("user", JSON.stringify(userResponse));
+        localStorage.setItem("user", JSON.stringify(userResponse.data));
 
-        if (userResponse.roles.includes("recruiter") === false) {
+        if (userResponse.data.roles.includes("recruiter") === false) {
           router.push(`${process.env.NEXT_PUBLIC_LOGIN_URL}`);
         } else {
           setLoading(false);

@@ -33,7 +33,7 @@ const Exams: FC = () => {
     setLoading(true);
     const fetchData = async () => {
       let ownedExamsResponse = (await examService.getAllOwnExams()).reverse();
-      let profileExamsResponse = await userService.getProfile();
+      let profileExamsResponse = (await userService.getProfile()).data;
 
       setAllExams(ownedExamsResponse);
 

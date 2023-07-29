@@ -305,9 +305,6 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       };
     }
 
-    console.log("gradingRubric", gradingRubric);
-    console.log("questionData", questionData);
-
     const response = await questionService.createQuestion(
       questionData,
       sectionId,

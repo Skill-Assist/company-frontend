@@ -92,7 +92,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
               <ul>
                 <li className={styles.dropdownItem}>
                   <BsPersonCircle size={25} />
-                  <Link href="#">Ver Perfil</Link>
+                  <Link href="/profile">Ver Perfil</Link>
                 </li>
                 <li className={styles.dropdownItem}>
                   <BiLogOut size={25} />

@@ -1,0 +1,65 @@
+.formContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: none;
+    width: 100%;
+    margin-bottom: 20px;
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--secondary-2);
+      margin-bottom: 0.4rem;
+    }
+
+    input,
+    textarea {
+      background: var(--neutral-50);
+      border: 1px solid var(--neutral-100);
+      color: var(--secondary);
+      resize: none;
+      border-radius: 10px;
+      padding: 10px;
+      width: 100%;
+      transition: 300ms;
+
+      &:focus {
+        border-color: var(--primary);
+      }
+    }
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  button {
+    padding: 6px 20px;
+    width: min-content;
+    border-radius: 8px;
+    background-color: var(--primary);
+    color: var(--neutral-0);
+    font-weight: 600;
+    transition: 300ms;
+    align-self: flex-end;
+    border: none;
+
+    &:hover {
+      scale: 1.05;
+    }
+  }
+}
+
+.congrats {
+  padding: 10px;
+  align-self: flex-start;
+  font-weight: 500;
+  color: var(--secondary-2);
+}

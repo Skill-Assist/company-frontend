@@ -126,7 +126,7 @@ const ScoredSection: FC<Props> = ({
             }}
           >
             {loadingQuestion && (
-              <div className={styles.loadingContainer}>
+              <div className="loadingContainer">
                 <TailSpin
                   height="80"
                   width="80"

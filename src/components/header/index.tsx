@@ -25,7 +25,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem("skillAssistUser");
     if (user) {
       setUser(JSON.parse(user));
     }

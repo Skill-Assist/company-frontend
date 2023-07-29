@@ -5,19 +5,19 @@ import {
   ClipboardEvent,
   ChangeEvent,
   useEffect,
-} from "react";
-import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
-import { Tooltip } from "@nextui-org/react";
-import { ThreeDots } from "react-loader-spinner";
-import { AiOutlineReload, AiOutlineSend } from "react-icons/ai";
-import { GiNotebook } from "react-icons/gi";
+} from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
+import { Tooltip } from '@nextui-org/react';
+import { ThreeDots } from 'react-loader-spinner';
+import { AiOutlineReload, AiOutlineSend } from 'react-icons/ai';
+import { GiNotebook } from 'react-icons/gi';
 
-import examService from "@/services/examService";
+import examService from '@/services/examService';
 
-import styles from "./styles.module.scss";
-import Image from "next/image";
-import { Candidate } from "@/types/candidate";
+import styles from './styles.module.scss';
+import Image from 'next/image';
+import { Candidate } from '@/types/candidate';
 
 const InvitationContainer = () => {
   const [invitationLoading, setInvitationLoading] = useState(false);
@@ -25,7 +25,7 @@ const InvitationContainer = () => {
   const [tableLoading, setTableLoading] = useState(false);
 
   const [emails, setEmails] = useState<string[]>([]);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   const [candidates, setCandidates] = useState<Candidate[]>([]);
@@ -38,32 +38,46 @@ const InvitationContainer = () => {
     setTableLoading(true);
     const examId = router.query.examId;
 
-    if (examId && typeof examId === "string") {
+    if (examId && typeof examId === 'string') {
       const response = await examService.getCandidates(examId);
 
       if (response.status >= 200 && response.status < 300) {
         setCandidates(response.data.reverse());
         setTableLoading(false);
       } else {
-        toast.error("Erro ao buscar candidatos!");
+        toast.error('Erro ao buscar candidatos!');
         setTableLoading(false);
       }
     }
   };
 
   useEffect(() => {
+    const examId = router.query.examId;
+
+    if (examId || typeof examId === 'string') {
+      const fetchInvitations = async () => {
+        const examId = router.query.examId;
+
+        if (examId && typeof examId === 'string') {
+          const response = await examService.getInvitation(examId);
+        }
+      };
+
+      fetchInvitations();
+    }
+
     fetchCandidates();
   }, []);
 
   const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>): void => {
-    if (["Enter", "Tab", ",", " "].includes(evt.key)) {
+    if (['Enter', 'Tab', ',', ' '].includes(evt.key)) {
       evt.preventDefault();
 
       const trimmedValue = value.trim();
 
       if (trimmedValue && isValid(trimmedValue)) {
         setEmails([...emails, trimmedValue]);
-        setValue("");
+        setValue('');
       }
     }
   };
@@ -80,7 +94,7 @@ const InvitationContainer = () => {
   const handlePaste = (evt: ClipboardEvent<HTMLInputElement>): void => {
     evt.preventDefault();
 
-    const paste = evt.clipboardData.getData("text");
+    const paste = evt.clipboardData.getData('text');
     const emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g);
 
     if (emails) {
@@ -116,20 +130,20 @@ const InvitationContainer = () => {
     return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email);
   };
 
-  const invitationHandler = async () => {
+  const sendInvitationHandler = async () => {
     setInvitationLoading(true);
 
     const examId = router.query.examId;
     const enteredExpirationInHours = expirationInHoursInputRef.current?.value;
 
-    if (!examId || typeof examId !== "string") {
-      setError("Erro ao buscar o exame!");
+    if (!examId || typeof examId !== 'string') {
+      setError('Erro ao buscar o exame!');
       setInvitationLoading(false);
       return;
     }
 
     if (!enteredExpirationInHours) {
-      setError("Digite um valor para a expiração do convite!");
+      setError('Digite um valor para a expiração do convite!');
       setInvitationLoading(false);
       return;
     }
@@ -142,103 +156,93 @@ const InvitationContainer = () => {
     const response = await examService.sendInvitation(examId, invitationData);
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Convite enviado com sucesso!");
+      toast.success('Convite enviado com sucesso!');
       setInvitationLoading(false);
       setEmails([]);
-      setValue("");
+      setValue('');
       setError(null);
-      expirationInHoursInputRef.current!.value = "";
+      expirationInHoursInputRef.current!.value = '';
       fetchCandidates();
+    } else if (
+      response.data.message ===
+      'Exam is not published or live. Process was aborted.'
+    ) {
+      toast.error('O exame não está publicado ou em andamento!');
+      setInvitationLoading(false);
     } else {
-      toast.error("Erro ao enviar convite!");
+      toast.error('Erro ao enviar convite!');
       setInvitationLoading(false);
     }
   };
 
-  useEffect(() => {
-    const examId = router.query.examId;
-
-    if (examId || typeof examId === "string") {
-      const fetchInvitations = async () => {
-        const examId = router.query.examId;
-
-        if (examId && typeof examId === "string") {
-          const response = await examService.getInvitation(examId);
-        }
-      };
-
-      fetchInvitations();
-    }
-  }, []);
-
   const generateStatus = (status: string) => {
     switch (status) {
-      case "pending":
+      case 'pending':
         return (
           <p
             style={{
-              backgroundColor: "var(--neutral-50)",
-              color: "var(--secondary)",
+              backgroundColor: 'var(--neutral-50)',
+              color: 'var(--secondary)',
             }}
             className={styles.status}
           >
             Pendente
           </p>
         );
-      case "accepted":
+      case 'accepted':
         return (
           <p
             style={{
-              backgroundColor: "var(--success)",
-              color: "var(--neutral-0)",
+              backgroundColor: 'var(--success)',
+              color: 'var(--neutral-0)',
             }}
             className={styles.status}
           >
             Aceito
           </p>
         );
-      case "rejected":
+      case 'rejected':
         return (
           <p
             style={{
-              backgroundColor: "var(--warning)",
-              color: "var(--neutral-0)",
+              backgroundColor: 'var(--warning)',
+              color: 'var(--neutral-0)',
             }}
             className={styles.status}
           >
             Recusado
           </p>
         );
-      case "expired":
+      case 'expired':
         return (
           <p
             style={{
-              backgroundColor: "var(--alert)",
-              color: "var(--neutral-0)",
+              backgroundColor: 'var(--alert)',
+              color: 'var(--neutral-0)',
             }}
             className={styles.status}
           >
             Expirado
           </p>
         );
-      case "started":
+      case 'started':
         return (
           <p
             style={{
-              backgroundColor: "var(--secondary-2)",
-              color: "var(--neutral-0)",
+              backgroundColor: 'var(--secondary-2)',
+              color: 'var(--neutral-0)',
             }}
             className={styles.status}
           >
             Iniciado
           </p>
         );
-      case "finished":
+      case 'finished':
         return (
           <p
             style={{
-              backgroundColor: "#59a15f",
-              color: "var(--neutral-0)",
+              backgroundColor: '#59a15f',
+              color: 'var(--neutral-0)',
             }}
             className={styles.status}
           >
@@ -252,10 +256,10 @@ const InvitationContainer = () => {
     const response = await examService.resendInvitation(invitationId);
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Convite reenviado com sucesso!");
+      toast.success('Convite reenviado com sucesso!');
       fetchCandidates();
     } else {
-      toast.error("Erro ao reenviar convite!");
+      toast.error('Erro ao reenviar convite!');
       fetchCandidates();
     }
   };
@@ -264,14 +268,12 @@ const InvitationContainer = () => {
     setCorrectionLoading(true);
     const response = await examService.generateCorrection(answerSheetId);
 
-    console.log(response);
-
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Correção gerada com sucesso!");
+      toast.success('Correção gerada com sucesso!');
       setCorrectionLoading(false);
       fetchCandidates();
     } else {
-      toast.error("Erro ao gerar correção!");
+      toast.error('Erro ao gerar correção!');
       setCorrectionLoading(false);
       fetchCandidates();
     }
@@ -319,7 +321,7 @@ const InvitationContainer = () => {
           </div>
 
           <button
-            onClick={invitationHandler}
+            onClick={sendInvitationHandler}
             disabled={emails.length === 0 ? true : false}
             type="button"
           >
@@ -334,7 +336,7 @@ const InvitationContainer = () => {
                 visible={true}
               />
             ) : (
-              `Enviar convite${emails.length > 1 ? "s" : ""}`
+              `Enviar convite${emails.length > 1 ? 's' : ''}`
             )}
           </button>
         </div>
@@ -349,19 +351,25 @@ const InvitationContainer = () => {
                 <span>Nome</span>
               </th>
               <th>
-                <span style={{ justifySelf: "center", marginRight: "18px" }}>
+                <span style={{ justifySelf: 'center', marginRight: '18px' }}>
                   Status
                 </span>
               </th>
               <th>
-                <span style={{ justifySelf: "center", marginRight: "18px" }}>
+                <span style={{ justifySelf: 'center', marginRight: '18px' }}>
                   Ações
                 </span>
               </th>
             </tr>
           </thead>
           {tableLoading ? (
-            "Carregando..."
+            <tbody>
+              <tr>
+                <td colSpan={3} style={{ textAlign: 'center' }}>
+                  Carregando...
+                </td>
+              </tr>
+            </tbody>
           ) : (
             <tbody>
               {candidates.length > 0 ? (
@@ -370,7 +378,7 @@ const InvitationContainer = () => {
                     <td>
                       <div className={styles.userTd}>
                         <Image
-                          src={candidate.logo ? candidate.logo : "/user.png"}
+                          src={candidate.logo ? candidate.logo : '/user.png'}
                           alt="avatar"
                           width={40}
                           height={40}
@@ -381,20 +389,20 @@ const InvitationContainer = () => {
                         </div>
                       </div>
                     </td>
-                    <td style={{ justifyContent: "center" }}>
+                    <td style={{ justifyContent: 'center' }}>
                       {generateStatus(candidate.status)}
                     </td>
                     <td>
                       <div className={styles.rowActions}>
                         <Tooltip
                           content={
-                            candidate.status === "expired"
-                              ? "Reenviar convite"
-                              : "Convite ainda válido"
+                            candidate.status === 'expired'
+                              ? 'Reenviar convite'
+                              : 'Convite ainda válido'
                           }
                         >
                           <button
-                            disabled={!(candidate.status === "expired")}
+                            disabled={!(candidate.status === 'expired')}
                             onClick={() => handleResendInvitation(candidate.id)}
                             type="button"
                           >
@@ -404,18 +412,18 @@ const InvitationContainer = () => {
                         <Tooltip
                           content={
                             candidate.aiScore
-                              ? "Correção já gerada"
+                              ? 'Correção já gerada'
                               : correctionLoading
-                              ? "Gerando correção..."
-                              : candidate.status === "finished"
-                              ? "Gerar Correção"
-                              : "Exame não finalizado ainda"
+                              ? 'Gerando correção...'
+                              : candidate.status === 'finished'
+                              ? 'Gerar Correção'
+                              : 'Exame não finalizado ainda'
                           }
                         >
                           <button
                             disabled={
                               candidate.aiScore ||
-                              !(candidate.status === "finished") ||
+                              !(candidate.status === 'finished') ||
                               correctionLoading
                                 ? true
                                 : false
@@ -433,8 +441,8 @@ const InvitationContainer = () => {
                         <Tooltip
                           content={
                             candidate.aiScore
-                              ? "Visualizar candidato"
-                              : "Gere uma correção primeiro"
+                              ? 'Visualizar candidato'
+                              : 'Gere uma correção primeiro'
                           }
                         >
                           <button
@@ -457,8 +465,8 @@ const InvitationContainer = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={3} style={{ textAlign: "center" }}>
-                    <p style={{ color: "var(--secondary-2)" }}>
+                  <td colSpan={3} style={{ textAlign: 'center' }}>
+                    <p style={{ color: 'var(--secondary-2)' }}>
                       Nenhum candidato encontrado
                     </p>
                   </td>

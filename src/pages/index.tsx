@@ -17,6 +17,7 @@ import { Candidate } from "@/types/candidate";
 import examService from "@/services/examService";
 
 import styles from "./styles.module.scss";
+import axios from "axios";
 
 interface Props {
   user: User;
@@ -209,7 +210,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { token } = req.cookies;
   const { show_skill_assist_announcement } = req.cookies;
 
-  const userResponse = await fetch(
+  const userResponse = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
     {
       headers: {
@@ -218,7 +219,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   );
 
-  const user = await userResponse.json();
+  console.log(userResponse);
+
+  const user = await userResponse.data;
 
   return {
     props: {

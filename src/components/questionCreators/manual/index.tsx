@@ -315,7 +315,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
         fetchSectionName(sectionId, setSectionName);
       }
     }
-  }, []);
+  }, [router]);
 
   const handleCreateQuestion = async () => {
     const sectionId = router.query.sectionId;

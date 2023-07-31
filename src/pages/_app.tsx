@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       fetchData();
     }
-  }, []);
+  }, [router]);
 
   return (
     <>

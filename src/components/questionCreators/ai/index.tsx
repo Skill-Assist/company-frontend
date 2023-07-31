@@ -271,7 +271,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
         fetchSectionName(sectionId, setSectionName);
       }
     }
-  }, []);
+  }, [router]);
 
   const createQuestionHandler = async () => {
     const sectionId = router.query.sectionId;

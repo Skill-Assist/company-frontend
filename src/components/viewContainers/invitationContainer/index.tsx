@@ -68,7 +68,7 @@ const InvitationContainer = () => {
     }
 
     fetchCandidates();
-  }, []);
+  }, [router]);
 
   const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>): void => {
     if (['Enter', 'Tab', ',', ' '].includes(evt.key)) {
@@ -280,6 +280,10 @@ const InvitationContainer = () => {
 
     if (response.status >= 200 && response.status < 300) {
       toast.success('Correção gerada com sucesso!');
+      setCorrectionLoading(false);
+      fetchCandidates();
+    } else if (response.data.message === "Service Unavailable") {
+      toast.error('Serviço indisponível no momento. Tente novamente mais tarde.');
       setCorrectionLoading(false);
       fetchCandidates();
     } else {

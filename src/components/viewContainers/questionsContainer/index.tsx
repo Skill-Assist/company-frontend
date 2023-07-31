@@ -59,8 +59,6 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
     setLoadingQuestions(true);
     const sectionData = await fetchOwnSection();
 
-    console.log('questions', sectionData.questions);
-
     if (sectionData.questions && sectionData.questions.length > 0) {
       const response = await questionService.getAllQuestions(
         sectionData.questions

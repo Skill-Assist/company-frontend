@@ -16,8 +16,8 @@ const ExamCard: FC<Props> = ({
   exam,
   owner,
 }: Props) => {
-  const examTitle = `${exam.title} ${exam.subtitle && exam.subtitle} ${
-    exam.level && exam.level
+  const examTitle = `${exam.title} ${exam.subtitle ? exam.subtitle : ""} ${
+    exam.level ? exam.level : ""
   }`;
 
   return (

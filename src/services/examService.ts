@@ -121,11 +121,11 @@ const examService = {
 
   updateExam: async (
     updatedExam: {
-      subtitle?: string;
-      level?: string;
-      dateToArchive?: Date;
-      showScore?: boolean;
-      isPublic?: boolean;
+      subtitle?: string | null;
+      level?: string | null;
+      dateToArchive?: Date | null;
+      showScore?: boolean | null;
+      isPublic?: boolean | null;
     },
     examId: number
   ) => {

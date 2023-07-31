@@ -1,45 +1,46 @@
-import { FC, FormEvent, useRef, useState } from "react";
-import { Tooltip, Input, Switch } from "@nextui-org/react";
-import { motion } from "framer-motion";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { ThreeDots } from "react-loader-spinner";
-import { useLottie } from "lottie-react";
+import { FC, FormEvent, useRef, useState } from 'react';
+import { Tooltip, Input, Switch } from '@nextui-org/react';
+import { motion } from 'framer-motion';
+import { AiOutlineQuestionCircle } from 'react-icons/ai';
+import { ThreeDots } from 'react-loader-spinner';
+import { useLottie } from 'lottie-react';
+import Link from 'next/link';
 
-import examService from "@/services/examService";
+import examService from '@/services/examService';
 
-import Layout from "@/components/layout";
+import Layout from '@/components/layout';
 
-import success from "@public/lottie/success.json";
+import success from '@public/lottie/success.json';
 
-import styles from "./styles.module.scss";
-import Link from "next/link";
+import styles from './styles.module.scss';
+import { toast } from 'react-hot-toast';
 
 const stepOneDropIn = {
   hidden: {
-    y: "-100%",
+    y: '-100%',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
   },
   exit: {
-    y: "-100%",
+    y: '-100%',
     opacity: 0,
   },
 };
 
 const stepTwoDropIn = {
   hidden: {
-    y: "100%",
+    y: '100%',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
   },
   exit: {
-    y: "-100%",
+    y: '-100%',
     opacity: 0,
   },
 };
@@ -47,6 +48,7 @@ const stepTwoDropIn = {
 const lottieOptions = {
   animationData: success,
   loop: true,
+  autoplay: true,
 };
 
 const CreateExam: FC = () => {
@@ -65,7 +67,7 @@ const CreateExam: FC = () => {
   const [showScore, setShowScore] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
 
-  let examId = localStorage.getItem("examId");
+  let examId = localStorage.getItem('examId');
 
   const createExam = async (e: FormEvent) => {
     e.preventDefault();
@@ -77,7 +79,10 @@ const CreateExam: FC = () => {
 
     if (!title || !durationInHours || !submissionInHours) {
       setLoading(false);
-      alert("Preencha todos os campos");
+      toast.error('Preencha todos os campos', {
+        duration: 3000,
+        position: 'top-right',
+      });
       return;
     }
 
@@ -90,13 +95,16 @@ const CreateExam: FC = () => {
     const response = await examService.createExam(exam);
 
     if (response.status >= 200 && response.status < 300) {
-      localStorage.setItem("examId", response.data.id);
+      localStorage.setItem('examId', response.data.id);
       setLoading(false);
       setStep(1);
       return;
     } else {
       setLoading(false);
-      alert("Erro ao criar exame");
+      toast.error('Erro ao criar exame', {
+        duration: 3000,
+        position: 'top-right',
+      });
       return;
     }
   };
@@ -113,18 +121,18 @@ const CreateExam: FC = () => {
     }
 
     const updatedExam = {
-      subtitle,
-      level,
-      dateToArchive,
-      showScore,
-      isPublic,
+      subtitle: subtitle ? subtitle : null,
+      level: level ? level : null,
+      dateToArchive: dateToArchive ? dateToArchive : null,
+      showScore: showScore,
+      isPublic: isPublic,
     };
 
-    examId = localStorage.getItem("examId");
+    examId = localStorage.getItem('examId');
 
     const response = await examService.updateExam(updatedExam, Number(examId));
 
-    console.log(response)
+    console.log(response);
 
     if (response.status >= 200 && response.status < 300) {
       setLoading(false);
@@ -132,7 +140,10 @@ const CreateExam: FC = () => {
       return;
     } else {
       setLoading(false);
-      alert("Erro ao criar exame");
+      toast.error('Erro ao criar exame', {
+        duration: 3000,
+        position: 'top-right',
+      });
       return;
     }
   };
@@ -179,7 +190,7 @@ const CreateExam: FC = () => {
                     <Tooltip
                       className={styles.tooltip}
                       content={
-                        "A partir do momento que o candidato iniciar o exame, quantas horas tera para terminar"
+                        'A partir do momento que o candidato iniciar o exame, quantas horas tera para terminar'
                       }
                     >
                       <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -198,7 +209,7 @@ const CreateExam: FC = () => {
                     <Tooltip
                       className={styles.tooltip}
                       content={
-                        "A partir do momento que o candidato receber o convite, quantas horas ele terá para começar o teste e mandar suas respostas"
+                        'A partir do momento que o candidato receber o convite, quantas horas ele terá para começar o teste e mandar suas respostas'
                       }
                     >
                       <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -217,7 +228,7 @@ const CreateExam: FC = () => {
                       visible={true}
                     />
                   ) : (
-                    "Próximo"
+                    'Próximo'
                   )}
                 </button>
               </form>
@@ -273,7 +284,7 @@ const CreateExam: FC = () => {
                     <Tooltip
                       className={styles.tooltip}
                       content={
-                        "Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data."
+                        'Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data.'
                       }
                     >
                       <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -299,7 +310,12 @@ const CreateExam: FC = () => {
                   </div>
                 </div>
                 <div className={styles.skipContainar}>
-                  <button type="submit" form="update">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStep(2);
+                    }}
+                  >
                     {loading ? (
                       <ThreeDots
                         height="15"
@@ -311,7 +327,7 @@ const CreateExam: FC = () => {
                         visible={true}
                       />
                     ) : (
-                      "Pular"
+                      'Pular'
                     )}
                   </button>
                   <button type="submit" form="update">
@@ -326,25 +342,27 @@ const CreateExam: FC = () => {
                         visible={true}
                       />
                     ) : (
-                      "Finalizar"
+                      'Finalizar'
                     )}
                   </button>
                 </div>
               </form>
             </motion.div>
           )}
-          {step === 2 && (
-            <motion.div
-              className={styles.motionDiv}
-              variants={stepTwoDropIn}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <div className={styles.finishingView}>
+          <motion.div
+            className={styles.motionDiv}
+            variants={stepTwoDropIn}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <div className={styles.finishingView}>
+              {step === 2 && (
                 <div>
                   <div className={styles.intro}>
-                    <h1>Perfeito! <br /> Exame já criado!</h1>
+                    <h1>
+                      Perfeito! <br /> Exame já criado!
+                    </h1>
                     <p>
                       O que acha da gente começar a criar a sessões do seu
                       exame?
@@ -360,10 +378,16 @@ const CreateExam: FC = () => {
                     </Link>
                   </div>
                 </div>
-                <div className={styles.lottie}>{View}</div>
+              )}
+
+              <div
+                style={step !== 2 ? { display: 'none' } : {}}
+                className={styles.lottie}
+              >
+                {View}
               </div>
-            </motion.div>
-          )}
+            </div>
+          </motion.div>
         </div>
       </div>
     </Layout>

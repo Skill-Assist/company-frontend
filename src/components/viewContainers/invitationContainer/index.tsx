@@ -31,6 +31,7 @@ const InvitationContainer = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
 
   const expirationInHoursInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -79,6 +80,15 @@ const InvitationContainer = () => {
         setEmails([...emails, trimmedValue]);
         setValue('');
       }
+    }
+  };
+
+  const handleInputBlur = (): void => {
+    const trimmedValue = value.trim();
+
+    if (trimmedValue && isValid(trimmedValue)) {
+      setEmails([...emails, trimmedValue]);
+      setValue('');
     }
   };
 
@@ -301,7 +311,9 @@ const InvitationContainer = () => {
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               onPaste={handlePaste}
+              onBlur={handleInputBlur}
               id="emails"
+              ref={emailInputRef}
             />
           </div>
           {error && <p className={styles.error}>{error}</p>}

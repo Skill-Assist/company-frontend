@@ -278,11 +278,13 @@ const InvitationContainer = () => {
     setCorrectionLoading(true);
     const response = await examService.generateCorrection(answerSheetId);
 
+    console.log(response)
+
     if (response.status >= 200 && response.status < 300) {
       toast.success('Correção gerada com sucesso!');
       setCorrectionLoading(false);
       fetchCandidates();
-    } else if (response.data.message === "Service Unavailable") {
+    } else if (response.data.error === "Service Unavailable") {
       toast.error('Serviço indisponível no momento. Tente novamente mais tarde.');
       setCorrectionLoading(false);
       fetchCandidates();

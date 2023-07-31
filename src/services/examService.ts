@@ -20,7 +20,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -49,7 +49,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -78,7 +78,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -108,7 +108,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -147,7 +147,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -176,7 +176,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -212,7 +212,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -241,7 +241,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -270,7 +270,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -299,7 +299,7 @@ const examService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua seção expirou. Faça login novamente", {
+        toast.error("Sua sessão expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {

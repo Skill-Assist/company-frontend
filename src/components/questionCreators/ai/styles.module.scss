@@ -11,7 +11,7 @@
   z-index: 1000;
   height: 42px;
   padding-bottom: 50px;
-  width: calc(100% - 64px);
+  width: 80%;
 
   h1 {
     font-size: 20px;
@@ -84,6 +84,61 @@
         color: var(--primary);
         border-bottom: 1px solid var(--primary);
       }
+    }
+  }
+}
+
+.aiStatementInput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+
+    label {
+      color: var(--secondary-2);
+      font-weight: 500;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      background: var(--neutral-0);
+      border: 1px solid var(--neutral-100);
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+
+      &::placeholder {
+        color: var(--neutral-200);
+        font-weight: 500;
+      }
+    }
+  }
+
+  button {
+    align-self: flex-end;
+    border: none;
+    white-space: nowrap;
+    border-radius: 10px;
+    padding: 4px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--neutral-0);
+    background-color: var(--primary);
+    margin: 15px 0;
+    transition: 300ms;
+    cursor: pointer;
+
+    &:hover {
+      scale: 1.05;
     }
   }
 }
@@ -216,7 +271,7 @@
   transform: translateX(-50%);
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }
@@ -363,15 +418,15 @@
     align-items: center;
     justify-content: center;
 
-    // &:first-child {
-    //   background-color: var(--neutral-100);
-    //   color: var(--secondary-2);
-    // }
+    &:first-child {
+      background-color: var(--neutral-100);
+      color: var(--secondary-2);
+    }
 
-    // &:first-child:hover {
-    //   background-color: var(--warning);
-    //   color: var(--neutral-0);
-    // }
+    &:first-child:hover {
+      background-color: var(--warning);
+      color: var(--neutral-0);
+    }
 
     &:hover {
       scale: 1.05;
@@ -424,7 +479,7 @@
   align-items: center;
   justify-content: space-between;
 
-  h3{
+  h3 {
     text-transform: capitalize;
   }
 }

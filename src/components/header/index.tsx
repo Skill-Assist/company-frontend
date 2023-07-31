@@ -2,15 +2,15 @@ import { FC, useEffect, useRef, useState, RefObject } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import cookies from "react-cookies";
-
 import { BsPersonCircle } from "react-icons/bs";
 import { BsArrowLeft } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
 
-import styles from "./styles.module.scss";
 import { User } from "@/types/user";
+
 import userService from "@/services/userService";
+
+import styles from "./styles.module.scss";
 
 type Props = {
   title?: string;
@@ -70,7 +70,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
         {user && (
           <div className={styles.headerInfo}>
             <p>Olá, </p>
-            <span>{user.name.split(" ")[0]}</span>
+            <span>{user.nickname}</span>
 
             <div
               className={styles.userIcon}

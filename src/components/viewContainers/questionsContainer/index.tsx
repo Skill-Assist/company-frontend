@@ -1,16 +1,17 @@
-import { FC, useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { FC, useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import QuestionsContainerPlaceholder from "@/components/placeholders/questionsContainerPlaceholder";
-import QuestionCard from "@/components/questionCard";
-import ManualCreator from "@/components/questionCreators/manual";
-import Modal from "@/components/modal";
+import QuestionsContainerPlaceholder from '@/components/placeholders/questionsContainerPlaceholder';
+import QuestionCard from '@/components/questionCard';
+import ManualCreator from '@/components/questionCreators/manual';
+import AiCreator from '@/components/questionCreators/ai';
+import Modal from '@/components/modal';
 
-import questionService from "@/services/questionService";
+import questionService from '@/services/questionService';
 
-import { Question } from "@/types/question";
+import { Question } from '@/types/question';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 interface Props {
   fetchOwnSection: () => any;
@@ -18,21 +19,21 @@ interface Props {
 
 const dropIn = {
   hidden: {
-    y: "-100vh",
+    y: '-100vh',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
     transition: {
       duration: 0.1,
-      type: "spring",
+      type: 'spring',
       damping: 25,
       stiffness: 500,
     },
   },
   exit: {
-    y: "100vh",
+    y: '100vh',
     opacity: 0,
   },
 };
@@ -42,14 +43,14 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [modalContent, setModalContent] = useState<
-    "manual" | "wizard" | "ai" | ""
-  >("");
+    'manual' | 'wizard' | 'ai' | ''
+  >('');
   const close = () => {
     setShowModal(false);
-    setModalContent("");
+    setModalContent('');
   };
 
-  const open = (content: "manual" | "wizard" | "ai") => {
+  const open = (content: 'manual' | 'wizard' | 'ai') => {
     setShowModal(true);
     setModalContent(content);
   };
@@ -57,6 +58,8 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
   const fetchQuestions = async () => {
     setLoadingQuestions(true);
     const sectionData = await fetchOwnSection();
+
+    console.log('questions', sectionData.questions);
 
     if (sectionData.questions && sectionData.questions.length > 0) {
       const response = await questionService.getAllQuestions(
@@ -85,9 +88,9 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
       <div className={styles.container}>
         {questions && questions.length > 0 && (
           <div className={styles.stroke}>
-            <button onClick={() => open("manual")}>Manual</button>
-            <button onClick={() => open("wizard")}>Wizard</button>
-            <button onClick={() => open("ai")}>IA</button>
+            <button onClick={() => open('manual')}>Manual</button>
+            <button onClick={() => open('wizard')}>Wizard</button>
+            <button onClick={() => open('ai')}>IA</button>
           </div>
         )}
         <div className={styles.questionContainer}>
@@ -138,15 +141,17 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
           <Modal
             handleClose={close}
             dimensions={{
-              height: "90%",
-              width: "100%",
+              height: '90%',
+              width: '100%',
             }}
           >
-            {modalContent === "manual" && (
+            {modalContent === 'manual' && (
               <ManualCreator close={close} fetchQuestions={fetchQuestions} />
             )}
-            {modalContent === "wizard" && "wizard"}
-            {modalContent === "ai" && "ai"}
+            {modalContent === 'wizard' && 'wizard'}
+            {modalContent === 'ai' && (
+              <AiCreator close={close} fetchQuestions={fetchQuestions} />
+            )}
           </Modal>
         )}
       </AnimatePresence>

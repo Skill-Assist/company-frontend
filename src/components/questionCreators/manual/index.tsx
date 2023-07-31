@@ -1,23 +1,24 @@
-import { useEffect, useState, useRef, FC, FormEvent } from "react";
-import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
-import dynamic from "next/dynamic";
-import CreatableSelect from "react-select/creatable";
-const ReactQuill = dynamic(import("react-quill"), { ssr: false });
-import makeAnimated from "react-select/animated";
+import { useEffect, useState, useRef, FC, FormEvent } from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
+import dynamic from 'next/dynamic';
+import CreatableSelect from 'react-select/creatable';
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
 
-import examService from "@/services/examService";
-import sectionService from "@/services/sectionService";
-import questionService from "@/services/questionService";
+import examService from '@/services/examService';
+import sectionService from '@/services/sectionService';
+import questionService from '@/services/questionService';
 
-import { Option } from "@/types/option";
-import { Question } from "@/types/question";
+import { Option } from '@/types/option';
+import { Question } from '@/types/question';
 
-import "react-quill/dist/quill.bubble.css";
-import "react-quill/dist/quill.snow.css";
-import styles from "./styles.module.scss";
-import { ThreeDots } from "react-loader-spinner";
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.snow.css';
+import styles from './styles.module.scss';
+import { ThreeDots } from 'react-loader-spinner';
+import { GradingRubric } from '@/types/gradingRubric';
 
 const fetchSectionName = async (
   sectionId: string,
@@ -28,11 +29,11 @@ const fetchSectionName = async (
   if (response.status >= 200 && response.status < 300) {
     const { name } = response.data;
 
-    localStorage.setItem("exameName", name);
+    localStorage.setItem('exameName', name);
 
     setSectionName(name);
   } else {
-    toast.error("Erro ao buscar nome da sessão.");
+    toast.error('Erro ao buscar nome da sessão.');
   }
 };
 
@@ -45,19 +46,24 @@ const fetchExameName = async (
   if (response.status >= 200 && response.status < 300) {
     const { title, subtitle, level } = response.data;
 
-    const exameName = title + " " + subtitle + " - " + level;
+    const exameName = title + ' ' + subtitle + ' - ' + level;
 
-    localStorage.setItem("exameName", exameName);
+    localStorage.setItem('exameName', exameName);
 
     setExamName(exameName);
   } else {
-    toast.error("Erro ao buscar nome do exame.");
+    toast.error('Erro ao buscar nome do exame.');
   }
 };
 
 interface selectOption {
   value: string;
   label: string;
+}
+
+interface GradingRubricName {
+  name: string;
+  id: number;
 }
 
 interface Props {
@@ -75,31 +81,33 @@ interface CriteriaObject {
 }
 
 const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
-  const [exameName, setExameName] = useState("");
-  const [sectionName, setSectionName] = useState("");
+  const [exameName, setExameName] = useState('');
+  const [sectionName, setSectionName] = useState('');
   const [questionType, setQuestionType] = useState<
-    "challenge" | "programming" | "multipleChoice" | "text" | ""
-  >("");
-  const [questionWeight, setQuestionWeight] = useState<1 | 2 | 3 | "">("");
-  const [statement, setStatement] = useState("");
+    'challenge' | 'programming' | 'multipleChoice' | 'text' | ''
+  >('');
+  const [questionWeight, setQuestionWeight] = useState<1 | 2 | 3 | ''>('');
+  const [statement, setStatement] = useState('');
+
+  const [temporarylyHelper, setTemporarylyHelper] = useState<GradingRubric>();
 
   // Multiple Choice Variables and Logic
 
   const [options, setOptions] = useState<Option>({
-    "1": "",
-    "2": "",
+    '1': '',
+    '2': '',
   });
 
   const addOptionHandler = () => {
     setOptions((oldOptions) => {
       const newOptions = { ...oldOptions };
-      newOptions[Object.keys(oldOptions).length + 1] = "";
+      newOptions[Object.keys(oldOptions).length + 1] = '';
       return newOptions;
     });
   };
 
   const [correctOption, setCorrectOption] = useState({
-    answer: { option: "" },
+    answer: { option: '' },
   });
 
   // End of Multiple Choice Variables and Logic
@@ -107,7 +115,10 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   // Grading Rubric Variables and Logic
   const [savingGradingRubricLoading, setSavingGradingRubricLoading] =
     useState(false);
-  const [gradingRubricNames, setGradingRubricNames] = useState<string[]>([]);
+  const [gradingRubricNames, setGradingRubricNames] = useState<
+    GradingRubricName[]
+  >([]);
+
   const gradingRubricNameInputRef = useRef<HTMLInputElement>(null);
 
   const [gradingRubric, setGradingRubric] = useState<CriteriaObject>({});
@@ -142,6 +153,35 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       `bad-max-${name}`
     ) as HTMLInputElement;
 
+    const gradientRubricCriteria = {
+      title: name,
+      total_points: +totalPoints.value,
+      maxValueCriteria: {
+        description: greatGradeText.value,
+        value: +greatMax.value,
+      },
+      averageValueCriteria: {
+        description: avaregeGradeText.value,
+        value: {
+          min: +avarageMin.value,
+          max: +avarageMax.value,
+        },
+      },
+      minValueCriteria: {
+        description: badGradeText.value,
+        value: {
+          min: +badMin.value,
+          max: +badMax.value,
+        },
+      },
+    };
+
+    //@ts-ignore
+    // setTemporarylyHelper((oldHelper) => {
+    //   const newHelper = { ...oldHelper, [name]: gradientRubricCriteria };
+    //   return newHelper;
+    // })
+
     if (
       !totalPoints.value ||
       !greatGradeText.value ||
@@ -153,7 +193,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       !badMin.value ||
       !badMax.value
     ) {
-      toast.error("Preencha todos os campos.");
+      toast.error('Preencha todos os campos.');
       setTimeout(() => {
         setSavingGradingRubricLoading(false);
       }, 1000);
@@ -180,22 +220,27 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       setSavingGradingRubricLoading(false);
     }, 1000);
 
-    toast.success("Critério de correção salvo com sucesso.");
+    toast.success('Critério de correção salvo com sucesso.');
   };
 
   const gradingRubricNameHandler = () => {
     if (
       gradingRubricNameInputRef.current &&
-      gradingRubricNameInputRef.current.value !== ""
+      gradingRubricNameInputRef.current.value !== ''
     ) {
       setGradingRubricNames((oldNames) => {
-        const newNames = [...oldNames];
-        const existingName = newNames.find(
-          (name) => name === gradingRubricNameInputRef.current!.value
+        const existingName = oldNames.find(
+          (name) => name.name === gradingRubricNameInputRef.current!.value
         );
 
         if (!existingName) {
-          newNames.push(gradingRubricNameInputRef.current!.value);
+          const newNames = [
+            ...oldNames,
+            {
+              name: gradingRubricNameInputRef.current!.value,
+              id: oldNames.length,
+            },
+          ];
           return newNames;
         } else {
           toast.error(
@@ -205,35 +250,40 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
         }
       });
     }
+    setTimeout(() => {
+      const modal = document.getElementById('modal') as HTMLDivElement;
+      modal.scrollTop = modal.scrollHeight;
+    }, 100);
+
   };
 
-  const deletegradingRubricNameHandler = (name: string) => {
-    setGradingRubricNames((oldNames) => {
-      const newNames = [...oldNames];
-      const index = newNames.findIndex((n) => n === name);
-      newNames.splice(index, 1);
-      return newNames;
-    });
-  };
+  // const deletegradingRubricNameHandler = (name: string) => {
+  //   setGradingRubricNames((oldNames) => {
+  //     const newNames = [...oldNames];
+  //     const index = newNames.findIndex((n) => n === name);
+  //     newNames.splice(index, 1);
+  //     return newNames;
+  //   });
+  // };
 
   // End of Grading Rubric Variables and Logic
 
   const [defaultTags, setDefaultTags] = useState<selectOption[]>([
     {
-      value: "multipla-escolha",
-      label: "Múltipla escolha",
+      value: 'multipla-escolha',
+      label: 'Múltipla escolha',
     },
     {
-      value: "desafio",
-      label: "Desafio",
+      value: 'desafio',
+      label: 'Desafio',
     },
     {
-      value: "programacao",
-      label: "Programação",
+      value: 'programacao',
+      label: 'Programação',
     },
     {
-      value: "texto",
-      label: "Texto",
+      value: 'texto',
+      label: 'Texto',
     },
   ]);
 
@@ -245,12 +295,12 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const router = useRouter();
 
   useEffect(() => {
-    const exameName = localStorage.getItem("exameName");
-    const sectionName = localStorage.getItem("sectionName");
+    const exameName = localStorage.getItem('exameName');
+    const sectionName = localStorage.getItem('sectionName');
     const examId = router.query.examId;
     const sectionId = router.query.sectionId;
 
-    if (examId && typeof examId === "string") {
+    if (examId && typeof examId === 'string') {
       if (exameName) {
         setExameName(exameName);
       } else {
@@ -258,7 +308,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       }
     }
 
-    if (sectionId && typeof sectionId === "string") {
+    if (sectionId && typeof sectionId === 'string') {
       if (sectionName) {
         setSectionName(sectionName);
       } else {
@@ -270,12 +320,22 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const handleCreateQuestion = async () => {
     const sectionId = router.query.sectionId;
 
-    if (!sectionId || typeof sectionId !== "string") {
+    if (!sectionId || typeof sectionId !== 'string') {
       return;
     }
 
-    if (questionWeight === "") {
-      toast.error("Preencha o peso da questão.");
+    if (questionWeight === '') {
+      toast.error('Preencha o peso da questão.');
+      return;
+    }
+
+    if (questionType === '') {
+      toast.error('Selecione um tipo de questão.');
+      return;
+    }
+
+    if (statement === '') {
+      toast.error('Preencha o enunciado da questão.');
       return;
     }
 
@@ -288,21 +348,31 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       gradingRubric: {},
     };
 
-    if (questionType === "multipleChoice") {
-      questionData = {
-        ...questionData,
-        options: options,
-        gradingRubric: correctOption,
-      };
+    if (questionType === 'multipleChoice') {
+      if (correctOption.answer.option === '') {
+        toast.error('Selecione uma alternativa correta.');
+        return;
+      } else {
+        questionData = {
+          ...questionData,
+          options: options,
+          gradingRubric: correctOption,
+        };
+      }
     } else if (
-      questionType === "text" ||
-      questionType === "challenge" ||
-      questionType === "programming"
+      questionType === 'text' ||
+      questionType === 'challenge' ||
+      questionType === 'programming'
     ) {
-      questionData = {
-        ...questionData,
-        gradingRubric: gradingRubric,
-      };
+      if (gradingRubricNames.length === 0) {
+        toast.error('Adicione pelo menos um critério de correção.');
+        return;
+      } else {
+        questionData = {
+          ...questionData,
+          gradingRubric: gradingRubric,
+        };
+      }
     }
 
     const response = await questionService.createQuestion(
@@ -312,18 +382,24 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     );
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Questão criada com sucesso.");
+      toast.success('Questão criada com sucesso.');
       fetchQuestions();
       close();
     } else {
-      toast.error("Erro ao criar questão.");
+      toast.error('Erro ao criar questão.');
     }
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="modal">
       <div className={styles.header}>
-        <h1>Nova questão para sessão.</h1>
+        <h1
+          onClick={() => {
+            console.log(gradingRubric);
+          }}
+        >
+          Nova questão para sessão.
+        </h1>
         <p>
           Preencha todos os campos obrigatórios para criar uma nova questão.
         </p>
@@ -346,11 +422,11 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               onChange={(e) => {
                 setQuestionType(
                   e.target.value as
-                    | "challenge"
-                    | "programming"
-                    | "multipleChoice"
-                    | "text"
-                    | ""
+                    | 'challenge'
+                    | 'programming'
+                    | 'multipleChoice'
+                    | 'text'
+                    | ''
                 );
               }}
             >
@@ -367,7 +443,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               name="questionWeight"
               id="questionWeight"
               onChange={(e) => {
-                setQuestionWeight(e.target.value as 1 | 2 | 3 | "");
+                setQuestionWeight(e.target.value as 1 | 2 | 3 | '');
               }}
             >
               <option value="">Peso da questão</option>
@@ -378,13 +454,13 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
           </div>
         </div>
         <div className={styles.contentBody}>
-          <div className={styles.contentBox} style={{ height: "200px" }}>
+          <div className={styles.contentBox} style={{ height: '200px' }}>
             <h3>Enunciado</h3>
             <ReactQuill
               theme="snow"
               value={statement}
               onChange={setStatement}
-              style={{ height: "120px" }}
+              style={{ height: '120px' }}
               placeholder="Digite o enunciado da questão aqui..."
             />
           </div>
@@ -397,19 +473,19 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               styles={{
                 control: (provided) => ({
                   ...provided,
-                  boxShadow: "none",
+                  boxShadow: 'none',
                 }),
                 option: (provided) => ({
                   ...provided,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }),
               }}
               theme={(theme) => ({
                 ...theme,
                 colors: {
                   ...theme.colors,
-                  primary25: "var(--neutral-50)",
-                  primary: "var(--primary-2)",
+                  primary25: 'var(--neutral-50)',
+                  primary: 'var(--primary-2)',
                 },
               })}
               components={animatedComponents}
@@ -444,7 +520,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 name="shareable"
                 id="shareable"
                 onChange={(e) => {
-                  setIsShareable(e.target.value === "true" ? true : false);
+                  setIsShareable(e.target.value === 'true' ? true : false);
                 }}
               >
                 <option value="true">Sim</option>
@@ -452,8 +528,8 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               </select>
             </div>
           </div>
-          <div style={{ display: questionType === "" ? "none" : "flex" }}>
-            {questionType === "multipleChoice" && (
+          <div style={{ display: questionType === '' ? 'none' : 'flex' }}>
+            {questionType === 'multipleChoice' && (
               <div className={styles.multipleChoiceContainer}>
                 <div className={styles.multipleChoiceHeader}>
                   <h3>Alternativas</h3>
@@ -471,7 +547,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           onChange={(e) => {
                             setCorrectOption({
                               answer: {
-                                option: e.target.checked ? option : "",
+                                option: e.target.checked ? option : '',
                               },
                             });
                           }}
@@ -496,7 +572,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 </button>
               </div>
             )}
-            {questionType === "programming" && (
+            {questionType === 'programming' && (
               <div className={styles.gradingRubricContainer}>
                 <h3>Critérios de correção</h3>
                 <div className={styles.gradingRubricInput}>
@@ -515,120 +591,120 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                   </button>
                 </div>
                 <div className={styles.gradingRubricTable}>
-                  {gradingRubricNames.reverse().map((name, index) => (
+                  {gradingRubricNames.map((gradingRubricName, index) => (
                     <form className={styles.gradingRubricCard} key={index}>
                       <div className={styles.cardHeader}>
-                        <h3>{name}</h3>
+                        <h3>{gradingRubricName.name}</h3>
                         <div>
-                          <label htmlFor={`total-points-${name}`}>
+                          <label htmlFor={`total-points-${gradingRubricName.name}`}>
                             Peso do critério
                           </label>
                           <input
                             type="number"
                             name="total-points"
-                            id={`total-points-${name}`}
+                            id={`total-points-${gradingRubricName.name}`}
                           />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`great-grade-text-${name}`}>
+                          <label htmlFor={`great-grade-text-${gradingRubricName.name}`}>
                             Nota máxima
                           </label>
                           <input
                             type="text"
                             name="great-grade-text"
-                            id={`great-grade-text-${name}`}
+                            id={`great-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`great-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`great-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`great-max-${name}`} />
+                          <input type="number" id={`great-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`avarage-grade-text-${name}`}>
+                          <label htmlFor={`avarage-grade-text-${gradingRubricName.name}`}>
                             Nota média
                           </label>
                           <input
                             type="text"
                             name="avarege-grade-text"
-                            id={`avarage-grade-text-${name}`}
+                            id={`avarage-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`avarage-min-${name}`}
-                            style={{ color: "var(--warning)" }}
+                            htmlFor={`avarage-min-${gradingRubricName.name}`}
+                            style={{ color: 'var(--warning)' }}
                           >
                             Min
                           </label>
-                          <input type="number" id={`avarage-min-${name}`} />
+                          <input type="number" id={`avarage-min-${gradingRubricName.name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`avarage-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`avarage-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`avarage-max-${name}`} />
+                          <input type="number" id={`avarage-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`bad-grade-text-${name}`}>
+                          <label htmlFor={`bad-grade-text-${gradingRubricName.name}`}>
                             Nota ruim
                           </label>
                           <input
                             type="text"
                             name="bad-grade-text"
-                            id={`bad-grade-text-${name}`}
+                            id={`bad-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`bad-min-${name}`}
-                            style={{ color: "var(--warning)" }}
+                            htmlFor={`bad-min-${gradingRubricName.name}`}
+                            style={{ color: 'var(--warning)' }}
                           >
                             Min
                           </label>
-                          <input type="number" id={`bad-min-${name}`} />
+                          <input type="number" id={`bad-min-${gradingRubricName.name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`bad-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`bad-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`bad-max-${name}`} />
+                          <input type="number" id={`bad-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.gradingRubricActions}>
-                        <button
+                        {/* <button
                           type="button"
                           onClick={() => deletegradingRubricNameHandler(name)}
                         >
                           Deletar critério de correção
-                        </button>
+                        </button> */}
 
                         <button
                           type="button"
-                          onClick={() => saveGradingRubricHandler(name)}
+                          onClick={() => saveGradingRubricHandler(gradingRubricName.name)}
                         >
                           {savingGradingRubricLoading ? (
                             <ThreeDots
@@ -637,7 +713,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               width={20}
                             />
                           ) : (
-                            "Salvar critério de correção"
+                            'Salvar critério de correção'
                           )}
                         </button>
                       </div>
@@ -679,7 +755,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 </div>
               </div>
             )}
-            {questionType === "challenge" && (
+            {questionType === 'challenge' && (
               <div className={styles.gradingRubricContainer}>
                 <h3>Critérios de correção</h3>
                 <div className={styles.gradingRubricInput}>
@@ -698,120 +774,120 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                   </button>
                 </div>
                 <div className={styles.gradingRubricTable}>
-                  {gradingRubricNames.reverse().map((name, index) => (
+                  {gradingRubricNames.map((gradingRubricName, index) => (
                     <form className={styles.gradingRubricCard} key={index}>
                       <div className={styles.cardHeader}>
-                        <h3>{name}</h3>
+                        <h3>{gradingRubricName.name}</h3>
                         <div>
-                          <label htmlFor={`total-points-${name}`}>
+                          <label htmlFor={`total-points-${gradingRubricName.name}`}>
                             Peso do critério
                           </label>
                           <input
                             type="number"
                             name="total-points"
-                            id={`total-points-${name}`}
+                            id={`total-points-${gradingRubricName.name}`}
                           />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`great-grade-text-${name}`}>
+                          <label htmlFor={`great-grade-text-${gradingRubricName.name}`}>
                             Nota máxima
                           </label>
                           <input
                             type="text"
                             name="great-grade-text"
-                            id={`great-grade-text-${name}`}
+                            id={`great-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`great-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`great-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`great-max-${name}`} />
+                          <input type="number" id={`great-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`avarage-grade-text-${name}`}>
+                          <label htmlFor={`avarage-grade-text-${gradingRubricName.name}`}>
                             Nota média
                           </label>
                           <input
                             type="text"
                             name="avarege-grade-text"
-                            id={`avarage-grade-text-${name}`}
+                            id={`avarage-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`avarage-min-${name}`}
-                            style={{ color: "var(--warning)" }}
+                            htmlFor={`avarage-min-${gradingRubricName.name}`}
+                            style={{ color: 'var(--warning)' }}
                           >
                             Min
                           </label>
-                          <input type="number" id={`avarage-min-${name}`} />
+                          <input type="number" id={`avarage-min-${gradingRubricName.name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`avarage-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`avarage-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`avarage-max-${name}`} />
+                          <input type="number" id={`avarage-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.criteriaContainer}>
                         <div className={styles.criteriaInput}>
-                          <label htmlFor={`bad-grade-text-${name}`}>
+                          <label htmlFor={`bad-grade-text-${gradingRubricName.name}`}>
                             Nota ruim
                           </label>
                           <input
                             type="text"
                             name="bad-grade-text"
-                            id={`bad-grade-text-${name}`}
+                            id={`bad-grade-text-${gradingRubricName.name}`}
                             placeholder="Por exemplo '...'"
                           />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`bad-min-${name}`}
-                            style={{ color: "var(--warning)" }}
+                            htmlFor={`bad-min-${gradingRubricName.name}`}
+                            style={{ color: 'var(--warning)' }}
                           >
                             Min
                           </label>
-                          <input type="number" id={`bad-min-${name}`} />
+                          <input type="number" id={`bad-min-${gradingRubricName.name}`} />
                         </div>
                         <div className={styles.criteriaValues}>
                           <label
-                            htmlFor={`bad-max-${name}`}
-                            style={{ color: "var(--primary-2)" }}
+                            htmlFor={`bad-max-${gradingRubricName.name}`}
+                            style={{ color: 'var(--primary-2)' }}
                           >
                             Max
                           </label>
-                          <input type="number" id={`bad-max-${name}`} />
+                          <input type="number" id={`bad-max-${gradingRubricName.name}`} />
                         </div>
                       </div>
 
                       <div className={styles.gradingRubricActions}>
-                        <button
+                        {/* <button
                           type="button"
                           onClick={() => deletegradingRubricNameHandler(name)}
                         >
                           Deletar critério de correção
-                        </button>
+                        </button> */}
 
                         <button
                           type="button"
-                          onClick={() => saveGradingRubricHandler(name)}
+                          onClick={() => saveGradingRubricHandler(gradingRubricName.name)}
                         >
                           {savingGradingRubricLoading ? (
                             <ThreeDots
@@ -820,7 +896,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               width={20}
                             />
                           ) : (
-                            "Salvar critério de correção"
+                            'Salvar critério de correção'
                           )}
                         </button>
                       </div>
@@ -862,7 +938,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 </div>
               </div>
             )}
-            {questionType === "text" && (
+            {questionType === 'text' && (
               <>
                 <div className={styles.gradingRubricContainer}>
                   <h3>Critérios de correção</h3>
@@ -882,120 +958,120 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                     </button>
                   </div>
                   <div className={styles.gradingRubricTable}>
-                    {gradingRubricNames.reverse().map((name, index) => (
+                    {gradingRubricNames.map((gradingRubricName, index) => (
                       <form className={styles.gradingRubricCard} key={index}>
                         <div className={styles.cardHeader}>
-                          <h3>{name}</h3>
+                          <h3>{gradingRubricName.name}</h3>
                           <div>
-                            <label htmlFor={`total-points-${name}`}>
+                            <label htmlFor={`total-points-${gradingRubricName.name}`}>
                               Peso do critério
                             </label>
                             <input
                               type="number"
                               name="total-points"
-                              id={`total-points-${name}`}
+                              id={`total-points-${gradingRubricName.name}`}
                             />
                           </div>
                         </div>
 
                         <div className={styles.criteriaContainer}>
                           <div className={styles.criteriaInput}>
-                            <label htmlFor={`great-grade-text-${name}`}>
+                            <label htmlFor={`great-grade-text-${gradingRubricName.name}`}>
                               Nota máxima
                             </label>
                             <input
                               type="text"
                               name="great-grade-text"
-                              id={`great-grade-text-${name}`}
+                              id={`great-grade-text-${gradingRubricName.name}`}
                               placeholder="Por exemplo '...'"
                             />
                           </div>
                           <div className={styles.criteriaValues}>
                             <label
-                              htmlFor={`great-max-${name}`}
-                              style={{ color: "var(--primary-2)" }}
+                              htmlFor={`great-max-${gradingRubricName.name}`}
+                              style={{ color: 'var(--primary-2)' }}
                             >
                               Max
                             </label>
-                            <input type="number" id={`great-max-${name}`} />
+                            <input type="number" id={`great-max-${gradingRubricName.name}`} />
                           </div>
                         </div>
 
                         <div className={styles.criteriaContainer}>
                           <div className={styles.criteriaInput}>
-                            <label htmlFor={`avarage-grade-text-${name}`}>
+                            <label htmlFor={`avarage-grade-text-${gradingRubricName.name}`}>
                               Nota média
                             </label>
                             <input
                               type="text"
                               name="avarege-grade-text"
-                              id={`avarage-grade-text-${name}`}
+                              id={`avarage-grade-text-${gradingRubricName.name}`}
                               placeholder="Por exemplo '...'"
                             />
                           </div>
                           <div className={styles.criteriaValues}>
                             <label
-                              htmlFor={`avarage-min-${name}`}
-                              style={{ color: "var(--warning)" }}
+                              htmlFor={`avarage-min-${gradingRubricName.name}`}
+                              style={{ color: 'var(--warning)' }}
                             >
                               Min
                             </label>
-                            <input type="number" id={`avarage-min-${name}`} />
+                            <input type="number" id={`avarage-min-${gradingRubricName.name}`} />
                           </div>
                           <div className={styles.criteriaValues}>
                             <label
-                              htmlFor={`avarage-max-${name}`}
-                              style={{ color: "var(--primary-2)" }}
+                              htmlFor={`avarage-max-${gradingRubricName.name}`}
+                              style={{ color: 'var(--primary-2)' }}
                             >
                               Max
                             </label>
-                            <input type="number" id={`avarage-max-${name}`} />
+                            <input type="number" id={`avarage-max-${gradingRubricName.name}`} />
                           </div>
                         </div>
 
                         <div className={styles.criteriaContainer}>
                           <div className={styles.criteriaInput}>
-                            <label htmlFor={`bad-grade-text-${name}`}>
+                            <label htmlFor={`bad-grade-text-${gradingRubricName.name}`}>
                               Nota ruim
                             </label>
                             <input
                               type="text"
                               name="bad-grade-text"
-                              id={`bad-grade-text-${name}`}
+                              id={`bad-grade-text-${gradingRubricName.name}`}
                               placeholder="Por exemplo '...'"
                             />
                           </div>
                           <div className={styles.criteriaValues}>
                             <label
-                              htmlFor={`bad-min-${name}`}
-                              style={{ color: "var(--warning)" }}
+                              htmlFor={`bad-min-${gradingRubricName.name}`}
+                              style={{ color: 'var(--warning)' }}
                             >
                               Min
                             </label>
-                            <input type="number" id={`bad-min-${name}`} />
+                            <input type="number" id={`bad-min-${gradingRubricName.name}`} />
                           </div>
                           <div className={styles.criteriaValues}>
                             <label
-                              htmlFor={`bad-max-${name}`}
-                              style={{ color: "var(--primary-2)" }}
+                              htmlFor={`bad-max-${gradingRubricName.name}`}
+                              style={{ color: 'var(--primary-2)' }}
                             >
                               Max
                             </label>
-                            <input type="number" id={`bad-max-${name}`} />
+                            <input type="number" id={`bad-max-${gradingRubricName.name}`} />
                           </div>
                         </div>
 
                         <div className={styles.gradingRubricActions}>
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() => deletegradingRubricNameHandler(name)}
                           >
                             Deletar critério de correção
-                          </button>
+                          </button> */}
 
                           <button
                             type="button"
-                            onClick={() => saveGradingRubricHandler(name)}
+                            onClick={() => saveGradingRubricHandler(gradingRubricName.name)}
                           >
                             {savingGradingRubricLoading ? (
                               <ThreeDots
@@ -1004,7 +1080,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 width={20}
                               />
                             ) : (
-                              "Salvar critério de correção"
+                              'Salvar critério de correção'
                             )}
                           </button>
                         </div>

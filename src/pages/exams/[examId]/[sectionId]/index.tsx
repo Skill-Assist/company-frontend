@@ -48,12 +48,9 @@ const SectionPage = () => {
 
       if (response.status >= 200 && response.status < 300) {
         setSectionData(response.data);
-        localStorage.setItem(
-          'sectionName',
-          response.data.name || ''
-        );
+        localStorage.setItem('sectionName', response.data.name || '');
         setPageLoading(false);
-        return response.data;
+        return response.data; 
       } else {
         toast.error('Erro ao buscar seção!');
         setPageLoading(false);
@@ -67,7 +64,7 @@ const SectionPage = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={2}>
+      <Layout sidebar header headerTitle="Dashboard" active={1}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -86,7 +83,7 @@ const SectionPage = () => {
     <Layout sidebar header headerTitle="Dashboard" active={2}>
       <div className="loadingContainer">Erro ao buscar exame</div>
     </Layout>;
-  } else
+  } else {
     return (
       <>
         <Layout
@@ -155,6 +152,7 @@ const SectionPage = () => {
         </AnimatePresence>
       </>
     );
+  }
 };
 
 export default SectionPage;

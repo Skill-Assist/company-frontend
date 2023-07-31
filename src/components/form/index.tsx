@@ -70,6 +70,7 @@ const Form: FC<Props> = ({user}: Props) => {
             style={{opacity: 0.5, cursor:"not-allowed"}}
             defaultValue={user.email}
             type="email"
+            disabled
           />
         </fieldset>
 

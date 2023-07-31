@@ -69,7 +69,7 @@ const Profile = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={10}>
+      <Layout sidebar header headerTitle="Profile" active={10}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -119,7 +119,10 @@ const Profile = () => {
           </div>
           <div className={styles.profileIntro}>
             <div>
-              <h3>Perfil do recrutador</h3>
+              <h3>
+                Perfil do{' '}
+                {user.roles[0] === 'candidate' ? 'Candidato' : 'Recrutador'}
+              </h3>
               <p>Atualize suas informações detalhes por aqui</p>
             </div>
             <div>

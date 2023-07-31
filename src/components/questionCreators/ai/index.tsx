@@ -33,7 +33,7 @@ const fetchSectionName = async (
 
     setSectionName(name);
   } else {
-    toast.error('Erro ao buscar nome da sessão.');
+    toast.error('Erro ao buscar nome da seção.');
   }
 };
 
@@ -364,7 +364,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>
-          Nova questão para sessão.
+          Nova questão para seção.
         </h1>
         <p>
           Preencha todos os campos obrigatórios para criar uma nova questão.
@@ -378,7 +378,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             <p>{exameName}</p>
           </div>
           <div>
-            <h3>Sessão</h3>
+            <h3>Seção</h3>
             <p>{sectionName}</p>
           </div>
           <div>

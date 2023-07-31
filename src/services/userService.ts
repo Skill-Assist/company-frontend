@@ -26,7 +26,7 @@ const userService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua sessão expirou. Faça login novamente", {
+        toast.error("Sua seção expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {
@@ -57,7 +57,7 @@ const userService = {
 
       if (statusCode === 418 || message.includes("Invalid token")) {
         cookie.remove("token");
-        toast.error("Sua sessão expirou. Faça login novamente", {
+        toast.error("Sua seção expirou. Faça login novamente", {
           icon: "⏱️",
         });
         setTimeout(() => {

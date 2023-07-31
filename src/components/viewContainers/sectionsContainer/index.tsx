@@ -65,7 +65,7 @@ const SectionsContainer: FC<Props> = ({
     const response = await sectionService.createSection(examId, newSection);
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Sessão criada com sucesso!", {
+      toast.success("Seção criada com sucesso!", {
         duration: 3000,
         position: "top-right",
       });
@@ -77,7 +77,7 @@ const SectionsContainer: FC<Props> = ({
 
       onCreateSection();
     } else {
-      toast.error("Erro ao criar sessão", {
+      toast.error("Erro ao criar seção", {
         duration: 3000,
         position: "top-right",
       });
@@ -93,7 +93,7 @@ const SectionsContainer: FC<Props> = ({
               <>
                 <h3>Sessões</h3>
                 <button onClick={() => setNewSection(true)}>
-                  Nova sessão <AiOutlinePlus size={25} />
+                  Nova seção <AiOutlinePlus size={25} />
                 </button>
               </>
             )}
@@ -113,7 +113,7 @@ const SectionsContainer: FC<Props> = ({
                   key={section.id}
                 >
                   <div className={styles.cardHeader}>
-                    <h3>Sessão {index + 1}</h3>
+                    <h3>Seção {index + 1}</h3>
                     <BsFillTrashFill
                       className={styles.deleteIcon}
                       size={20}
@@ -130,7 +130,7 @@ const SectionsContainer: FC<Props> = ({
                     <div className={styles.formsContent}>
                       <div>
                         <div className={styles.infoBox}>
-                          <span>Nome da sessão:</span>
+                          <span>Nome da seção:</span>
                           <p>{section.name}</p>
                         </div>
                         <div className={styles.infoBox}>
@@ -141,12 +141,12 @@ const SectionsContainer: FC<Props> = ({
                       <div>
                         <div className={styles.infoBox}>
                           <div>
-                            <span>Peso da sessão</span>
+                            <span>Peso da seção</span>
                             <p>{+section.weight * 100}%</p>
                           </div>
                         </div>
                         <div className={styles.infoBox}>
-                          <span>Duração da sessão</span>
+                          <span>Duração da seção</span>
                           <p>
                             {section.durationInHours > 1
                               ? section.durationInHours + " horas"
@@ -157,7 +157,7 @@ const SectionsContainer: FC<Props> = ({
                     </div>
                     <div className={styles.buttonContainer}>
                       <Link href={`/exams/${examId}/${section.id}`}>
-                        Ver Sessão
+                        Ver Seção
                       </Link>
                     </div>
                   </div>
@@ -175,7 +175,7 @@ const SectionsContainer: FC<Props> = ({
               exit="exit"
             >
               <div className={styles.cardHeader}>
-                <h3>Nova sessão</h3>
+                <h3>Nova seção</h3>
                 <BsFillTrashFill
                   className={styles.deleteIcon}
                   size={20}
@@ -187,7 +187,7 @@ const SectionsContainer: FC<Props> = ({
                 <div className={styles.formsContent}>
                   <div>
                     <div className={styles.field}>
-                      <label>Nome da sessão</label>
+                      <label>Nome da seção</label>
                       <input
                         required
                         type="text"
@@ -214,11 +214,11 @@ const SectionsContainer: FC<Props> = ({
                   <div>
                     <div className={styles.field}>
                       <div>
-                        <label>Peso da sessão (%)</label>
+                        <label>Peso da seção (%)</label>
                         <Tooltip
                           className={styles.tooltip}
                           content={
-                            "De 0 a 100, quantos porcentos da nota total você deseja que essa sessão represente?"
+                            "De 0 a 100, quantos porcentos da nota total você deseja que essa seção represente?"
                           }
                         >
                           <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -237,7 +237,7 @@ const SectionsContainer: FC<Props> = ({
                       />
                     </div>
                     <div className={styles.field}>
-                      <label>Duração da sessão (hrs)</label>
+                      <label>Duração da seção (hrs)</label>
                       <input
                         required
                         type="number"
@@ -251,7 +251,7 @@ const SectionsContainer: FC<Props> = ({
                   </div>
                 </div>
                 <div className={styles.buttonContainer}>
-                  <button type="submit">Criar sessão</button>
+                  <button type="submit">Criar seção</button>
                 </div>
               </form>
             </motion.div>

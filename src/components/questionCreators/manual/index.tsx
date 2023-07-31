@@ -33,7 +33,7 @@ const fetchSectionName = async (
 
     setSectionName(name);
   } else {
-    toast.error('Erro ao buscar nome da sessão.');
+    toast.error('Erro ao buscar nome da seção.');
   }
 };
 
@@ -398,7 +398,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             console.log(gradingRubric);
           }}
         >
-          Nova questão para sessão.
+          Nova questão para seção.
         </h1>
         <p>
           Preencha todos os campos obrigatórios para criar uma nova questão.
@@ -411,7 +411,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
             <p>{exameName}</p>
           </div>
           <div>
-            <h3>Sessão</h3>
+            <h3>Seção</h3>
             <p>{sectionName}</p>
           </div>
           <div>

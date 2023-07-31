@@ -123,7 +123,7 @@ const Home = () => {
     );
   } else if (!user) {
     cookie.remove('token');
-    toast.error('Sua sessão expirou. Faça login novamente', {
+    toast.error('Sua seção expirou. Faça login novamente', {
       icon: '⏱️',
     });
     setTimeout(() => {

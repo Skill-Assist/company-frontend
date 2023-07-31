@@ -133,7 +133,7 @@ const SectionSideBar: FC<Props> = ({
           <p>{sectionData.durationInHours} horas</p>
         </div>
         <div>
-          <span>Peso da sessão:</span>
+          <span>Peso da seção:</span>
           <p>{+sectionData.weight * 100}%</p>
         </div>
       </div>

@@ -20,13 +20,13 @@ const SectionsContainerPlaceholder: FC<Props> = ({onClick}: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1>Nenhuma sessão criada até agora...</h1>
+        <h1>Nenhuma seção criada até agora...</h1>
         <p>
           Sessões são como etapas do seu exame, nada mais que um conjunto de
           questões para deixar seu teste mais organizado.
         </p>
         <p>E o melhor de tudo, você pode criar quantas sessões quiser!</p>
-        <button onClick={onClick}>Criar sessão</button>
+        <button onClick={onClick}>Criar seção</button>
       </div>
       <div className={styles.view}>{View}</div>
     </div>

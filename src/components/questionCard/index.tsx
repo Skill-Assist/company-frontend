@@ -1,11 +1,11 @@
-import { FC, useState } from "react";
-import { BsArrowDown, BsFillTrashFill } from "react-icons/bs";
-import parse from "html-react-parser";
+import { FC, useState } from 'react';
+import { BsArrowDown, BsFillTrashFill } from 'react-icons/bs';
+import parse from 'html-react-parser';
 
-import styles from "./styles.module.scss";
-import { Question } from "@/types/question";
-import { toast } from "react-hot-toast";
-import { AiFillTag } from "react-icons/ai";
+import styles from './styles.module.scss';
+import { Question } from '@/types/question';
+import { toast } from 'react-hot-toast';
+import { AiFillTag } from 'react-icons/ai';
 
 interface Props {
   question: Question;
@@ -25,26 +25,26 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
             size={20}
             fill="var(--warning)"
             onClick={() =>
-              toast.loading("Feature em desenvolvimento", {
+              toast.loading('Feature em desenvolvimento', {
                 duration: 3000,
-                position: "top-right",
+                position: 'top-right',
               })
             }
           />
           <BsArrowDown
             size={25}
-            className={open ? styles.rotate : ""}
+            className={open ? styles.rotate : ''}
             fill="var(--secondary-2)"
           />
         </div>
       </div>
-      <div className={`${styles.content} ${open ? styles.open : ""}`}>
+      <div className={`${styles.content} ${open ? styles.open : ''}`}>
         {parse(question.statement)}
-        {question.type === "multipleChoice" && question.options && (
+        {question.type === 'multipleChoice' && question.options && (
           <div className={styles.options}>
             <>
               <h3>Alternativas</h3>
-              {Object.keys(question.options).map((option, index) => {
+              {question.options.map((option, index) => {
                 return (
                   <div className={styles.option} key={index}>
                     <label className={styles.checkboxContainer}>
@@ -54,14 +54,14 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
                         id="check"
                         disabled
                         checked={
-                          question.gradingRubric.answer.option === option
+                          question.gradingRubric.answer.option ===
+                          option.identifier
                         }
                       />
                       <span className={styles.checkmark}></span>
                     </label>
                     <p>
-                      {question.options &&
-                        Object.values(question.options)[index]}
+                      {question.options && question.options[index].description}
                     </p>
                   </div>
                 );

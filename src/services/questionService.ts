@@ -112,7 +112,7 @@ const questionService = {
 
   generateQuestion: async (body: {
     type: string;
-    statement: string;
+    prompt: string;
   }) => {
     let config = {
       headers: {

@@ -43,14 +43,14 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [modalContent, setModalContent] = useState<
-    'manual' | 'wizard' | 'ai' | ''
+    'manual' | 'ai' | ''
   >('');
   const close = () => {
     setShowModal(false);
     setModalContent('');
   };
 
-  const open = (content: 'manual' | 'wizard' | 'ai') => {
+  const open = (content: 'manual' | 'ai') => {
     setShowModal(true);
     setModalContent(content);
   };
@@ -87,7 +87,6 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
         {questions && questions.length > 0 && (
           <div className={styles.stroke}>
             <button onClick={() => open('manual')}>Manual</button>
-            <button onClick={() => open('wizard')}>Wizard</button>
             <button onClick={() => open('ai')}>IA</button>
           </div>
         )}
@@ -146,7 +145,6 @@ const QuestionsContainer: FC<Props> = ({ fetchOwnSection }: Props) => {
             {modalContent === 'manual' && (
               <ManualCreator close={close} fetchQuestions={fetchQuestions} />
             )}
-            {modalContent === 'wizard' && 'wizard'}
             {modalContent === 'ai' && (
               <AiCreator close={close} fetchQuestions={fetchQuestions} />
             )}

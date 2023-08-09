@@ -6,19 +6,21 @@ import CreatableSelect from 'react-select/creatable';
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
+import { TailSpin, ThreeDots } from 'react-loader-spinner';
+import { AiFillCloseCircle } from 'react-icons/ai';
 
 import examService from '@/services/examService';
 import sectionService from '@/services/sectionService';
 import questionService from '@/services/questionService';
 
+import { GenerateQuestion } from '@/types/generatedQuestion';
+import { GradingRubric } from '@/types/gradingRubric';
 import { Option } from '@/types/option';
 import { Question } from '@/types/question';
 
 import 'react-quill/dist/quill.bubble.css';
 import 'react-quill/dist/quill.snow.css';
 import styles from './styles.module.scss';
-import { TailSpin, ThreeDots } from 'react-loader-spinner';
-import { GenerateQuestion } from '@/types/generatedQuestion';
 
 const fetchSectionName = async (
   sectionId: string,
@@ -71,15 +73,11 @@ interface Criteria {
   [key: string]: number | null | { min: number | null; max: number | null };
 }
 
-interface CriteriaObject {
-  [key: string]: Criteria;
-}
-
 const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   const [exameName, setExameName] = useState('');
   const [sectionName, setSectionName] = useState('');
   const [questionType, setQuestionType] = useState<
-    'challenge' | 'programming' | 'multipleChoice' | 'text' | ''
+    'challenge' | 'programming' | 'multiple-choice' | 'text' | ''
   >('');
   const [questionWeight, setQuestionWeight] = useState<1 | 2 | 3 | ''>('');
   const [statement, setStatement] = useState('');
@@ -91,15 +89,30 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
   // Multiple Choice Variables and Logic
 
-  const [options, setOptions] = useState<Option>({
-    '1': '',
-    '2': '',
-  });
+  const [options, setOptions] = useState<Option>([
+    {
+      identifier: 'a',
+      description: '',
+    },
+    {
+      identifier: 'b',
+      description: '',
+    },
+  ]);
 
   const addOptionHandler = () => {
     setOptions((oldOptions) => {
-      const newOptions = { ...oldOptions };
-      newOptions[Object.keys(oldOptions).length + 1] = '';
+      const newOptions = [...oldOptions];
+
+      const newIdentifier = String.fromCharCode(
+        newOptions[newOptions.length - 1].identifier.charCodeAt(0) + 1
+      );
+
+      newOptions.push({
+        identifier: newIdentifier,
+        description: '',
+      });
+
       return newOptions;
     });
   };
@@ -111,114 +124,56 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   // End of Multiple Choice Variables and Logic
 
   // Grading Rubric Variables and Logic
-  const [savingGradingRubricLoading, setSavingGradingRubricLoading] =
-    useState(false);
-  const [gradingRubricNames, setGradingRubricNames] = useState<string[]>([]);
   const gradingRubricNameInputRef = useRef<HTMLInputElement>(null);
 
-  const [gradingRubric, setGradingRubric] = useState<CriteriaObject>({});
+  const [gradingRubric, setGradingRubric] = useState<GradingRubric>([]);
 
-  const saveGradingRubricHandler = (name: string) => {
-    setSavingGradingRubricLoading(true);
-    const totalPoints = document.getElementById(
-      `total-points-${name}`
-    ) as HTMLInputElement;
-    const greatGradeText = document.getElementById(
-      `great-grade-text-${name}`
-    ) as HTMLInputElement;
-    const greatMax = document.getElementById(
-      `great-max-${name}`
-    ) as HTMLInputElement;
-    const avaregeGradeText = document.getElementById(
-      `avarage-grade-text-${name}`
-    ) as HTMLInputElement;
-    const avarageMin = document.getElementById(
-      `avarage-min-${name}`
-    ) as HTMLInputElement;
-    const avarageMax = document.getElementById(
-      `avarage-max-${name}`
-    ) as HTMLInputElement;
-    const badGradeText = document.getElementById(
-      `bad-grade-text-${name}`
-    ) as HTMLInputElement;
-    const badMin = document.getElementById(
-      `bad-min-${name}`
-    ) as HTMLInputElement;
-    const badMax = document.getElementById(
-      `bad-max-${name}`
-    ) as HTMLInputElement;
+  const gradingRubricHandler = () => {
+    const enteredCriteriaName = gradingRubricNameInputRef.current!.value;
 
-    if (
-      !totalPoints.value ||
-      !greatGradeText.value ||
-      !greatMax.value ||
-      !avaregeGradeText.value ||
-      !avarageMin.value ||
-      !avarageMax.value ||
-      !badGradeText.value ||
-      !badMin.value ||
-      !badMax.value
-    ) {
-      toast.error('Preencha todos os campos.');
-      setTimeout(() => {
-        setSavingGradingRubricLoading(false);
-      }, 1000);
+    if (!enteredCriteriaName || enteredCriteriaName === '') {
+      toast.error('Digite um nome para o critério de correção.');
       return;
     }
 
-    const newCriteria: Criteria = {
-      total_points: +totalPoints.value,
-      [greatGradeText.value]: +greatMax.value,
-      [avaregeGradeText.value]: {
-        min: +avarageMin.value,
-        max: +avarageMax.value,
+    const newCriteria = {
+      criteria: {
+        title: enteredCriteriaName,
+        total_points: 0,
+        maxValueCriteria: {
+          description: '',
+          value: {
+            min: 0,
+            max: 0,
+          },
+        },
+        avgValueCriteria: {
+          description: '',
+          value: {
+            min: 0,
+            max: 0,
+          },
+        },
+        minValueCriteria: {
+          description: '',
+          value: {
+            min: 0,
+            max: 0,
+          },
+        },
       },
-      [badGradeText.value]: { min: +badMin.value, max: +badMax.value },
     };
 
+    setGradingRubric((oldGradingRubric) => [...oldGradingRubric, newCriteria]);
+
+    gradingRubricNameInputRef.current!.value = '';
+  };
+
+  const deleteCriteria = (index: number) => {
     setGradingRubric((oldGradingRubric) => {
-      const newGradingRubric = { ...oldGradingRubric };
-      newGradingRubric[name] = newCriteria;
+      const newGradingRubric = [...oldGradingRubric];
+      newGradingRubric.splice(index, 1);
       return newGradingRubric;
-    });
-
-    setTimeout(() => {
-      setSavingGradingRubricLoading(false);
-    }, 1000);
-
-    toast.success('Critério de correção salvo com sucesso.');
-  };
-
-  const gradingRubricNameHandler = () => {
-    if (
-      gradingRubricNameInputRef.current &&
-      gradingRubricNameInputRef.current.value !== ''
-    ) {
-      setGradingRubricNames((oldNames) => {
-        const newNames = [...oldNames];
-        const existingName = newNames.find(
-          (name) => name === gradingRubricNameInputRef.current!.value
-        );
-
-        if (!existingName) {
-          newNames.push(gradingRubricNameInputRef.current!.value);
-          return newNames;
-        } else {
-          toast.error(
-            `${gradingRubricNameInputRef.current!.value} já foi adicionado.`
-          );
-          return oldNames;
-        }
-      });
-    }
-  };
-
-  const deletegradingRubricNameHandler = (name: string) => {
-    setGradingRubricNames((oldNames) => {
-      const newNames = [...oldNames];
-      const index = newNames.findIndex((n) => n === name);
-      newNames.splice(index, 1);
-      return newNames;
     });
   };
 
@@ -294,9 +249,10 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       gradingRubric: {},
     };
 
-    if (questionType === 'multipleChoice') {
+    if (questionType === 'multiple-choice') {
       questionData = {
         ...questionData,
+        type: 'multipleChoice',
         options: options,
         gradingRubric: correctOption,
       };
@@ -341,18 +297,26 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
     const body = {
       type: questionType,
-      statement: generatedStatement,
+      prompt: generatedStatement,
     };
 
     const response = await questionService.generateQuestion(body);
 
-    console.log(response);
 
     if (response.status >= 200 && response.status < 300) {
-      const { data } = response;
+      const { data } = response.data;
 
-      setGeneratedData(data.data);
-      setStatement(data.data.statement);
+      setStatement(data.statement);
+      setTags(data.tags);
+
+      if (data.type === 'multipleChoice') {
+        setOptions(data.options);
+        setCorrectOption(data.gradingRubric);
+      } else {
+        setGradingRubric(data.gradingRubric);
+      }
+
+      setGeneratedData(data);
     } else {
       toast.error('Erro ao gerar questão.');
     }
@@ -363,7 +327,11 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>
+        <h1
+          onClick={() => {
+            console.log(generatedData);
+          }}
+        >
           Nova questão para seção.
         </h1>
         <p>
@@ -391,7 +359,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                   e.target.value as
                     | 'challenge'
                     | 'programming'
-                    | 'multipleChoice'
+                    | 'multiple-choice'
                     | 'text'
                     | ''
                 );
@@ -400,7 +368,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               <option value="">Selecione um tipo</option>
               <option value="challenge">Desafio</option>
               <option value="programming">Programação</option>
-              <option value="multipleChoice">Múltipla escolha</option>
+              <option value="multiple-choice">Múltipla escolha</option>
               <option value="text">Texto</option>
             </select>
           </div>
@@ -476,7 +444,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 />
               </div>
               <div className={styles.contentBox}>
-                <h3 onClick={() => console.log(gradingRubricNames)}>Tags</h3>
+                <h3>Tags</h3>
                 <CreatableSelect
                   isMulti
                   isClearable
@@ -508,6 +476,12 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       setTags([]);
                     }
                   }}
+                  value={tags.map((tag) => {
+                    return {
+                      value: tag,
+                      label: tag,
+                    };
+                  })}
                 />
               </div>
               <div className={styles.optionalInfos}>
@@ -540,13 +514,19 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 </div>
               </div>
               <div style={{ display: questionType === '' ? 'none' : 'flex' }}>
-                {questionType === 'multipleChoice' && (
+                {questionType === 'multiple-choice' && (
                   <div className={styles.multipleChoiceContainer}>
                     <div className={styles.multipleChoiceHeader}>
-                      <h3>Alternativas</h3>
+                      <h3
+                        onClick={() => {
+                          console.log(options);
+                        }}
+                      >
+                        Alternativas
+                      </h3>
                       <p>Marque a alternativa correta</p>
                     </div>
-                    {Object.keys(options).map((option, index) => {
+                    {options.map((option, index) => {
                       return (
                         <div className={styles.option} key={index}>
                           <label className={styles.checkboxContainer}>
@@ -554,11 +534,17 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               type="checkbox"
                               name="check"
                               id="check"
-                              checked={correctOption.answer.option === option}
+                              value={option.identifier}
+                              checked={
+                                correctOption.answer.option ===
+                                option.identifier
+                              }
                               onChange={(e) => {
                                 setCorrectOption({
                                   answer: {
-                                    option: e.target.checked ? option : '',
+                                    option: e.target.checked
+                                      ? option.identifier
+                                      : '',
                                   },
                                 });
                               }}
@@ -566,10 +552,12 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             <span className={styles.checkmark}></span>
                           </label>
                           <input
+                            type="text"
+                            value={option.description}
                             onChange={(e) => {
                               setOptions((oldOptions) => {
-                                const newOptions = { ...oldOptions };
-                                newOptions[option] = e.target.value;
+                                const newOptions = [...oldOptions];
+                                newOptions[index].description = e.target.value;
                                 return newOptions;
                               });
                             }}
@@ -588,150 +576,266 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                     <h3>Critérios de correção</h3>
                     <div className={styles.gradingRubricInput}>
                       <div>
-                        <label htmlFor="gradingRubric">Nome do critério</label>
+                        <label>Nome do critério</label>
                         <input
                           type="text"
-                          name="gradingRubric"
-                          id="gradingRubric"
                           placeholder='Por exemplo: "Clean Code", "Deploy", "Acurácia"'
                           ref={gradingRubricNameInputRef}
                         />
                       </div>
-                      <button type="button" onClick={gradingRubricNameHandler}>
+                      <button type="button" onClick={gradingRubricHandler}>
                         Adicionar
                       </button>
                     </div>
                     <div className={styles.gradingRubricTable}>
-                      {gradingRubricNames.reverse().map((name, index) => (
-                        <form className={styles.gradingRubricCard} key={index}>
-                          <div className={styles.cardHeader}>
-                            <h3>{name}</h3>
+                      {gradingRubric.map((object, index) => {
+                        const criteria = object.criteria;
+
+                        return (
+                          <form
+                            className={styles.gradingRubricCard}
+                            key={index}
+                          >
+                            <div className={styles.cardHeader}>
+                              <h3>{criteria.title}</h3>
+                              <AiFillCloseCircle
+                                size={25}
+                                onClick={() => deleteCriteria(index)}
+                              />
+                            </div>
                             <div>
-                              <label htmlFor={`total-points-${name}`}>
-                                Peso do critério
-                              </label>
+                              <label>Peso do critério</label>
                               <input
                                 type="number"
-                                name="total-points"
-                                id={`total-points-${name}`}
+                                value={criteria.total_points}
+                                onChange={(e) => {
+                                  setGradingRubric((oldGradingRubric) => {
+                                    const newGradingRubric = [
+                                      ...oldGradingRubric,
+                                    ];
+
+                                    newGradingRubric[
+                                      index
+                                    ].criteria.total_points = +e.target.value;
+                                    return newGradingRubric;
+                                  });
+                                }}
                               />
                             </div>
-                          </div>
 
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`great-grade-text-${name}`}>
-                                Nota máxima
-                              </label>
-                              <input
-                                type="text"
-                                name="great-grade-text"
-                                id={`great-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`great-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`great-max-${name}`} />
-                            </div>
-                          </div>
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota máxima</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.maxValueCriteria.description}
+                                  placeholder="Por exemplo 'Cumpriu com tudo que foi pedido e fez além...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
 
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`avarage-grade-text-${name}`}>
-                                Nota média
-                              </label>
-                              <input
-                                type="text"
-                                name="avarege-grade-text"
-                                id={`avarage-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`avarage-min-${name}`}
-                                style={{ color: 'var(--warning)' }}
-                              >
-                                Min
-                              </label>
-                              <input type="number" id={`avarage-min-${name}`} />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`avarage-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`avarage-max-${name}`} />
-                            </div>
-                          </div>
-
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`bad-grade-text-${name}`}>
-                                Nota ruim
-                              </label>
-                              <input
-                                type="text"
-                                name="bad-grade-text"
-                                id={`bad-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`bad-min-${name}`}
-                                style={{ color: 'var(--warning)' }}
-                              >
-                                Min
-                              </label>
-                              <input type="number" id={`bad-min-${name}`} />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`bad-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`bad-max-${name}`} />
-                            </div>
-                          </div>
-
-                          <div className={styles.gradingRubricActions}>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                deletegradingRubricNameHandler(name)
-                              }
-                            >
-                              Deletar critério de correção
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() => saveGradingRubricHandler(name)}
-                            >
-                              {savingGradingRubricLoading ? (
-                                <ThreeDots
-                                  color="var(--neutral-0)"
-                                  height={20}
-                                  width={20}
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.maxValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
                                 />
-                              ) : (
-                                'Salvar critério de correção'
-                              )}
-                            </button>
-                          </div>
-                        </form>
-                      ))}
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.maxValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.maxValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.maxValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.maxValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota média</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.avgValueCriteria.description}
+                                  placeholder="Por exemplo 'Cumpriu parcialmente com o que foi pedido...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
+
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.avgValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
+                                />
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.avgValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.avgValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.avgValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.avgValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota ruim</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.minValueCriteria.description}
+                                  placeholder="Por exemplo 'Não cumpriu com o que foi pedido...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
+
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.minValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
+                                />
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.minValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.minValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.minValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.minValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        );
+                      })}
                     </div>
                     <div className={styles.techOptions}>
                       <h3>Runtimes:</h3>
@@ -769,13 +873,6 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </label>
                           <label htmlFor="option3">C++</label>
                         </li>
-                        {/* <li>
-                        <label className={styles.checkboxContainer}>
-                          <input type="checkbox" name="option4" id="option4" />
-                          <span className={styles.checkmark}></span>
-                        </label>
-                        <label htmlFor="option4">Python</label>
-                      </li> */}
                       </ul>
                     </div>
                   </div>
@@ -785,150 +882,266 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                     <h3>Critérios de correção</h3>
                     <div className={styles.gradingRubricInput}>
                       <div>
-                        <label htmlFor="gradingRubric">Nome do critério</label>
+                        <label>Nome do critério</label>
                         <input
                           type="text"
-                          name="gradingRubric"
-                          id="gradingRubric"
                           placeholder='Por exemplo: "Clean Code", "Deploy", "Acurácia"'
                           ref={gradingRubricNameInputRef}
                         />
                       </div>
-                      <button type="button" onClick={gradingRubricNameHandler}>
+                      <button type="button" onClick={gradingRubricHandler}>
                         Adicionar
                       </button>
                     </div>
                     <div className={styles.gradingRubricTable}>
-                      {gradingRubricNames.reverse().map((name, index) => (
-                        <form className={styles.gradingRubricCard} key={index}>
-                          <div className={styles.cardHeader}>
-                            <h3>{name}</h3>
+                      {gradingRubric.map((object, index) => {
+                        const criteria = object.criteria;
+
+                        return (
+                          <form
+                            className={styles.gradingRubricCard}
+                            key={index}
+                          >
+                            <div className={styles.cardHeader}>
+                              <h3>{criteria.title}</h3>
+                              <AiFillCloseCircle
+                                size={25}
+                                onClick={() => deleteCriteria(index)}
+                              />
+                            </div>
                             <div>
-                              <label htmlFor={`total-points-${name}`}>
-                                Peso do critério
-                              </label>
+                              <label>Peso do critério</label>
                               <input
                                 type="number"
-                                name="total-points"
-                                id={`total-points-${name}`}
+                                value={criteria.total_points}
+                                onChange={(e) => {
+                                  setGradingRubric((oldGradingRubric) => {
+                                    const newGradingRubric = [
+                                      ...oldGradingRubric,
+                                    ];
+
+                                    newGradingRubric[
+                                      index
+                                    ].criteria.total_points = +e.target.value;
+                                    return newGradingRubric;
+                                  });
+                                }}
                               />
                             </div>
-                          </div>
 
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`great-grade-text-${name}`}>
-                                Nota máxima
-                              </label>
-                              <input
-                                type="text"
-                                name="great-grade-text"
-                                id={`great-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`great-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`great-max-${name}`} />
-                            </div>
-                          </div>
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota máxima</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.maxValueCriteria.description}
+                                  placeholder="Por exemplo 'Cumpriu com tudo que foi pedido e fez além...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
 
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`avarage-grade-text-${name}`}>
-                                Nota média
-                              </label>
-                              <input
-                                type="text"
-                                name="avarege-grade-text"
-                                id={`avarage-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`avarage-min-${name}`}
-                                style={{ color: 'var(--warning)' }}
-                              >
-                                Min
-                              </label>
-                              <input type="number" id={`avarage-min-${name}`} />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`avarage-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`avarage-max-${name}`} />
-                            </div>
-                          </div>
-
-                          <div className={styles.criteriaContainer}>
-                            <div className={styles.criteriaInput}>
-                              <label htmlFor={`bad-grade-text-${name}`}>
-                                Nota ruim
-                              </label>
-                              <input
-                                type="text"
-                                name="bad-grade-text"
-                                id={`bad-grade-text-${name}`}
-                                placeholder="Por exemplo '...'"
-                              />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`bad-min-${name}`}
-                                style={{ color: 'var(--warning)' }}
-                              >
-                                Min
-                              </label>
-                              <input type="number" id={`bad-min-${name}`} />
-                            </div>
-                            <div className={styles.criteriaValues}>
-                              <label
-                                htmlFor={`bad-max-${name}`}
-                                style={{ color: 'var(--primary-2)' }}
-                              >
-                                Max
-                              </label>
-                              <input type="number" id={`bad-max-${name}`} />
-                            </div>
-                          </div>
-
-                          <div className={styles.gradingRubricActions}>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                deletegradingRubricNameHandler(name)
-                              }
-                            >
-                              Deletar critério de correção
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() => saveGradingRubricHandler(name)}
-                            >
-                              {savingGradingRubricLoading ? (
-                                <ThreeDots
-                                  color="var(--neutral-0)"
-                                  height={20}
-                                  width={20}
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.maxValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
                                 />
-                              ) : (
-                                'Salvar critério de correção'
-                              )}
-                            </button>
-                          </div>
-                        </form>
-                      ))}
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.maxValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.maxValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.maxValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.maxValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota média</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.avgValueCriteria.description}
+                                  placeholder="Por exemplo 'Cumpriu parcialmente com o que foi pedido...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
+
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.avgValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
+                                />
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.avgValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.avgValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.avgValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.avgValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className={styles.criteriaContainer}>
+                              <div className={styles.criteriaInput}>
+                                <label>Nota ruim</label>
+                                <textarea
+                                  rows={5}
+                                  value={criteria.minValueCriteria.description}
+                                  placeholder="Por exemplo 'Não cumpriu com o que foi pedido...'"
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
+
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.minValueCriteria.description =
+                                        e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
+                                />
+                              </div>
+                              <div className={styles.criteriaValues}>
+                                <div>
+                                  <label style={{ color: 'var(--primary-2)' }}>
+                                    Max
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.minValueCriteria.value.max}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.minValueCriteria.value.max =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <label style={{ color: 'var(--warning)' }}>
+                                    Min
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={criteria.minValueCriteria.value.min}
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.minValueCriteria.value.min =
+                                          +e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        );
+                      })}
                     </div>
                     <div className={styles.techOptions}>
                       <h3>Runtimes:</h3>
@@ -987,164 +1200,290 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                       <h3>Critérios de correção</h3>
                       <div className={styles.gradingRubricInput}>
                         <div>
-                          <label htmlFor="gradingRubric">
-                            Nome do critério
-                          </label>
+                          <label>Nome do critério</label>
                           <input
                             type="text"
-                            name="gradingRubric"
-                            id="gradingRubric"
                             placeholder='Por exemplo: "Coerência e coesão", "Gramática", "Conteúdo"'
                             ref={gradingRubricNameInputRef}
                           />
                         </div>
-                        <button
-                          type="button"
-                          onClick={gradingRubricNameHandler}
-                        >
+                        <button type="button" onClick={gradingRubricHandler}>
                           Adicionar
                         </button>
                       </div>
                       <div className={styles.gradingRubricTable}>
-                        {gradingRubricNames.reverse().map((name, index) => (
-                          <form
-                            className={styles.gradingRubricCard}
-                            key={index}
-                          >
-                            <div className={styles.cardHeader}>
-                              <h3>{name}</h3>
+                        {gradingRubric.map((object, index) => {
+                          const criteria = object.criteria;
+
+                          return (
+                            <form
+                              className={styles.gradingRubricCard}
+                              key={index}
+                            >
+                              <div className={styles.cardHeader}>
+                                <h3>{criteria.title}</h3>
+                                <AiFillCloseCircle
+                                  size={25}
+                                  onClick={() => deleteCriteria(index)}
+                                />
+                              </div>
                               <div>
-                                <label htmlFor={`total-points-${name}`}>
-                                  Peso do critério
-                                </label>
+                                <label>Peso do critério</label>
                                 <input
                                   type="number"
-                                  name="total-points"
-                                  id={`total-points-${name}`}
-                                />
-                              </div>
-                            </div>
+                                  value={criteria.total_points}
+                                  onChange={(e) => {
+                                    setGradingRubric((oldGradingRubric) => {
+                                      const newGradingRubric = [
+                                        ...oldGradingRubric,
+                                      ];
 
-                            <div className={styles.criteriaContainer}>
-                              <div className={styles.criteriaInput}>
-                                <label htmlFor={`great-grade-text-${name}`}>
-                                  Nota máxima
-                                </label>
-                                <input
-                                  type="text"
-                                  name="great-grade-text"
-                                  id={`great-grade-text-${name}`}
-                                  placeholder="Por exemplo '...'"
+                                      newGradingRubric[
+                                        index
+                                      ].criteria.total_points = +e.target.value;
+                                      return newGradingRubric;
+                                    });
+                                  }}
                                 />
                               </div>
-                              <div className={styles.criteriaValues}>
-                                <label
-                                  htmlFor={`great-max-${name}`}
-                                  style={{ color: 'var(--primary-2)' }}
-                                >
-                                  Max
-                                </label>
-                                <input type="number" id={`great-max-${name}`} />
-                              </div>
-                            </div>
 
-                            <div className={styles.criteriaContainer}>
-                              <div className={styles.criteriaInput}>
-                                <label htmlFor={`avarage-grade-text-${name}`}>
-                                  Nota média
-                                </label>
-                                <input
-                                  type="text"
-                                  name="avarege-grade-text"
-                                  id={`avarage-grade-text-${name}`}
-                                  placeholder="Por exemplo '...'"
-                                />
-                              </div>
-                              <div className={styles.criteriaValues}>
-                                <label
-                                  htmlFor={`avarage-min-${name}`}
-                                  style={{ color: 'var(--warning)' }}
-                                >
-                                  Min
-                                </label>
-                                <input
-                                  type="number"
-                                  id={`avarage-min-${name}`}
-                                />
-                              </div>
-                              <div className={styles.criteriaValues}>
-                                <label
-                                  htmlFor={`avarage-max-${name}`}
-                                  style={{ color: 'var(--primary-2)' }}
-                                >
-                                  Max
-                                </label>
-                                <input
-                                  type="number"
-                                  id={`avarage-max-${name}`}
-                                />
-                              </div>
-                            </div>
+                              <div className={styles.criteriaContainer}>
+                                <div className={styles.criteriaInput}>
+                                  <label>Nota máxima</label>
+                                  <textarea
+                                    rows={5}
+                                    value={
+                                      criteria.maxValueCriteria.description
+                                    }
+                                    placeholder="Por exemplo 'Cumpriu com tudo que foi pedido e fez além...'"
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
 
-                            <div className={styles.criteriaContainer}>
-                              <div className={styles.criteriaInput}>
-                                <label htmlFor={`bad-grade-text-${name}`}>
-                                  Nota ruim
-                                </label>
-                                <input
-                                  type="text"
-                                  name="bad-grade-text"
-                                  id={`bad-grade-text-${name}`}
-                                  placeholder="Por exemplo '...'"
-                                />
-                              </div>
-                              <div className={styles.criteriaValues}>
-                                <label
-                                  htmlFor={`bad-min-${name}`}
-                                  style={{ color: 'var(--warning)' }}
-                                >
-                                  Min
-                                </label>
-                                <input type="number" id={`bad-min-${name}`} />
-                              </div>
-                              <div className={styles.criteriaValues}>
-                                <label
-                                  htmlFor={`bad-max-${name}`}
-                                  style={{ color: 'var(--primary-2)' }}
-                                >
-                                  Max
-                                </label>
-                                <input type="number" id={`bad-max-${name}`} />
-                              </div>
-                            </div>
-
-                            <div className={styles.gradingRubricActions}>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  deletegradingRubricNameHandler(name)
-                                }
-                              >
-                                Deletar critério de correção
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => saveGradingRubricHandler(name)}
-                              >
-                                {savingGradingRubricLoading ? (
-                                  <ThreeDots
-                                    color="var(--neutral-0)"
-                                    height={20}
-                                    width={20}
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.maxValueCriteria.description =
+                                          e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
                                   />
-                                ) : (
-                                  'Salvar critério de correção'
-                                )}
-                              </button>
-                            </div>
-                          </form>
-                        ))}
+                                </div>
+                                <div className={styles.criteriaValues}>
+                                  <div>
+                                    <label
+                                      style={{ color: 'var(--primary-2)' }}
+                                    >
+                                      Max
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.maxValueCriteria.value.max
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.maxValueCriteria.value.max =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                  <div>
+                                    <label style={{ color: 'var(--warning)' }}>
+                                      Min
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.maxValueCriteria.value.min
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.maxValueCriteria.value.min =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className={styles.criteriaContainer}>
+                                <div className={styles.criteriaInput}>
+                                  <label>Nota média</label>
+                                  <textarea
+                                    rows={5}
+                                    value={
+                                      criteria.avgValueCriteria.description
+                                    }
+                                    placeholder="Por exemplo 'Cumpriu parcialmente com o que foi pedido...'"
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.avgValueCriteria.description =
+                                          e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div className={styles.criteriaValues}>
+                                  <div>
+                                    <label
+                                      style={{ color: 'var(--primary-2)' }}
+                                    >
+                                      Max
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.avgValueCriteria.value.max
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.avgValueCriteria.value.max =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <label style={{ color: 'var(--warning)' }}>
+                                      Min
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.avgValueCriteria.value.min
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.avgValueCriteria.value.min =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className={styles.criteriaContainer}>
+                                <div className={styles.criteriaInput}>
+                                  <label>Nota ruim</label>
+                                  <textarea
+                                    rows={5}
+                                    value={
+                                      criteria.minValueCriteria.description
+                                    }
+                                    placeholder="Por exemplo 'Não cumpriu com o que foi pedido...'"
+                                    onChange={(e) => {
+                                      setGradingRubric((oldGradingRubric) => {
+                                        const newGradingRubric = [
+                                          ...oldGradingRubric,
+                                        ];
+
+                                        newGradingRubric[
+                                          index
+                                        ].criteria.minValueCriteria.description =
+                                          e.target.value;
+                                        return newGradingRubric;
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div className={styles.criteriaValues}>
+                                  <div>
+                                    <label
+                                      style={{ color: 'var(--primary-2)' }}
+                                    >
+                                      Max
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.minValueCriteria.value.max
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.minValueCriteria.value.max =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                  <div>
+                                    <label style={{ color: 'var(--warning)' }}>
+                                      Min
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={
+                                        criteria.minValueCriteria.value.min
+                                      }
+                                      onChange={(e) => {
+                                        setGradingRubric((oldGradingRubric) => {
+                                          const newGradingRubric = [
+                                            ...oldGradingRubric,
+                                          ];
+
+                                          newGradingRubric[
+                                            index
+                                          ].criteria.minValueCriteria.value.min =
+                                            +e.target.value;
+                                          return newGradingRubric;
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          );
+                        })}
                       </div>
                     </div>
                   </>

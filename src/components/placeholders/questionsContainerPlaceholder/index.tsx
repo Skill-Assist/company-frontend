@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import { FC } from "react";
 
 interface Props {
-  open: (content: "manual" | "wizard" | "ai") => void;
+  open: (content: "manual" | "ai") => void;
 }
 
 const QuestionsContainerPlaceholder: FC<Props> = ({ open }: Props) => {
@@ -32,7 +32,6 @@ const QuestionsContainerPlaceholder: FC<Props> = ({ open }: Props) => {
         </p>
         <div className={styles.stroke}>
           <button onClick={() => open("manual")}>Manual</button>
-          <button onClick={() => open("wizard")}>Wizard</button>
           <button onClick={() => open("ai")}>IA</button>
         </div>
       </div>

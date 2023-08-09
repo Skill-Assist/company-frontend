@@ -4,9 +4,12 @@ export type GradingRubric = {
     total_points: number;
     maxValueCriteria: {
       description: string;
-      value: number;
+      value: {
+        min: number;
+        max: number;
+      };
     };
-    averageValueCriteria: {
+    avgValueCriteria: {
       description: string;
       value: {
         min: number;
@@ -20,5 +23,5 @@ export type GradingRubric = {
         max: number;
       };
     };
-  }[];
-};
+  };
+}[];

@@ -216,7 +216,7 @@
   transform: translateX(-50%);
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }
@@ -320,17 +320,17 @@
     font-weight: 500;
   }
 
-  input {
+  input,
+  textarea {
     background: var(--neutral-0);
     border: 1px solid var(--neutral-100);
     border-radius: 5px;
     padding: 6px 5px;
-    width: 50px;
+    width: 80px;
     margin: 0 5px;
     font-size: 16px;
     color: var(--secondary-2);
     transition: 300ms;
-    cursor: pointer;
 
     &::placeholder {
       color: var(--neutral-200);
@@ -338,43 +338,12 @@
 
     &:focus {
       color: var(--primary);
-      border-bottom: 1px solid var(--primary);
+      border: 1px solid var(--primary);
     }
-  }
-}
 
-.gradingRubricActions {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  button {
-    width: 200px;
-    height: 30px;
-    margin: 5px 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 300ms;
-    background-color: var(--primary);
-    color: var(--neutral-50);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // &:first-child {
-    //   background-color: var(--neutral-100);
-    //   color: var(--secondary-2);
-    // }
-
-    // &:first-child:hover {
-    //   background-color: var(--warning);
-    //   color: var(--neutral-0);
-    // }
-
-    &:hover {
-      scale: 1.05;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      display: none;
     }
   }
 }
@@ -394,28 +363,37 @@
   gap: 5px;
   width: 100%;
 
-  input {
+  textarea {
     width: 100%;
+    resize: none;
+    
   }
 
   label {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--primary);
+    margin-left: 10px;
   }
 }
 
 .criteriaValues {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 
-  label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--primary);
-    text-align: center;
-    margin-right: 5px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      text-align: center;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -424,8 +402,18 @@
   align-items: center;
   justify-content: space-between;
 
-  h3{
+  h3 {
     text-transform: capitalize;
+  }
+
+  svg {
+    fill: var(--warning);
+    cursor: pointer;
+    transition: 400ms;
+
+    &:hover {
+      scale: 1.05;
+    }
   }
 }
 

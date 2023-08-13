@@ -37,58 +37,43 @@ const Home = () => {
   const data = {
     slides: [
       {
-        icon: 'automation.svg',
-        id: 'automation',
-        title: 'Plug-and-play',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
+        icon: 'ai.svg',
+        id: 'ai',
+        title: 'Augmented AI',
+        copy: 'Elaboração e correção por IA, com possibilidade revisão humana.',
       },
       {
         icon: 'proctoring.svg',
         id: 'proctoring',
         title: 'Proctoring',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
+        copy: 'Monitoramente do candidato durante a prova.',
       },
       {
-        icon: 'plug-and-play.svg',
-        id: 'plug-and-play',
-        title: 'Plug-and-play',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
+        icon: 'setup.svg',
+        id: 'setup',
+        title: 'Setup customizado',
+        copy: 'Configuração personalizada de acordo com o que for necessário',
+      },
+      {
+        icon: 'feedback.svg',
+        id: 'feedback',
+        title: 'Feedback',
+        copy: 'Dashboard com insights do resultado do candidato.',
       },
       {
         icon: 'curva.svg',
         id: 'curva',
         title: 'Notas "na curva"',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
+        copy: 'Notas distribuidas de acordo com os pares.',
       },
       {
-        icon: 'ai.svg',
-        id: 'ai',
-        title: 'Correção baseada em AI',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
-      },
-      {
-        icon: 'rocket.svg',
-        id: 'rocket',
-        title: 'Escala do processo',
-        copy: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies aliquam.',
+        icon: 'security.svg',
+        id: 'security',
+        title: 'Segurança',
+        copy: 'Criptografia e arquitetura em nuvem para proteção dos dados.',
       },
     ],
   };
-
-  //////Example data/////
-  // const fetchCandidates = async () => {
-  //   setTableLoading(true);
-  //   const response = await examService.getCandidates('1');
-
-  //   if (response.status >= 200 && response.status < 300) {
-  //     setCandidates(response.data.reverse());
-  //     setTableLoading(false);
-  //   } else {
-  //     toast.error('Erro ao buscar candidatos!');
-  //     setTableLoading(false);
-  //   }
-  // };
-  ////////////////////////////////
 
   useEffect(() => {
     const showAnnouncementCookie = cookie.load(
@@ -101,7 +86,6 @@ const Home = () => {
     }
 
     fetchUser();
-    // fetchCandidates();
   }, []);
 
   if (pageLoading) {
@@ -146,7 +130,7 @@ const Home = () => {
                 <AiOutlinePlus />
                 <Link href={'/exams/create'}>Criar novo exame</Link>
               </button>
-              <button
+              {/* <button
                 onClick={() => {
                   toast.loading('Feature em desenvolvimento', {
                     duration: 3000,
@@ -156,13 +140,14 @@ const Home = () => {
               >
                 <BiBookOpen />
                 Tutoriais
-              </button>
+              </button> */}
             </div>
           </div>
           {showAnnouncement === true && (
             <div className={styles.announcementContainer}>
               <AiOutlineCloseCircle
                 size={25}
+                className={styles.closeIcon}
                 onClick={() => {
                   cookie.save('show_skill_assist_announcement', 'false', {
                     domain: `${process.env.NEXT_PUBLIC_COOKIE_DOMAIN_URL}`,
@@ -170,7 +155,22 @@ const Home = () => {
                   setShowAnnouncement(false);
                 }}
               />
-              Anuncio
+              <div>
+                <h1>
+                  Transforme Suas Entrevistas <br /> com o Poder da IA
+                </h1>
+                <p>
+                  Conduza Entrevistas Mais Inteligentes <br />e Eficientes com
+                  Nosso Novo Assistente de Entrevista por IA
+                </p>
+              </div>
+              <Image
+                src={'/icons/AIassistant.svg'}
+                width={200}
+                height={200}
+                alt="ai-assistant"
+                className={styles.aiAssistant}
+              />
             </div>
           )}
           <div className={styles.featuresContainer}>

@@ -207,7 +207,7 @@
   transform: translateX(-50%);
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }
@@ -258,6 +258,7 @@
 
 .modalContent {
   position: relative;
+  overflow: scroll;
 
   hr {
     margin: 10px 0;

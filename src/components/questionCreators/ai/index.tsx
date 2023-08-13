@@ -302,7 +302,6 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
 
     const response = await questionService.generateQuestion(body);
 
-
     if (response.status >= 200 && response.status < 300) {
       const { data } = response.data;
 
@@ -436,6 +435,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 <h3>Enunciado</h3>
                 <ReactQuill
                   theme="snow"
+                  className={styles.customQuillStyle}
                   defaultValue={statement}
                   value={statement}
                   onChange={setStatement}

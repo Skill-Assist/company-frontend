@@ -1,25 +1,25 @@
-import { FC, useState } from "react";
-import { BsArrowDown } from "react-icons/bs";
-import { AnimatePresence } from "framer-motion";
-import parse from "html-react-parser";
-import { TailSpin } from "react-loader-spinner";
+import { FC, useState } from 'react';
+import { BsArrowDown } from 'react-icons/bs';
+import { AnimatePresence } from 'framer-motion';
+import parse from 'html-react-parser';
+import { TailSpin } from 'react-loader-spinner';
 import {
   AiFillTag,
   AiOutlineCloseCircle,
   AiOutlineCloudDownload,
-} from "react-icons/ai";
-import Editor from "@monaco-editor/react";
-import { toast } from "react-hot-toast";
+} from 'react-icons/ai';
+import Editor from '@monaco-editor/react';
+import { toast } from 'react-hot-toast';
 
-import Modal from "../modal";
+import Modal from '../modal';
 
-import { Answer } from "@/types/answer";
-import { Question } from "@/types/question";
-import { Section } from "@/types/section";
+import { Answer } from '@/types/answer';
+import { Question } from '@/types/question';
+import { Section } from '@/types/section';
 
-import questionService from "@/services/questionService";
+import questionService from '@/services/questionService';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 interface Props {
   section: Partial<Section>;
@@ -66,7 +66,7 @@ const ScoredSection: FC<Props> = ({
       });
       setLoadingQuestion(false);
     } else {
-      alert("Erro ao carregar questão");
+      alert('Erro ao carregar questão');
       setLoadingQuestion(false);
     }
   };
@@ -76,27 +76,27 @@ const ScoredSection: FC<Props> = ({
       <div className={styles.rowsContainer}>
         <div className={styles.divisor} onClick={() => toggleSection(index)}>
           <p>Nome</p>
-          <p style={{ justifySelf: "center" }}>Peso</p>
-          <p style={{ justifySelf: "center" }}>Nota</p>
+          <p style={{ justifySelf: 'center' }}>Peso</p>
+          <p style={{ justifySelf: 'center' }}>Nota</p>
           <BsArrowDown
             size={25}
-            className={open ? styles.rotate : ""}
-            style={{ justifySelf: "flex-end" }}
+            className={open ? styles.rotate : ''}
+            style={{ justifySelf: 'flex-end' }}
           />
         </div>
-        <div className={`${styles.rows} ${open ? styles.open : ""}`}>
+        <div className={`${styles.rows} ${open ? styles.open : ''}`}>
           {!loading &&
             rows.length > 0 &&
             rows.map((row: Answer, index: number) => {
               return (
                 <div className={styles.row}>
                   <p>Questão {index + 1}</p>
-                  <p style={{ justifySelf: "center" }}>
+                  <p style={{ justifySelf: 'center' }}>
                     {section.questions && section.questions[index].weight}
                   </p>
-                  <p style={{ justifySelf: "center" }}>{+row.aiScore * 10}</p>
+                  <p style={{ justifySelf: 'center' }}>{+row.aiScore * 10}</p>
                   <button
-                    style={{ justifySelf: "center" }}
+                    style={{ justifySelf: 'center' }}
                     onClick={() => openModal(row.questionRef, index)}
                   >
                     Ver detalhes
@@ -106,11 +106,11 @@ const ScoredSection: FC<Props> = ({
             })}
           <div className={styles.sectionData}>
             <p>{section.name}</p>
-            <p style={{ justifySelf: "center" }}>
-              {" "}
-              Peso da seção: {section.weight && +section.weight * 100 + "%"}
+            <p style={{ justifySelf: 'center' }}>
+              {' '}
+              Peso da seção: {section.weight && +section.weight * 100 + '%'}
             </p>
-            <p style={{ justifySelf: "center" }}>
+            <p style={{ justifySelf: 'center' }}>
               Nota da seção: {+sectionScore * 10}
             </p>
           </div>
@@ -121,8 +121,8 @@ const ScoredSection: FC<Props> = ({
           <Modal
             handleClose={closeModal}
             dimensions={{
-              height: "90%",
-              width: "100%",
+              height: '90%',
+              width: '100%',
             }}
           >
             {loadingQuestion && (
@@ -149,12 +149,12 @@ const ScoredSection: FC<Props> = ({
                 <div className={styles.questionContent}>
                   <h3>Questão {modalContent.index + 1}</h3>
                   {parse(modalContent.question.statement)}
-                  {modalContent.question.type === "multipleChoice" &&
+                  {modalContent.question.type === 'multipleChoice' &&
                     modalContent.question.options && (
                       <div className={styles.options}>
                         <>
                           <h3>Alternativas</h3>
-                          {Object.keys(modalContent.question.options).map(
+                          {modalContent.question.options.map(
                             (option, index) => {
                               return (
                                 <div className={styles.option} key={index}>
@@ -166,16 +166,15 @@ const ScoredSection: FC<Props> = ({
                                       disabled
                                       checked={
                                         modalContent.question.gradingRubric
-                                          .answer.option === option
+                                          .answer.option === option.identifier
                                       }
                                     />
                                     <span className={styles.checkmark}></span>
                                   </label>
                                   <p>
                                     {modalContent.question.options &&
-                                      Object.values(
-                                        modalContent.question.options
-                                      )[index]}
+                                      modalContent.question.options[index]
+                                        .description}
                                   </p>
                                 </div>
                               );
@@ -201,38 +200,42 @@ const ScoredSection: FC<Props> = ({
                 </div>
                 <hr />
                 <div className={styles.answerContent}>
-                  <h3>Resposta do usuário</h3>
+                  <h3
+                    onClick={() => {
+                      console.log(modalContent);
+                    }}
+                  >
+                    Resposta do usuário
+                  </h3>
                   <p>
-                    {modalContent.question.type === "multipleChoice" &&
+                    {modalContent.question.type === 'multipleChoice' &&
                     modalContent.question.options ? (
-                      modalContent.question.options[
-                        rows[modalContent.index].content
-                      ]
-                    ) : modalContent.question.type === "challenge" ? (
+                      rows[modalContent.index].content
+                    ) : modalContent.question.type === 'challenge' ? (
                       <div
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
                         }}
                       >
-                        Download do arquivo{" "}
+                        Download do arquivo{' '}
                         <AiOutlineCloudDownload
                           fill="var(--secondary-2)"
                           size={20}
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                           onClick={() => {
-                            toast.loading("Feature em desenvolvimento", {
+                            toast.loading('Feature em desenvolvimento', {
                               duration: 3000,
-                              position: "top-right",
+                              position: 'top-right',
                             });
                           }}
                         />
                       </div>
-                    ) : modalContent.question.type === "programming" ? (
+                    ) : modalContent.question.type === 'programming' ? (
                       <>
                         <Editor
-                          language={"javascript"}
+                          language={'javascript'}
                           theme="vs-dark"
                           value={rows[modalContent.index].content}
                           options={{
@@ -241,7 +244,7 @@ const ScoredSection: FC<Props> = ({
                               enabled: false,
                             },
                           }}
-                          height="300px"
+                          height="200px"
                         />
                       </>
                     ) : (
@@ -249,22 +252,20 @@ const ScoredSection: FC<Props> = ({
                     )}
                   </p>
                   <h3>
-                    {modalContent.question.type === "multipleChoice"
-                      ? "Alternativa Correta"
-                      : "Feedback"}
+                    {modalContent.question.type === 'multipleChoice'
+                      ? 'Alternativa Correta'
+                      : 'Feedback'}
                   </h3>
-                  <p>
-                    {modalContent.question.type === "multipleChoice" &&
-                    modalContent.question.options ? (
-                      modalContent.question.options[
-                        modalContent.question.gradingRubric.answer.option
-                      ]
-                    ) : rows[modalContent.index].aiFeedback ? (
+                  {modalContent.question.type === 'multipleChoice' &&
+                  modalContent.question.options ? (
+                    <p>{modalContent.question.gradingRubric.answer.option}</p>
+                  ) : rows[modalContent.index].aiFeedback ? (
+                    <p>
                       <pre>{rows[modalContent.index].aiFeedback}</pre>
-                    ) : (
-                      "Sem feedback"
-                    )}
-                  </p>
+                    </p>
+                  ) : (
+                    <p>Sem feedback</p>
+                  )}
                 </div>
               </div>
             )}

@@ -49,24 +49,45 @@
 }
 
 .announcementContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
   width: 100%;
-  min-height: 200px!important;
+  min-height: 200px !important;
   border: 1px solid var(--neutral-100);
   border-radius: 10px;
   padding: 10px;
   color: var(--secondary-2);
+  background: linear-gradient(-90deg, var(--primary-2) 0%, var(--primary) 100%);
 
-  svg{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    transition: 300ms;
+  h1,
+  p {
+    color: var(--neutral-0);
+    margin-left: 30px;
+  }
 
-    &:hover{
-      scale: 1.05;
-      cursor: pointer;
-    }
+  p {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+}
+
+.aiAssistant{
+  margin-right: 100px;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: 300ms;
+  fill: var(--neutral-0);
+
+  &:hover {
+    scale: 1.05;
+    cursor: pointer;
   }
 }
 

@@ -365,7 +365,8 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               theme="snow"
               value={statement}
               onChange={setStatement}
-              style={{ height: '120px' }}
+              style={{ height: '120px', background: 'white' }}
+              className={styles.customQuillStyle}
               placeholder="Digite o enunciado da questão aqui..."
             />
           </div>

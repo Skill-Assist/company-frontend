@@ -46,6 +46,8 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
   ]);
   const selectRef = useRef<HTMLSelectElement>(null);
 
+  console.log(examData)
+
   useEffect(() => {
     const currentValue = statusOptions.filter(
       (statusOption) => statusOption.select === true

@@ -33,29 +33,63 @@
   margin-top: -40px;
   gap: 10px;
 
+  
+}
+
+.imgBx{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 400ms;
+  background: var(--neutral-50);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+
+  input{
+    display: none;
+  }
+
+  &:hover > svg{
+    display: unset;
+  }
+
+  &:hover > img{
+    opacity: 0.2;
+  }
+
+  .editIcon{
+    position: absolute;
+    fill: var(--secondary);
+    display: none;
+    transition: 400ms;
+  }
+
   img {
     width: 110px;
     height: 110px;
     border-radius: 50%;
     border: 2px solid var(--neutral-0);
   }
+}
 
-  div {
-    transform: translateY(10px);
+.infoContent {
+  transform: translateY(10px);
 
-    h2 {
-      font-size: 24px;
-      font-weight: 500;
-      color: var(--secondary-2);
-      transform: translateY(5px) !important;
-    }
+  h2 {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--secondary-2);
+    transform: translateY(5px) !important;
+  }
 
-    span {
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--secondary-2);
-      font-weight: 500;
-    }
+  span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--secondary-2);
+    font-weight: 500;
   }
 }
 
@@ -153,7 +187,7 @@
 
 .updateLogoContainer {
   display: flex;
-  flex-direction: row!important;
+  flex-direction: row !important;
   align-items: center;
 
   img {
@@ -165,7 +199,6 @@
     box-shadow: 5px 5px 10px var(--neutral-200);
     margin-right: 40px;
   }
-
 }
 
 .upload {
@@ -200,7 +233,7 @@
   }
 }
 
-.actions{
+.actions {
   display: flex;
   flex-direction: row;
   align-items: center;

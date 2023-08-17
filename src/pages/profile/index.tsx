@@ -1,10 +1,10 @@
-import { FormEvent, useRef, useState, useEffect } from 'react';
+import { FormEvent, useRef, useState, useEffect, ChangeEvent } from 'react';
 import cookie from 'react-cookies';
 import Image from 'next/image';
 import InputMask from 'react-input-mask';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { toast } from 'react-hot-toast';
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin, ThreeDots } from 'react-loader-spinner';
+import { BiPencil } from 'react-icons/bi';
 
 import Layout from '@/components/layout';
 
@@ -20,7 +20,10 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [nationalId, setNationalId] = useState('');
   const [mobilePhone, setMobilePhone] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [logo, setLogo] = useState('');
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
 
@@ -54,6 +57,39 @@ const Profile = () => {
       });
       setIsEditing(false);
       return;
+    }
+  };
+
+  const editPhotoHandler = async (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    setIsEditing(true);
+
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+
+    const formData = new FormData();
+
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
+
+    const response = await userService.update(formData);
+
+    if (response.status >= 200 && response.status < 300) {
+      setLogo(response.data.logo);
+      toast.success('Foto atualizada com sucesso', {
+        duration: 3000,
+        position: 'top-right',
+      });
+      setIsEditing(false);
+    } else {
+      toast.error('Erro ao atualizar foto', {
+        duration: 3000,
+        position: 'top-right',
+      });
+      setIsEditing(false);
     }
   };
 
@@ -106,13 +142,40 @@ const Profile = () => {
         <header className={styles.header}>
           <div className={styles.bannner} />
           <div className={styles.mainInfos}>
-            <Image
-              src={user.logo}
-              height={100}
-              width={100}
-              alt="profile_picture"
-            />
-            <div>
+            <div
+              className={styles.imgBx}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {!isEditing && (
+                <>
+                  <BiPencil size={30} className={styles.editIcon}/>
+                  <Image
+                    src={logo !== '' ? logo : user.logo}
+                    height={100}
+                    width={100}
+                    alt="profile_picture"
+                  />
+                  <input
+                    ref={fileInputRef}
+                    onChange={editPhotoHandler}
+                    type="file"
+                    name="file"
+                    id="file"
+                  />
+                </>
+              )}
+              {isEditing && (
+                <ThreeDots
+                  height="15"
+                  width="15"
+                  radius="9"
+                  color="var(--primary)"
+                  ariaLabel="three-dots-loading"
+                  visible={true}
+                />
+              )}
+            </div>
+            <div className={styles.infoContent}>
               <h2>{user.name}</h2>
               <span>{user.email}</span>
             </div>
@@ -201,7 +264,7 @@ const Profile = () => {
             </div>
           </div>
           <hr className={styles.divisor} />
-          <div className={styles.row}>
+          {/* <div className={styles.row}>
             <div>
               <h4>Logo</h4>
               <p>
@@ -239,7 +302,7 @@ const Profile = () => {
                 </label>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className={styles.actions}>
             {isEditing && (
               <button type="button" onClick={() => setIsEditing(false)}>

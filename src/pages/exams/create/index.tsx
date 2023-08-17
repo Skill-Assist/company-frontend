@@ -14,6 +14,7 @@ import success from '@public/lottie/success.json';
 
 import styles from './styles.module.scss';
 import { toast } from 'react-hot-toast';
+import PreviewSideBar from '@/components/sidebars/previewSideBar';
 
 const stepOneDropIn = {
   hidden: {
@@ -45,6 +46,21 @@ const stepTwoDropIn = {
   },
 };
 
+const sideBarDropIn = {
+  hidden: {
+    x: '100%',
+    opacity: 0,
+  },
+  visible: {
+    x: '0',
+    opacity: 1,
+  },
+  exit: {
+    x: '-100%',
+    opacity: 0,
+  },
+};
+
 const lottieOptions = {
   animationData: success,
   loop: true,
@@ -56,13 +72,14 @@ const CreateExam: FC = () => {
   const [loading, setLoading] = useState(false);
   const { View } = useLottie(lottieOptions);
 
-  const titleInputRef = useRef<HTMLInputElement>(null);
-  const durationInputRef = useRef<HTMLInputElement>(null);
-  const submissionDeadlineInputRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState('');
+  const [examDuration, setExamDuration] = useState('');
+  const [examSubmissionDate, setExamSubmissionDate] = useState('');
+  const [examSubmissionTime, setExamSubmissionTime] = useState('');
 
-  const subtitleInputRef = useRef<HTMLInputElement>(null);
-  const levelInputRef = useRef<HTMLInputElement>(null);
-  const dateToArchiveInputRef = useRef<HTMLInputElement>(null);
+  const [subtitle, setSubtitle] = useState<string>('');
+  const [level, setLevel] = useState<string>('');
+  const [dateToArchive, setDateToArchive] = useState<Date>();
 
   const [showScore, setShowScore] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
@@ -73,11 +90,7 @@ const CreateExam: FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    const title = titleInputRef.current?.value;
-    const durationInHours = durationInputRef.current?.value;
-    const submissionInHours = submissionDeadlineInputRef.current?.value;
-
-    if (!title || !durationInHours || !submissionInHours) {
+    if (!title || !examDuration || !examSubmissionDate || !examSubmissionTime) {
       setLoading(false);
       toast.error('Preencha todos os campos', {
         duration: 3000,
@@ -86,10 +99,27 @@ const CreateExam: FC = () => {
       return;
     }
 
+    const durationInHours = +(
+      Number(examDuration.split(':')[0]) +
+      Number(examDuration.split(':')[1]) / 60
+    ).toFixed(2);
+
+    const [ano, mes, dia] = examSubmissionDate.split('-').map(Number);
+
+    const [hora, minutos] = examSubmissionTime.split(':').map(Number);
+
+    const currentDate = new Date();
+    const submissionDate = new Date(ano, mes - 1, dia, hora, minutos);
+
+    const dateInHours =
+      (submissionDate.getTime() - currentDate.getTime()) / 1000 / 60 / 60;
+
+    const submissionInHours = Number(dateInHours.toFixed(2));
+
     const exam = {
       title,
-      durationInHours: Number(durationInHours),
-      submissionInHours: Number(submissionInHours),
+      durationInHours,
+      submissionInHours,
     };
 
     const response = await examService.createExam(exam);
@@ -113,11 +143,9 @@ const CreateExam: FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    const subtitle = subtitleInputRef.current?.value;
-    const level = levelInputRef.current?.value;
-    let dateToArchive;
-    if (dateToArchiveInputRef.current?.value) {
-      dateToArchive = new Date(dateToArchiveInputRef.current?.value);
+    if (dateToArchive) {
+      const date = new Date(dateToArchive);
+      setDateToArchive(date);
     }
 
     const updatedExam = {
@@ -131,8 +159,6 @@ const CreateExam: FC = () => {
     examId = localStorage.getItem('examId');
 
     const response = await examService.updateExam(updatedExam, Number(examId));
-
-    console.log(response);
 
     if (response.status >= 200 && response.status < 300) {
       setLoading(false);
@@ -149,7 +175,14 @@ const CreateExam: FC = () => {
   };
 
   return (
-    <Layout sidebar sidebarClosed header goBack headerTitle="Criar Exame">
+    <Layout
+      sidebar
+      sidebarClosed
+      header
+      goBack
+      headerTitle="Criar Exame"
+      contentClassName={styles.p0}
+    >
       <div className={styles.container}>
         <div className={styles.content}>
           {step === 0 && (
@@ -161,59 +194,70 @@ const CreateExam: FC = () => {
               exit="exit"
             >
               <div className={styles.intro}>
-                <h1>Fico feliz em ver você por aqui!</h1>
+                <h1 onClick={() => console.log(examDuration)}>
+                  Fico feliz em ver você por aqui!
+                </h1>
                 <p>Para começar precisamos das seguintes informações</p>
               </div>
               <form onSubmit={createExam} id="create">
                 <div className={styles.field}>
-                  <Input
-                    ref={titleInputRef}
-                    className={styles.styledInput}
-                    underlined
-                    labelPlaceholder="Título do exame"
+                  <label htmlFor="title">Título do exame</label>
+                  <input
+                    onChange={(e) => setTitle(e.target.value)}
+                    id="title"
                     type="text"
-                    aria-label="title-input"
                     minLength={3}
                     maxLength={20}
                   />
                 </div>
                 <div className={styles.row}>
                   <div className={styles.field}>
-                    <Input
-                      ref={durationInputRef}
+                    <div>
+                      <label htmlFor="duration">Duração do exame</label>
+                      <Tooltip
+                        className={styles.tooltip}
+                        content={
+                          'A partir do momento que o candidato iniciar o exame, quanto tempo ele terá para terminar?'
+                        }
+                      >
+                        <AiOutlineQuestionCircle fill="var(--secondary-2)" />
+                      </Tooltip>
+                    </div>
+                    <input
+                      onChange={(e) => setExamDuration(e.target.value)}
                       className={styles.styledInput}
-                      underlined
-                      labelPlaceholder="Duração em horas"
-                      type="number"
-                      aria-label="duration-input"
+                      type="time"
+                      id="duration"
                     />
-                    <Tooltip
-                      className={styles.tooltip}
-                      content={
-                        'A partir do momento que o candidato iniciar o exame, quantas horas tera para terminar'
-                      }
-                    >
-                      <AiOutlineQuestionCircle fill="var(--secondary-2)" />
-                    </Tooltip>
                   </div>
                   <div className={styles.field}>
-                    <Input
-                      ref={submissionDeadlineInputRef}
-                      className={styles.styledInput}
-                      underlined
-                      labelPlaceholder="Tempo para submissão em horas"
-                      type="number"
-                      min={24}
-                      aria-label="submission-deadline-input"
-                    />
-                    <Tooltip
-                      className={styles.tooltip}
-                      content={
-                        'A partir do momento que o candidato receber o convite, quantas horas ele terá para começar o teste e mandar suas respostas'
-                      }
-                    >
-                      <AiOutlineQuestionCircle fill="var(--secondary-2)" />
-                    </Tooltip>
+                    <div>
+                      <label htmlFor="submissionDeadline">
+                        Data e hora para submissão
+                      </label>
+                      <Tooltip
+                        className={styles.tooltip}
+                        content={
+                          'Prazo limite para o envio das respostas do candidato.'
+                        }
+                      >
+                        <AiOutlineQuestionCircle fill="var(--secondary-2)" />
+                      </Tooltip>
+                    </div>
+                    <div className={styles.dateBox}>
+                      <input
+                        onChange={(e) => setExamSubmissionDate(e.target.value)}
+                        className={styles.styledInput}
+                        type="date"
+                        id="duration"
+                      />
+                      <input
+                        onChange={(e) => setExamSubmissionTime(e.target.value)}
+                        className={styles.styledInput}
+                        type="time"
+                        id="duration"
+                      />
+                    </div>
                   </div>
                 </div>
                 <button form="create" type="submit">
@@ -251,44 +295,54 @@ const CreateExam: FC = () => {
               <form onSubmit={updateExam} id="update">
                 <div className={styles.row}>
                   <div className={styles.field}>
-                    <Input
-                      ref={subtitleInputRef}
-                      className={styles.styledInput}
-                      underlined
-                      labelPlaceholder="Subtitulo do exame"
+                    <label htmlFor="title">Subtítulo do teste</label>
+                    <input
+                      onChange={(e) => setSubtitle(e.target.value)}
+                      id="subtitle"
+                      placeholder="Insira um subtítulo para seu teste"
                       type="text"
-                      aria-label="subtitle-input"
+                      minLength={3}
+                      maxLength={20}
                     />
                   </div>
                 </div>
                 <div className={styles.row}>
                   <div className={styles.field}>
-                    <Input
-                      ref={levelInputRef}
+                    <div>
+                      <label htmlFor="level">Nível do teste</label>
+                    </div>
+                    <input
+                      onChange={(e) => setLevel(e.target.value)}
                       className={styles.styledInput}
-                      underlined
-                      labelPlaceholder="Nível do exame"
+                      placeholder="Insira um nível para seu teste"
                       type="text"
-                      aria-label="level-input"
+                      id="level"
                     />
                   </div>
                   <div className={styles.field}>
-                    <Input
-                      ref={dateToArchiveInputRef}
-                      className={styles.styledInput}
-                      underlined
-                      label="Data para arquivar o exame"
-                      type="date"
-                      aria-label="date-to-archive-input"
-                    />
-                    <Tooltip
-                      className={styles.tooltip}
-                      content={
-                        'Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data.'
-                      }
-                    >
-                      <AiOutlineQuestionCircle fill="var(--secondary-2)" />
-                    </Tooltip>
+                    <div>
+                      <label htmlFor="dateToArchive">
+                        Data para arquivar o teste
+                      </label>
+                      <Tooltip
+                        className={styles.tooltip}
+                        content={
+                          'Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data.'
+                        }
+                      >
+                        <AiOutlineQuestionCircle fill="var(--secondary-2)" />
+                      </Tooltip>
+                    </div>
+                    <div className={styles.dateBox}>
+                      <input
+                        onChange={(e) =>
+                          setDateToArchive(new Date(e.target.value))
+                        }
+                        className={styles.styledInput}
+                        type="date"
+                        id="dateToArchive"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className={styles.toggles}>
@@ -304,7 +358,12 @@ const CreateExam: FC = () => {
                     <p>O exame é público?</p>
                     <Switch
                       checked={isPublic}
-                      onChange={() => setIsPublic((prevState) => !prevState)}
+                      onChange={() =>
+                        toast.loading('Feature em desenvolvimento', {
+                          duration: 3000,
+                          position: 'top-right',
+                        })
+                      }
                       size="md"
                     />
                   </div>
@@ -389,6 +448,24 @@ const CreateExam: FC = () => {
             </div>
           </motion.div>
         </div>
+        <motion.div
+          className={styles.previewInfos}
+          variants={sideBarDropIn}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <PreviewSideBar
+            examTitle={title}
+            examDuration={examDuration}
+            examSubmissionDate={examSubmissionDate}
+            examSubmissionTime={examSubmissionTime}
+            examSubtitle={subtitle}
+            examLevel={level}
+            examShowScore={showScore}
+            examIsPublic={isPublic}
+          />
+        </motion.div>
       </div>
     </Layout>
   );

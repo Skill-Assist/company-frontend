@@ -1,45 +1,34 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import styles from "./styles.module.scss";
-import { Exam } from "@/types/exam";
-import { User } from "@/types/user";
-import Link from "next/link";
+import styles from './styles.module.scss';
+import { Exam } from '@/types/exam';
+import { User } from '@/types/user';
+import Link from 'next/link';
 
 type Props = {
   exam: Exam;
   owner: User;
 };
 
-const ExamCard: FC<Props> = ({
-  exam,
-  owner,
-}: Props) => {
-  const examTitle = `${exam.title} ${exam.subtitle ? exam.subtitle : ""} ${
-    exam.level ? exam.level : ""
-  }`;
-
+const ExamCard: FC<Props> = ({ exam, owner }: Props) => {
   return (
-      <Link href={`/exams/${exam.id}`} className={styles.card}>
-        <div
-          className={styles.header}
-          style={{ backgroundColor: owner.color }}
-        >
-          <Image
-            src={owner.logo}
-            width={400}
-            height={400}
-            alt="owner name"
-          />
-        </div>
-        <div className={styles.content}>
-          <h2>{examTitle}</h2>
+    <Link href={`/exams/${exam.id}`} className={styles.card}>
+      <div className={styles.header} style={{ backgroundColor: owner.color }}>
+        <Image src={owner.logo} width={400} height={400} alt="owner name" />
+      </div>
+      <div className={styles.content}>
+        <h2>{exam.title}</h2>
+        <p>
+          {exam.subtitle && exam.subtitle}{' '}
+          {exam.subtitle && exam.level && '-'}{' '}
+          {exam.level && exam.level}
+        </p>
 
-          <span>{owner.name}</span>
-
-        </div>
-      </Link>
+        <span>{owner.name}</span>
+      </div>
+    </Link>
   );
 };
 

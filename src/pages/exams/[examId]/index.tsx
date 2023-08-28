@@ -124,6 +124,7 @@ const ExamPage = () => {
               {showSectionsPage ? (
                 <SectionsContainer
                   sections={examData.__sections__}
+                  examDuration={examData.durationInHours}
                   examId={examData.id}
                   onCreateSection={fetchOwnExam}
                 />

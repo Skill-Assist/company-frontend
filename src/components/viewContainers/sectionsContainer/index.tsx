@@ -1,42 +1,43 @@
-import { FC, FormEvent, useState } from "react";
-import { Tooltip } from "@nextui-org/react";
-import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "react-hot-toast";
-import { BsFillTrashFill } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineQuestionCircle } from "react-icons/ai";
+import { FC, FormEvent, useEffect, useState } from 'react';
+import { Tooltip } from '@nextui-org/react';
+import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
+import { BsFillTrashFill } from 'react-icons/bs';
+import { AiOutlinePlus, AiOutlineQuestionCircle } from 'react-icons/ai';
 
-import SectionsContainerPlaceholder from "../../placeholders/sectionsContainerPlaceholder";
+import SectionsContainerPlaceholder from '../../placeholders/sectionsContainerPlaceholder';
 
-import sectionService from "@/services/sectionService";
+import sectionService from '@/services/sectionService';
 
-import { Section } from "@/types/section";
+import { Section } from '@/types/section';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 interface Props {
   sections: Section[] | undefined;
   examId: number;
+  examDuration: number;
   onCreateSection: () => void;
 }
 
 const dropIn = {
   hidden: {
-    y: "-100vh",
+    y: '-100vh',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
     transition: {
       duration: 0.1,
-      type: "spring",
+      type: 'spring',
       damping: 25,
       stiffness: 500,
     },
   },
   exit: {
-    y: "100vh",
+    y: '100vh',
     opacity: 0,
   },
 };
@@ -44,13 +45,51 @@ const dropIn = {
 const SectionsContainer: FC<Props> = ({
   examId,
   sections,
+  examDuration,
   onCreateSection,
 }: Props) => {
   const [newSection, setNewSection] = useState(false);
-  const [sectionName, setSectionName] = useState("");
-  const [sectionDescription, setSectionDescription] = useState("");
+  const [sectionName, setSectionName] = useState('');
+  const [sectionDescription, setSectionDescription] = useState('');
   const [sectionWeight, setSectionWeight] = useState(0);
   const [sectionDuration, setSectionDuration] = useState(0);
+  const [remainingWeight, setRemainingWeight] = useState(1);
+  const [remainingDuration, setRemainingDuration] = useState(examDuration);
+
+  useEffect(() => {
+    let totalWeight = 0;
+    let totalDuration = 0;
+
+    if (sections) {
+      totalWeight = sections.reduce(
+        (total, section) => total + Number(section.weight),
+        0
+      );
+
+      totalDuration = sections.reduce(
+        (total, section) => total + Number(section.durationInHours),
+        0
+      );
+    }
+
+    if (sectionWeight) {
+      totalWeight = +totalWeight + sectionWeight / 100;
+    }
+
+    if (sectionDuration) {
+      totalDuration = +totalDuration + sectionDuration;
+    }
+
+    // console.log('examDuration', examDuration);
+    // console.log('totalDuration', totalDuration);
+    console.log('sectionDuration', sectionDuration);
+    console.log('remainingDuration', examDuration - totalDuration);
+    
+    console.log('maxDuration', examDuration - totalDuration + sectionDuration);
+    
+    setRemainingWeight(1 - totalWeight);
+    setRemainingDuration(examDuration - totalDuration);
+  }, [sectionWeight, sectionDuration, sections, examDuration]);
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,21 +104,21 @@ const SectionsContainer: FC<Props> = ({
     const response = await sectionService.createSection(examId, newSection);
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success("Seção criada com sucesso!", {
+      toast.success('Seção criada com sucesso!', {
         duration: 3000,
-        position: "top-right",
+        position: 'top-right',
       });
-      setSectionName("");
-      setSectionDescription("");
+      setSectionName('');
+      setSectionDescription('');
       setSectionWeight(0);
       setSectionDuration(0);
       setNewSection(false);
 
       onCreateSection();
     } else {
-      toast.error("Erro ao criar seção", {
+      toast.error('Erro ao criar seção', {
         duration: 3000,
-        position: "top-right",
+        position: 'top-right',
       });
     }
   };
@@ -91,7 +130,7 @@ const SectionsContainer: FC<Props> = ({
           <div className={styles.sectionContainerHeader}>
             {sections && sections.length > 0 && (
               <>
-                <h3>Sessões</h3>
+                <h3 onClick={() => console.log(remainingWeight)}>Sessões</h3>
                 <button onClick={() => setNewSection(true)}>
                   Nova seção <AiOutlinePlus size={25} />
                 </button>
@@ -119,9 +158,9 @@ const SectionsContainer: FC<Props> = ({
                       size={20}
                       fill="var(--warning)"
                       onClick={() =>
-                        toast.loading("Feature em desenvolvimento", {
+                        toast.loading('Feature em desenvolvimento', {
                           duration: 3000,
-                          position: "top-right",
+                          position: 'top-right',
                         })
                       }
                     />
@@ -149,8 +188,8 @@ const SectionsContainer: FC<Props> = ({
                           <span>Duração da seção</span>
                           <p>
                             {section.durationInHours > 1
-                              ? section.durationInHours + " horas"
-                              : section.durationInHours + " hora"}
+                              ? section.durationInHours + ' horas'
+                              : section.durationInHours + ' hora'}
                           </p>
                         </div>
                       </div>
@@ -218,7 +257,7 @@ const SectionsContainer: FC<Props> = ({
                         <Tooltip
                           className={styles.tooltip}
                           content={
-                            "De 0 a 100, quantos porcentos da nota total você deseja que essa seção represente?"
+                            'De 0 a 100, quantos porcentos da nota total você deseja que essa seção represente?'
                           }
                         >
                           <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -227,7 +266,7 @@ const SectionsContainer: FC<Props> = ({
                       <input
                         required
                         type="number"
-                        max={100}
+                        max={sectionWeight + remainingWeight * 100}
                         min={1}
                         placeholder="1 a 100"
                         value={sectionWeight}
@@ -235,6 +274,10 @@ const SectionsContainer: FC<Props> = ({
                           setSectionWeight(Number(e.target.value))
                         }
                       />
+                      <span className={styles.remainingWeight}>
+                        {(remainingWeight * 100).toFixed(0)}% do peso total
+                        restante
+                      </span>
                     </div>
                     <div className={styles.field}>
                       <label>Duração da seção (hrs)</label>
@@ -242,11 +285,16 @@ const SectionsContainer: FC<Props> = ({
                         required
                         type="number"
                         placeholder="Insira a quantidade de horas..."
+                        min={1}
+                        max={remainingDuration + sectionDuration}
                         value={sectionDuration}
                         onChange={(e) =>
                           setSectionDuration(Number(e.target.value))
                         }
                       />
+                      <span className={styles.remainingHours}>
+                        {remainingDuration.toFixed(0)} horas restantes
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -135,6 +135,7 @@
   align-items: flex-start;
   width: 100%;
   margin: 15px 0;
+  position: relative;
 
   div {
     width: 100%;
@@ -182,7 +183,8 @@
   display: flex;
   justify-content: flex-end;
 
-  button, a {
+  button,
+  a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,4 +218,14 @@
     font-weight: 500;
     margin-bottom: 10px;
   }
+}
+
+.remainingWeight,
+.remainingHours {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 400;
+  bottom: 8px;
+  left: 35px;
+  color: var(--secondary-2);
 }

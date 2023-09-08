@@ -63,7 +63,7 @@ const Home = () => {
       {
         icon: 'curva.svg',
         id: 'curva',
-        title: 'Comparação Globa',
+        title: 'Comparação Global',
         copy: 'Notas distribuidas de acordo com os pares.',
       },
       {

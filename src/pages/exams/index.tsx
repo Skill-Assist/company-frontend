@@ -99,7 +99,7 @@ const Exams: FC = () => {
         {!loading && allExams.length === 0 ? (
           <Placeholder
             title="Ops, parece que você ainda não tem nenhum teste"
-            subtitle="Clique no botão abaixo para criar um novo teste"
+            subtitle=""
             buttonText="Criar teste"
           />
         ) : (

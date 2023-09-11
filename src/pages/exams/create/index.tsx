@@ -207,7 +207,7 @@ const CreateExam: FC = () => {
                     id="title"
                     type="text"
                     minLength={3}
-                    maxLength={20}
+                    maxLength={50}
                   />
                 </div>
                 <div className={styles.row}>

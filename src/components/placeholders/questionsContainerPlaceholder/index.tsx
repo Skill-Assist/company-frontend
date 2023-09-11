@@ -24,11 +24,11 @@ const QuestionsContainerPlaceholder: FC<Props> = ({ open }: Props) => {
         <p>
           Sabemos que a criação de questões é a parte mais cansativa de elaborar
           um teste, por isso, desenvolvemos formas de você criar questões de
-          maneira mais rápida e fácil!
+          maneira mais rápida e fácil.
         </p>
         <p>
-          Você pode criar questões manualmente, através do nosso wizard ou com
-          auxílio de Inteligencia Artificial.
+          Você pode criar questões manualmente ou de forma automática, com
+          auxílio de Inteligência Artificial.
         </p>
         <div className={styles.stroke}>
           <button onClick={() => open("manual")}>Manual</button>

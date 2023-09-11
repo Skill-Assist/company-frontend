@@ -423,7 +423,7 @@ const CreateExam: FC = () => {
                       Perfeito! <br /> Teste já criado!
                     </h1>
                     <p>
-                      O que acha da gente começar a criar a sessões do seu
+                      O que acha da gente começar a criar as seções do seu
                       teste?
                     </p>
                   </div>

@@ -140,7 +140,7 @@ const SectionSideBar: FC<Props> = ({
 
       <h3>
         <TbInfoSquareRounded />
-        Informações opicionais
+        Informações opcionais
       </h3>
       <div className={styles.optionalInfos}>
         <div>

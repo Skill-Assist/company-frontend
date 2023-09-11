@@ -130,7 +130,7 @@ const SectionsContainer: FC<Props> = ({
           <div className={styles.sectionContainerHeader}>
             {sections && sections.length > 0 && (
               <>
-                <h3 onClick={() => console.log(remainingWeight)}>Sessões</h3>
+                <h3 onClick={() => console.log(remainingWeight)}>Seções</h3>
                 <button onClick={() => setNewSection(true)}>
                   Nova seção <AiOutlinePlus size={25} />
                 </button>

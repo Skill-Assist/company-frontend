@@ -421,7 +421,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
               />
             </div>
             <div>
-              <h4>Compartilhavel?</h4>
+              <h4>Compartilhável?</h4>
               <select
                 name="shareable"
                 id="shareable"

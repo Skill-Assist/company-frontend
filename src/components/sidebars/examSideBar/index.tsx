@@ -26,15 +26,15 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
       currentValue: examData.status,
     },
     {
-      value: "live",
-      label: "Em andamento",
-      select: examData.status === "live" ? true : false,
+      value: "published",
+      label: "Publicado",
+      select: examData.status === "published" ? true : false,
       currentValue: examData.status,
     },
     {
-      value: "published",
-      label: "Público",
-      select: examData.status === "published" ? true : false,
+      value: "live",
+      label: "Em andamento",
+      select: examData.status === "live" ? true : false,
       currentValue: examData.status,
     },
     {
@@ -80,7 +80,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
     } else if (
       response.data.message === "Exam has no sections. Process was aborted."
     ) {
-      toast.error("O teste precisa ter sessões", {
+      toast.error("O teste precisa ter seções", {
         duration: 3000,
         position: "top-right",
       });
@@ -89,7 +89,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
     } else if (
       response.data.message === "Exam has sections without questions. Process was aborted."
     ) {
-      toast.error("As sessões precisam ter questões", {
+      toast.error("As seções precisam ter questões", {
         duration: 3000,
         position: "top-right",
       });

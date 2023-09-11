@@ -111,7 +111,7 @@ const ExamPage = () => {
                     className={showSectionsPage ? styles.active : ''}
                     onClick={() => setShowSectionsPage(true)}
                   >
-                    Sessões
+                    Seções
                   </li>
                   <li
                     className={!showSectionsPage ? styles.active : ''}

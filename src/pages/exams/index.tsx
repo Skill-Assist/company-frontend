@@ -94,13 +94,13 @@ const Exams: FC = () => {
   };
 
   return (
-    <Layout sidebar header headerTitle="Seus Exames" active={1}>
+    <Layout sidebar header headerTitle="Seus testes" active={1}>
       <div className={styles.container}>
         {!loading && allExams.length === 0 ? (
           <Placeholder
-            title="Ops, parece que você ainda não tem nenhum exame"
-            subtitle="Clique no botão abaixo para criar um novo exame"
-            buttonText="Criar exame"
+            title="Ops, parece que você ainda não tem nenhum teste"
+            subtitle="Clique no botão abaixo para criar um novo teste"
+            buttonText="Criar teste"
           />
         ) : (
           <>
@@ -112,7 +112,7 @@ const Exams: FC = () => {
               />
               <Link href={`/exams/create`}>
                 <AiFillPlusCircle size={25} fill="var(--primary)" />
-                <span>Novo Exame</span>
+                <span>Novo teste</span>
               </Link>
             </div>
 

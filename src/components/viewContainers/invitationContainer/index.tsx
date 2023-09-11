@@ -147,7 +147,7 @@ const InvitationContainer = () => {
     const enteredExpirationInHours = expirationInHoursInputRef.current?.value;
 
     if (!examId || typeof examId !== 'string') {
-      setError('Erro ao buscar o exame!');
+      setError('Erro ao buscar o teste!');
       setInvitationLoading(false);
       return;
     }
@@ -177,7 +177,7 @@ const InvitationContainer = () => {
       response.data.message ===
       'Exam is not published or live. Process was aborted.'
     ) {
-      toast.error('O exame não está publicado ou em andamento!');
+      toast.error('O teste não está publicado ou em andamento!');
       setInvitationLoading(false);
     } else {
       toast.error('Erro ao enviar convite!');
@@ -435,7 +435,7 @@ const InvitationContainer = () => {
                               ? 'Gerando correção...'
                               : candidate.status === 'finished'
                               ? 'Gerar Correção'
-                              : 'Exame não finalizado ainda'
+                              : 'Teste não finalizado ainda'
                           }
                         >
                           <button

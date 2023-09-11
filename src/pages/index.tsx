@@ -58,19 +58,19 @@ const Home = () => {
         icon: 'feedback.svg',
         id: 'feedback',
         title: 'Feedback',
-        copy: 'Dashboard com insights do resultado do candidato.',
+        copy: 'Dashboard com insights do resultado do candidato',
       },
       {
         icon: 'curva.svg',
         id: 'curva',
         title: 'Comparação Global',
-        copy: 'Notas distribuidas de acordo com os pares.',
+        copy: 'Notas distribuidas de acordo com os pares',
       },
       {
         icon: 'setup.svg',
         id: 'setup.svg',
         title: 'Anti-Fraude',
-        copy: 'Monitoramente do candidato durante a prova.',
+        copy: 'Monitoramente do candidato durante a prova',
       },
     ],
   };
@@ -90,7 +90,7 @@ const Home = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={0}>
+      <Layout sidebar header active={0}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -128,7 +128,7 @@ const Home = () => {
             <div>
               <button>
                 <AiOutlinePlus />
-                <Link href={'/exams/create'}>Criar novo exame</Link>
+                <Link href={'/exams/create'}>Criar novo teste</Link>
               </button>
               {/* <button
                 onClick={() => {

@@ -131,7 +131,7 @@ const CreateExam: FC = () => {
       return;
     } else {
       setLoading(false);
-      toast.error('Erro ao criar exame', {
+      toast.error('Erro ao criar teste', {
         duration: 3000,
         position: 'top-right',
       });
@@ -166,7 +166,7 @@ const CreateExam: FC = () => {
       return;
     } else {
       setLoading(false);
-      toast.error('Erro ao criar exame', {
+      toast.error('Erro ao criar teste', {
         duration: 3000,
         position: 'top-right',
       });
@@ -180,7 +180,7 @@ const CreateExam: FC = () => {
       sidebarClosed
       header
       goBack
-      headerTitle="Criar Exame"
+      headerTitle="Criar teste"
       contentClassName={styles.p0}
     >
       <div className={styles.container}>
@@ -201,7 +201,7 @@ const CreateExam: FC = () => {
               </div>
               <form onSubmit={createExam} id="create">
                 <div className={styles.field}>
-                  <label htmlFor="title">Título do exame</label>
+                  <label htmlFor="title">Título do teste</label>
                   <input
                     onChange={(e) => setTitle(e.target.value)}
                     id="title"
@@ -213,11 +213,11 @@ const CreateExam: FC = () => {
                 <div className={styles.row}>
                   <div className={styles.field}>
                     <div>
-                      <label htmlFor="duration">Duração do exame</label>
+                      <label htmlFor="duration">Duração do teste</label>
                       <Tooltip
                         className={styles.tooltip}
                         content={
-                          'A partir do momento que o candidato iniciar o exame, quanto tempo ele terá para terminar?'
+                          'A partir do momento que o candidato iniciar o teste, quanto tempo ele terá para terminar?'
                         }
                       >
                         <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -287,7 +287,7 @@ const CreateExam: FC = () => {
               exit="exit"
             >
               <div className={styles.intro}>
-                <h1>Muito bom! Exame já cadastrado.</h1>
+                <h1>Muito bom! Teste já cadastrado.</h1>
                 <p>
                   Agora, caso queira, temos mais algumas informações opcionais
                 </p>
@@ -327,7 +327,7 @@ const CreateExam: FC = () => {
                       <Tooltip
                         className={styles.tooltip}
                         content={
-                          'Caso pretenda arquivar o exame para não receber mais respostas, selecione uma data.'
+                          'Caso pretenda arquivar o teste para não receber mais respostas, selecione uma data.'
                         }
                       >
                         <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -355,7 +355,7 @@ const CreateExam: FC = () => {
                     />
                   </div>
                   <div>
-                    <p>O exame é público?</p>
+                    <p>O teste é público?</p>
                     <Switch
                       checked={isPublic}
                       onChange={() =>
@@ -420,20 +420,20 @@ const CreateExam: FC = () => {
                 <div>
                   <div className={styles.intro}>
                     <h1>
-                      Perfeito! <br /> Exame já criado!
+                      Perfeito! <br /> Teste já criado!
                     </h1>
                     <p>
                       O que acha da gente começar a criar a sessões do seu
-                      exame?
+                      teste?
                     </p>
                   </div>
                   <div className={styles.actions}>
-                    <Link href={`/exams`}>Meus exames</Link>
+                    <Link href={`/exams`}>Meus testes</Link>
                     <Link
                       href={`/exams/${examId}`}
                       className={styles.principalBtn}
                     >
-                      Ver exame criado
+                      Ver teste criado
                     </Link>
                   </div>
                 </div>

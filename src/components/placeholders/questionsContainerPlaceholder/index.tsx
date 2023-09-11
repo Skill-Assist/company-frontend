@@ -23,7 +23,7 @@ const QuestionsContainerPlaceholder: FC<Props> = ({ open }: Props) => {
         <h1>Sem questões no momento...</h1>
         <p>
           Sabemos que a criação de questões é a parte mais cansativa de elaborar
-          um exame, por isso, desenvolvemos formas de você criar questões de
+          um teste, por isso, desenvolvemos formas de você criar questões de
           maneira mais rápida e fácil!
         </p>
         <p>

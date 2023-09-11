@@ -60,7 +60,7 @@ const ExamPage = () => {
         );
         setPageLoading(false);
       } else {
-        toast.error('Erro ao buscar exame!');
+        toast.error('Erro ao buscar teste!');
         setPageLoading(false);
       }
     }
@@ -90,7 +90,7 @@ const ExamPage = () => {
   } else if (!examData) {
     <Layout sidebar header headerTitle="Dashboard" active={2}>
         <div className="loadingContainer">
-          Erro ao buscar exame
+          Erro ao buscar teste
         </div>
       </Layout>
   } else
@@ -100,7 +100,7 @@ const ExamPage = () => {
           sidebar
           sidebarClosed
           header
-          headerTitle="Seu Exame"
+          headerTitle="Seu teste"
           contentClassName={styles.p0}
         >
           <div className={styles.container}>
@@ -175,7 +175,7 @@ const ExamPage = () => {
                     </div>
                   ) : (
                     <>
-                      <h1>Editar Exame!</h1>
+                      <h1>Editar teste!</h1>
                     </>
                   )}
                 </>

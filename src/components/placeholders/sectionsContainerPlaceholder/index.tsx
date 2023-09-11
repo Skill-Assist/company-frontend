@@ -22,7 +22,7 @@ const SectionsContainerPlaceholder: FC<Props> = ({onClick}: Props) => {
       <div className={styles.content}>
         <h1>Nenhuma seção criada até agora...</h1>
         <p>
-          Sessões são como etapas do seu exame, nada mais que um conjunto de
+          Sessões são como etapas do seu teste, nada mais que um conjunto de
           questões para deixar seu teste mais organizado.
         </p>
         <p>E o melhor de tudo, você pode criar quantas sessões quiser!</p>

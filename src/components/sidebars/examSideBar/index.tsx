@@ -80,7 +80,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
     } else if (
       response.data.message === "Exam has no sections. Process was aborted."
     ) {
-      toast.error("O exame precisa ter sessões", {
+      toast.error("O teste precisa ter sessões", {
         duration: 3000,
         position: "top-right",
       });
@@ -133,7 +133,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
 
       <h3>
         <TbInfoSquareRounded />
-        Informações do exame
+        Informações do teste
       </h3>
       <div className={styles.infosBox}>
         <div>
@@ -149,14 +149,14 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
           <p>{examData.showScore === true ? "Sim" : "Não"}</p>
         </div>
         <div>
-          <span>O exame é público?</span>
+          <span>O teste é público?</span>
           <p>{examData.isPublic === true ? "Sim" : "Não"}</p>
         </div>
       </div>
 
       <h3>
         <TbInfoSquareRounded />
-        Status do exame
+        Status do teste
       </h3>
       <div className={styles.statusBox}>
         <select

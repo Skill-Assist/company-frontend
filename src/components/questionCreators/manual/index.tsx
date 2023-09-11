@@ -52,7 +52,7 @@ const fetchExameName = async (
 
     setExamName(exameName);
   } else {
-    toast.error('Erro ao buscar nome do exame.');
+    toast.error('Erro ao buscar nome do teste.');
   }
 };
 
@@ -312,7 +312,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
       <div className={styles.content}>
         <div className={styles.contentHeader}>
           <div>
-            <h3>Exame</h3>
+            <h3>Teste</h3>
             <p>{exameName}</p>
           </div>
           <div>

@@ -81,7 +81,7 @@ const SectionPage = () => {
     );
   } else if (!sectionData) {
     <Layout sidebar header headerTitle="Dashboard" active={2}>
-      <div className="loadingContainer">Erro ao buscar exame</div>
+      <div className="loadingContainer">Erro ao buscar teste</div>
     </Layout>;
   } else {
     return (
@@ -91,7 +91,7 @@ const SectionPage = () => {
           sidebarClosed
           header
           goBack
-          headerTitle="Seu Exame"
+          headerTitle="Seu teste"
           contentClassName={styles.p0}
         >
           <div className={styles.container}>

@@ -48,7 +48,7 @@ const PreviewSideBar: FC<Props> = ({
 
       <h3>
         <TbInfoSquareRounded />
-        Informações do exame
+        Informações do teste
       </h3>
       <div className={styles.infosBox}>
         <div>
@@ -83,7 +83,7 @@ const PreviewSideBar: FC<Props> = ({
           </p>
         </div>
         <div>
-          <span>O exame é público?</span>
+          <span>O teste é público?</span>
           <p>
             {examIsPublic === true ? "Sim" : "Não"}
           </p>

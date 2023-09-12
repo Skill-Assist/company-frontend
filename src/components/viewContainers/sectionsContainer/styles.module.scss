@@ -157,7 +157,7 @@
     margin-bottom: 5px;
   }
 
-  input {
+  input, textarea {
     width: 100%;
     padding: 5px;
     border: none;
@@ -166,6 +166,7 @@
     font-weight: 500;
     color: var(--secondary-2);
     transition: 300ms;
+    resize: none;
 
     &:focus {
       border-color: var(--primary);

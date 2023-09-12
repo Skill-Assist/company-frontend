@@ -74,8 +74,7 @@ const CreateExam: FC = () => {
 
   const [title, setTitle] = useState('');
   const [examDuration, setExamDuration] = useState('');
-  const [examSubmissionDate, setExamSubmissionDate] = useState('');
-  const [examSubmissionTime, setExamSubmissionTime] = useState('');
+  const [examSubmissionDays, setExamSubmissionDays] = useState<number>();
 
   const [subtitle, setSubtitle] = useState<string>('');
   const [level, setLevel] = useState<string>('');
@@ -90,7 +89,7 @@ const CreateExam: FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (!title || !examDuration || !examSubmissionDate || !examSubmissionTime) {
+    if (!title || !examDuration || !examSubmissionDays) {
       setLoading(false);
       toast.error('Preencha todos os campos', {
         duration: 3000,
@@ -104,17 +103,7 @@ const CreateExam: FC = () => {
       Number(examDuration.split(':')[1]) / 60
     ).toFixed(2);
 
-    const [ano, mes, dia] = examSubmissionDate.split('-').map(Number);
-
-    const [hora, minutos] = examSubmissionTime.split(':').map(Number);
-
-    const currentDate = new Date();
-    const submissionDate = new Date(ano, mes - 1, dia, hora, minutos);
-
-    const dateInHours =
-      (submissionDate.getTime() - currentDate.getTime()) / 1000 / 60 / 60;
-
-    const submissionInHours = Number(dateInHours.toFixed(2));
+    const submissionInHours = examSubmissionDays * 24
 
     const exam = {
       title,
@@ -233,12 +222,12 @@ const CreateExam: FC = () => {
                   <div className={styles.field}>
                     <div>
                       <label htmlFor="submissionDeadline">
-                        Data e hora para submissão
+                        Quantidade de dias para o envio das respostas
                       </label>
                       <Tooltip
                         className={styles.tooltip}
                         content={
-                          'Prazo limite para o envio das respostas do candidato.'
+                          'Prazo para o envio das respostas do candidato a partir do invite.'
                         }
                       >
                         <AiOutlineQuestionCircle fill="var(--secondary-2)" />
@@ -246,15 +235,9 @@ const CreateExam: FC = () => {
                     </div>
                     <div className={styles.dateBox}>
                       <input
-                        onChange={(e) => setExamSubmissionDate(e.target.value)}
+                        onChange={(e) => setExamSubmissionDays(+e.target.value)}
                         className={styles.styledInput}
-                        type="date"
-                        id="duration"
-                      />
-                      <input
-                        onChange={(e) => setExamSubmissionTime(e.target.value)}
-                        className={styles.styledInput}
-                        type="time"
+                        type="number"
                         id="duration"
                       />
                     </div>
@@ -458,8 +441,7 @@ const CreateExam: FC = () => {
           <PreviewSideBar
             examTitle={title}
             examDuration={examDuration}
-            examSubmissionDate={examSubmissionDate}
-            examSubmissionTime={examSubmissionTime}
+            examSubmissionDay={examSubmissionDays}
             examSubtitle={subtitle}
             examLevel={level}
             examShowScore={showScore}

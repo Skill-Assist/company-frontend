@@ -80,13 +80,6 @@ const SectionsContainer: FC<Props> = ({
       totalDuration = +totalDuration + sectionDuration;
     }
 
-    // console.log('examDuration', examDuration);
-    // console.log('totalDuration', totalDuration);
-    console.log('sectionDuration', sectionDuration);
-    console.log('remainingDuration', examDuration - totalDuration);
-    
-    console.log('maxDuration', examDuration - totalDuration + sectionDuration);
-    
     setRemainingWeight(1 - totalWeight);
     setRemainingDuration(examDuration - totalDuration);
   }, [sectionWeight, sectionDuration, sections, examDuration]);
@@ -239,9 +232,8 @@ const SectionsContainer: FC<Props> = ({
                     </div>
                     <div className={styles.field}>
                       <label>Descrição</label>
-                      <input
+                      <textarea
                         required
-                        type="text"
                         placeholder="Insira a descrição..."
                         minLength={15}
                         maxLength={100}

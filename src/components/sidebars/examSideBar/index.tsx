@@ -142,7 +142,7 @@ const ExamSideBar: FC<Props> = ({ examData, open }: Props) => {
         </div>
         <div>
           <span>Tempo para submissão:</span>
-          <p>{examData.submissionInHours} horas</p>
+          <p>{examData.submissionInHours/24} dias</p>
         </div>
         <div>
           <span>O candidato deve receber sua nota?</span>

@@ -466,7 +466,7 @@ const InvitationContainer = () => {
                         <Tooltip
                           content={
                             candidate.aiScore
-                              ? 'Visualizar candidato'
+                              ? 'Visualizar resultado'
                               : 'Gere uma correção primeiro'
                           }
                         >

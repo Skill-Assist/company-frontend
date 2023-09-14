@@ -1,15 +1,16 @@
-import { FC, useState, useRef, ChangeEvent } from "react";
-import { ThreeDots } from "react-loader-spinner";
-import { BiPencil } from "react-icons/bi";
-import { TbInfoSquareRounded } from "react-icons/tb";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/router";
+import { FC, useState, useRef, ChangeEvent } from 'react';
+import { ThreeDots } from 'react-loader-spinner';
+import { BiPencil } from 'react-icons/bi';
+import { TbInfoSquareRounded } from 'react-icons/tb';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
-import sectionService from "@/services/sectionService";
+import sectionService from '@/services/sectionService';
 
-import { Section } from "@/types/section";
+import { Section } from '@/types/section';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
+import { Tooltip } from '@nextui-org/react';
 
 interface Props {
   sectionData: Section;
@@ -20,9 +21,9 @@ interface Props {
 function formatDate(dateString: Date) {
   var date = new Date(dateString);
   var year = date.getFullYear();
-  var month = ("0" + (date.getMonth() + 1)).slice(-2);
-  var day = ("0" + date.getDate()).slice(-2);
-  var formattedDate = year + "-" + month + "-" + day;
+  var month = ('0' + (date.getMonth() + 1)).slice(-2);
+  var day = ('0' + date.getDate()).slice(-2);
+  var formattedDate = year + '-' + month + '-' + day;
   return formattedDate;
 }
 
@@ -43,17 +44,17 @@ const SectionSideBar: FC<Props> = ({
 
     let updatedSection = {};
 
-    if (name === "isShuffleQuestions") {
+    if (name === 'isShuffleQuestions') {
       updatedSection = {
         isShuffleQuestions: checked,
       };
-    } else if (name === "hasProctoring") {
+    } else if (name === 'hasProctoring') {
       updatedSection = {
         hasProctoring: checked,
       };
     }
 
-    if (sectionId && typeof sectionId === "string") {
+    if (sectionId && typeof sectionId === 'string') {
       setSectionEditingLoading(true);
 
       const response = await sectionService.updateSection(
@@ -64,15 +65,15 @@ const SectionSideBar: FC<Props> = ({
       if (response.status >= 200 && response.status < 300) {
         fetchOwnSection();
         setSectionEditingLoading(false);
-        toast.success("Informação atualizada com sucesso!", {
+        toast.success('Informação atualizada com sucesso!', {
           duration: 2000,
-          position: "top-right",
+          position: 'top-right',
         });
       } else {
         setSectionEditingLoading(false);
-        toast.error("Erro ao atualizar informação!", {
+        toast.error('Erro ao atualizar informação!', {
           duration: 2000,
-          position: "top-right",
+          position: 'top-right',
         });
       }
     }
@@ -82,7 +83,7 @@ const SectionSideBar: FC<Props> = ({
     const sectionId = router.query.sectionId;
     const enteredDate = dateRef.current?.value;
 
-    if (sectionId && typeof sectionId === "string" && enteredDate) {
+    if (sectionId && typeof sectionId === 'string' && enteredDate) {
       setSectionEditingLoading(true);
 
       const updatedSection = {
@@ -97,15 +98,15 @@ const SectionSideBar: FC<Props> = ({
       if (response.status >= 200 && response.status < 300) {
         fetchOwnSection();
         setSectionEditingLoading(false);
-        toast.success("Data atualizada com sucesso!", {
+        toast.success('Data atualizada com sucesso!', {
           duration: 2000,
-          position: "top-right",
+          position: 'top-right',
         });
       } else {
         setSectionEditingLoading(false);
-        toast.error("Erro ao atualizar data!", {
+        toast.error('Erro ao atualizar data!', {
           duration: 2000,
-          position: "top-right",
+          position: 'top-right',
         });
       }
     }
@@ -145,18 +146,25 @@ const SectionSideBar: FC<Props> = ({
       <div className={styles.optionalInfos}>
         <div>
           <span>Data de início:</span>
-          <input
-            className={styles.dateInput}
-            type="date"
-            name="startDate"
-            id="startDate"
-            defaultValue={
-              sectionData.startDate ? formatDate(sectionData.startDate) : ""
-            }
-            ref={dateRef}
-            onChange={() => setDisabledBtn(false)}
-          />
+          <Tooltip
+            className={styles.tooltip}
+            content={'Quando você quer que a seção seja liberada.'}
+            style={{margin: '0'}}
+          >
+            <input
+              className={styles.dateInput}
+              type="date"
+              name="startDate"
+              id="startDate"
+              defaultValue={
+                sectionData.startDate ? formatDate(sectionData.startDate) : ''
+              }
+              ref={dateRef}
+              onChange={() => setDisabledBtn(false)}
+            />
+          </Tooltip>
         </div>
+
         <div>
           <span>Perguntas embaralhadas?</span>
           <label className={styles.checkboxContainer}>
@@ -170,6 +178,7 @@ const SectionSideBar: FC<Props> = ({
             <span className={styles.checkmark}></span>
           </label>
         </div>
+
         <div>
           <span>Proctoring ativado?</span>
           <label className={styles.checkboxContainer}>
@@ -198,7 +207,7 @@ const SectionSideBar: FC<Props> = ({
               visible={true}
             />
           ) : (
-            "Salvar"
+            'Salvar'
           )}
         </button>
       </div>

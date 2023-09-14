@@ -35,7 +35,6 @@
 }
 
 .infosBox {
-  border: 1px solid var(--neutral-100);
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
@@ -65,16 +64,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px 0;
+    gap: 5px;
+    margin: 15px 0;
+
+    &:first-child {
+      margin: 5px!important;
+    }
 
     span {
       font-size: 14px;
       font-weight: 400;
-      margin-bottom: 5px;
+      white-space: nowrap;
     }
 
-    input[type="date"]::-webkit-inner-spin-button,
-    input[type="date"]::-webkit-calendar-picker-indicator {
+    input[type='date']::-webkit-inner-spin-button,
+    input[type='date']::-webkit-calendar-picker-indicator {
       display: none;
       -webkit-appearance: none;
     }
@@ -85,6 +89,15 @@
   background: none;
   border: none;
   color: var(--secondary-2);
+  border-bottom: 1px solid var(--neutral-100);
+  padding-bottom: 2px;
+  text-align: center;
+  transition: 300ms;
+  cursor: text;
+
+  &:hover, &:focus {
+    border-color: var(--primary);
+  }
 }
 
 .checkboxContainer {
@@ -133,7 +146,7 @@
   background-color: #eee;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }

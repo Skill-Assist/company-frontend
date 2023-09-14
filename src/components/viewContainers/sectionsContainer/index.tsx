@@ -123,7 +123,6 @@ const SectionsContainer: FC<Props> = ({
           <div className={styles.sectionContainerHeader}>
             {sections && sections.length > 0 && (
               <>
-                <h3 onClick={() => console.log(remainingWeight)}>Seções</h3>
                 <button onClick={() => setNewSection(true)}>
                   Nova seção <AiOutlinePlus size={25} />
                 </button>
@@ -237,6 +236,7 @@ const SectionsContainer: FC<Props> = ({
                         placeholder="Insira a descrição..."
                         minLength={15}
                         maxLength={100}
+                        rows={1}
                         value={sectionDescription}
                         onChange={(e) => setSectionDescription(e.target.value)}
                       />
@@ -260,8 +260,6 @@ const SectionsContainer: FC<Props> = ({
                         type="number"
                         max={sectionWeight + remainingWeight * 100}
                         min={1}
-                        placeholder="1 a 100"
-                        value={sectionWeight}
                         onChange={(e) =>
                           setSectionWeight(Number(e.target.value))
                         }
@@ -276,16 +274,13 @@ const SectionsContainer: FC<Props> = ({
                       <input
                         required
                         type="number"
-                        placeholder="Insira a quantidade de horas..."
-                        min={1}
                         max={remainingDuration + sectionDuration}
-                        value={sectionDuration}
                         onChange={(e) =>
                           setSectionDuration(Number(e.target.value))
                         }
                       />
                       <span className={styles.remainingHours}>
-                        {remainingDuration.toFixed(0)} horas restantes
+                        {Number.isInteger(remainingDuration) ? remainingDuration.toFixed(0) : remainingDuration.toFixed(2)} horas restantes
                       </span>
                     </div>
                   </div>

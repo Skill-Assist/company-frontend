@@ -24,7 +24,7 @@ const Help = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Suporte" active={2}>
+      <Layout sidebar header active={2}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -50,7 +50,7 @@ const Help = () => {
     return;
   } else
     return (
-      <Layout header headerTitle="Suporte" sidebar active={2}>
+      <Layout header sidebar active={2}>
         <div className={styles.container}>
           <div className={styles.textContent}>
             <h1>

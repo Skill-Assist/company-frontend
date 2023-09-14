@@ -94,7 +94,7 @@ const Exams: FC = () => {
   };
 
   return (
-    <Layout sidebar header headerTitle="Seus testes" active={1}>
+    <Layout sidebar header active={1}>
       <div className={styles.container}>
         {!loading && allExams.length === 0 ? (
           <Placeholder

@@ -116,7 +116,7 @@ const Home = () => {
     return;
   } else
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={0}>
+      <Layout sidebar header active={0}>
         <div className={styles.container}>
           <div className={styles.introContainer}>
             <h1>

@@ -64,7 +64,7 @@ const SectionPage = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={1}>
+      <Layout sidebar header active={1}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -80,7 +80,7 @@ const SectionPage = () => {
       </Layout>
     );
   } else if (!sectionData) {
-    <Layout sidebar header headerTitle="Dashboard" active={2}>
+    <Layout sidebar header active={2}>
       <div className="loadingContainer">Erro ao buscar teste</div>
     </Layout>;
   } else {
@@ -91,7 +91,6 @@ const SectionPage = () => {
           sidebarClosed
           header
           goBack
-          headerTitle="Seu teste"
           contentClassName={styles.p0}
         >
           <div className={styles.container}>

@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 const Results: FC = () => {
   return (
     <div className={styles.container}>
-      <Layout header headerTitle="Seus Resultados" sidebar active={3}>
+      <Layout header sidebar active={3}>
         <div>Results</div>
       </Layout>
     </div>

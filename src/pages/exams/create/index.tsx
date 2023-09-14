@@ -169,7 +169,6 @@ const CreateExam: FC = () => {
       sidebarClosed
       header
       goBack
-      headerTitle="Criar teste"
       contentClassName={styles.p0}
     >
       <div className={styles.container}>
@@ -403,7 +402,7 @@ const CreateExam: FC = () => {
                 <div>
                   <div className={styles.intro}>
                     <h1>
-                      Perfeito! <br /> Teste já criado!
+                      Perfeito! <br /> O teste foi criado.
                     </h1>
                     <p>
                       O que acha da gente começar a criar as seções do seu
@@ -416,7 +415,7 @@ const CreateExam: FC = () => {
                       href={`/exams/${examId}`}
                       className={styles.principalBtn}
                     >
-                      Ver teste criado
+                      Criar seções
                     </Link>
                   </div>
                 </div>

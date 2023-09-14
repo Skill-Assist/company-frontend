@@ -72,7 +72,7 @@ const ExamPage = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header headerTitle="Dashboard" active={2}>
+      <Layout sidebar header active={2}>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -88,7 +88,7 @@ const ExamPage = () => {
       </Layout>
     );
   } else if (!examData) {
-    <Layout sidebar header headerTitle="Dashboard" active={2}>
+    <Layout sidebar header active={2}>
         <div className="loadingContainer">
           Erro ao buscar teste
         </div>
@@ -100,7 +100,6 @@ const ExamPage = () => {
           sidebar
           sidebarClosed
           header
-          headerTitle="Seu teste"
           contentClassName={styles.p0}
         >
           <div className={styles.container}>

@@ -1,0 +1,53 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--primary);
+  color: var(--neutral-0);
+  width: 256px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin: 34px 8px 50px 20px;
+    cursor: pointer;
+  }
+
+  p {
+    font-size: 25px;
+  }
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 400ms ease;
+
+  li {
+    a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 14px 6px;
+      border-radius: 5px;
+
+      div {
+        width: 30px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.active {
+  background-color: var(--primary-4);
+}

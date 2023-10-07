@@ -1,9 +1,9 @@
 import { ReactNode, FC, useState } from "react";
 
-import MainSidebar from "../sidebars/mainSidebar";
 import Header from "../header";
 
 import styles from "./styles.module.scss";
+import Sidebar from "../sidebar";
 
 type Props = {
   sidebar?: boolean;
@@ -18,7 +18,6 @@ type Props = {
 
 const Layout: FC<Props> = ({
   sidebar,
-  sidebarClosed,
   active,
   header,
   headerTitle,
@@ -26,15 +25,12 @@ const Layout: FC<Props> = ({
   children,
   contentClassName
 }: Props) => {
-  const [show, setShow] = useState(sidebarClosed ? false : true);
 
   return (
     <div className={styles.container}>
       {sidebar && (
-        <MainSidebar
+        <Sidebar
           active={active}
-          show={show}
-          setShow={setShow}
         />
       )}
 

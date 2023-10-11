@@ -297,12 +297,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   return (
     <div className={styles.container} id="modal">
       <div className={styles.header}>
-        <h1
-          onClick={() => {
-            console.log('options', options);
-            console.log('correctOption', correctOption);
-          }}
-        >
+        <h1>
           Nova questão para seção.
         </h1>
         <p>

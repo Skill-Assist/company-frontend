@@ -326,13 +326,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1
-          onClick={() => {
-            console.log(generatedData);
-          }}
-        >
-          Nova questão para seção.
-        </h1>
+        <h1>Nova questão para seção.</h1>
         <p>
           Preencha todos os campos obrigatórios para criar uma nova questão.
         </p>
@@ -517,11 +511,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 {questionType === 'multiple-choice' && (
                   <div className={styles.multipleChoiceContainer}>
                     <div className={styles.multipleChoiceHeader}>
-                      <h3
-                        onClick={() => {
-                          console.log(options);
-                        }}
-                      >
+                      <h3>
                         Alternativas
                       </h3>
                       <p>Marque a alternativa correta</p>

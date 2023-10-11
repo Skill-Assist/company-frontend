@@ -67,13 +67,13 @@ const SectionSideBar: FC<Props> = ({
         setSectionEditingLoading(false);
         toast.success('Informação atualizada com sucesso!', {
           duration: 2000,
-          position: 'top-right',
+          position: 'top-center',
         });
       } else {
         setSectionEditingLoading(false);
         toast.error('Erro ao atualizar informação!', {
           duration: 2000,
-          position: 'top-right',
+          position: 'top-center',
         });
       }
     }
@@ -100,13 +100,13 @@ const SectionSideBar: FC<Props> = ({
         setSectionEditingLoading(false);
         toast.success('Data atualizada com sucesso!', {
           duration: 2000,
-          position: 'top-right',
+          position: 'top-center',
         });
       } else {
         setSectionEditingLoading(false);
         toast.error('Erro ao atualizar data!', {
           duration: 2000,
-          position: 'top-right',
+          position: 'top-center',
         });
       }
     }

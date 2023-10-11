@@ -33,7 +33,6 @@ const Form: FC<Props> = ({user}: Props) => {
       setSubmited(true);
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setSubmited(true);
       setLoading(false);
     }

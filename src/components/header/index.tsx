@@ -2,9 +2,10 @@ import { FC, useEffect, useRef, useState, RefObject } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+
 import { BsPersonCircle } from "react-icons/bs";
-import { BsArrowLeft } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
 import { User } from "@/types/user";
 
@@ -57,10 +58,8 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
     <div className={styles.header}>
       <div className={styles.titleContainer}>
         {goBack && (
-          <BsArrowLeft
+          <ArrowBackRoundedIcon
             onClick={() => router.back()}
-            size={36}
-            fill="var(--primary)"
           />
         )}
         <h2>{title}</h2>
@@ -69,9 +68,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
       <div className={styles.profile} ref={wrapperRef}>
         {user && (
           <div className={styles.headerInfo}>
-            <p>Olá, </p>
-            <span>{user.nickname}</span>
-
+            <p>Olá, {user.nickname}</p>
             <div
               className={styles.userIcon}
               onClick={() => setIsDropdownOpen((prevState) => !prevState)}
@@ -79,7 +76,7 @@ const Header: FC<Props> = ({ goBack, title }: Props) => {
               <Image
                 width={200}
                 height={200}
-                src={user.logo}
+                src='/user.svg'
                 alt="Profile Image"
               />
             </div>

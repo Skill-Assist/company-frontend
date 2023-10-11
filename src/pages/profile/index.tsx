@@ -36,7 +36,7 @@ const Profile = () => {
     if (!name || !email) {
       toast.error('Preencha todos os campos', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
       return;
     }
@@ -53,7 +53,7 @@ const Profile = () => {
     if (response.status >= 200 && response.status < 300) {
       toast.success('Perfil atualizado com sucesso', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
       setIsEditing(false);
       return;
@@ -81,13 +81,13 @@ const Profile = () => {
       setLogo(response.data.logo);
       toast.success('Foto atualizada com sucesso', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
       setIsEditing(false);
     } else {
       toast.error('Erro ao atualizar foto', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
       setIsEditing(false);
     }
@@ -285,7 +285,7 @@ const Profile = () => {
                   if (!isEditing) return;
                   toast.loading('Feature em desenvolvimento', {
                     duration: 3000,
-                    position: 'top-right',
+                    position: 'top-center',
                   });
                 }}
               >

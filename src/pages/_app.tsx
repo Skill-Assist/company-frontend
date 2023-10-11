@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 
 import userService from "@/services/userService";
 
+import 'react-loading-skeleton/dist/skeleton.css';
 import "@/styles/globals.scss";
 
 export default function App({ Component, pageProps }: AppProps) {

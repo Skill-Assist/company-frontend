@@ -42,7 +42,7 @@ const Sidebar = () => {
           <Link
             href="/exams"
             className={`${styles.item} ${
-              router.pathname === '/exams' && styles.active
+              router.pathname.includes('/exams') && styles.active
             }`}
           >
             <div>
@@ -65,9 +65,6 @@ const Sidebar = () => {
           </Link>
         </li>
       </ul>
-
-
-      
     </div>
   );
 };

@@ -1,0 +1,25 @@
+.container {
+  button, a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 164px;
+    height: 41px;
+
+    background: var(--primary);
+    color: var(--neutral-0);
+    box-shadow: 4px 4px 25px 0px rgba(40, 89, 67, 0.25);
+    border: none;
+    border-radius: 5px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 400ms;
+
+    &:hover {
+      scale: 1.02;
+    }
+  }
+}

@@ -1,231 +1,157 @@
-.p0 {
-  padding: 0 !important;
-}
-
 .container {
   display: flex;
+  flex-direction: column;
   height: 100%;
-  justify-content: space-between;
 }
 
 .content {
-  width: 70%;
-  height: 60%;
-  padding: 16px 16px 32px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-}
+  width: 100%;
+  height: 100%;
 
-.previewInfos {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  width: 300px;
-  box-shadow: 0 0 10px var(--neutral-100);
-  background-color: var(--neutral-500);
-  border-radius: 10px 0 0 10px;
-  color: var(--secondary-2);
-
-  h3 {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 18px;
-    font-weight: 500;
-    margin: 0 0 10px 5px;
-  }
-}
-
-.motionDiv {
   form {
-    margin-top: 55px;
-
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px 20px;
-      background: none;
-      border: 1px solid var(--secondary);
-      border-radius: 1.5rem;
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--primary);
-      width: 250px;
-      transition: 300ms ease-in-out;
-      margin: 15px auto;
-
-      &:hover {
-        scale: 1.02;
-        background: var(--primary);
-        color: var(--neutral-50);
-      }
-
-      &:hover svg {
-        fill: var(--neutral-50);
-      }
-    }
+    margin: 36px 72px;
   }
 }
 
 .intro {
+  margin-left: 40px;
+
   h1 {
     color: var(--primary);
-    font-size: 42px;
+    font-size: 35px;
+    font-weight: 700;
+    margin-bottom: 12px;
   }
 
   p {
-    color: var(--secondary-2);
-    font-size: 24px;
+    color: var(--neutral-500);
+    font-size: 20px;
+  }
+}
+
+.subtitle {
+  color: var(--primary);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.jobInfos {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.examInfos {
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
   }
 }
 
 .field {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  margin: 15px 0;
-  position: relative;
-
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 5px;
-  }
+  margin-bottom: 20px;
 
   label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--secondary-2);
+    color: var(--neutral-500);
+    font-size: 16px;
+    background: var(--neutral-75);
+    width: fit-content;
+
+    span {
+      color: #ff4545;
+    }
   }
 
-  input {
-    width: 100%;
-    padding: 5px;
-    border: none;
-    border-bottom: 1px solid var(--neutral-100);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--secondary-2);
-    transition: 300ms;
-
-    &::-webkit-calendar-picker-indicator {
-      filter: invert(60%) sepia(10%) saturate(200%) hue-rotate(130deg)
-        brightness(85%) contrast(90%);
-    }
-
-    &:focus {
-      border-color: var(--primary);
-    }
-
-    &::placeholder {
-      color: var(--neutral-200);
-      font-weight: 400;
-    }
+  p {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 3px 0px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.4px;
   }
 }
 
-.dateBox{
+.radios {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  width: 100%;
-}
-
-.tooltip {
-  width: unset !important;
-  top: -10px;
-  right: 0px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
-}
-
-.toggles {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  color: var(--secondary-2);
+  margin-top: 5px;
 
   div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-}
+    gap: 5px;
 
-.finishingView {
-  display: flex;
+    label {
+      color: var(--primary);
+      font-size: 16px;
+      line-height: 150%;
+      letter-spacing: 0.15px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 4px;
+      cursor: pointer;
+    }
 
-  h1 {
-    margin-bottom: 25px;
+    button {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      position: relative;
+      background-color: var(--neutral-75);
+      border: 2px solid var(--primary);
+    }
+
+    .active {
+      background-color: var(--primary);
+      border: 2px solid var(--primary);
+    }
   }
 }
 
 .lottie {
   width: 100%;
-  margin: auto;
-  transform: translateY(-10%);
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.actions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-top: 50px;
+.modalContent {
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 186.4%;
+    margin-top: 20px;
+  }
+
+  p {
+    color: var(--secondary-3);
+    text-align: center;
+    font-size: 18px;
+    line-height: 186.4%;
+  }
+
+  span {
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 186.4%;
+  }
 
   a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    background: none;
-    border: 1px solid var(--secondary);
-    border-radius: 1rem;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--primary);
-    transition: 300ms ease-in-out;
-    width: 180px;
-
-    &:hover {
-      scale: 1.02;
-    }
-  }
-}
-
-.principalBtn {
-  background-color: var(--primary) !important;
-  color: var(--neutral-0) !important;
-}
-
-.skipContainar {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-around;
-  margin-top: 20px;
-
-  button:last-child {
-    background-color: var(--primary) !important;
-    color: var(--neutral-0) !important;
+    margin: 10px auto;
   }
 }

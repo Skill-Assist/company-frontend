@@ -1,6 +1,6 @@
-import axios from "axios";
-import cookie from "react-cookies";
-import { toast } from "react-hot-toast";
+import axios from 'axios';
+import cookie from 'react-cookies';
+import { toast } from 'react-hot-toast';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -8,7 +8,7 @@ const examService = {
   getAllOwnExams: async () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -18,11 +18,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -34,7 +37,7 @@ const examService = {
   getOwnExam: async (examId: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -47,11 +50,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -63,7 +69,7 @@ const examService = {
   getAnswerSheet: async (AnswerSheetId: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -76,11 +82,47 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
+        setTimeout(() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+        }, 2000);
+      }
+      return error.response;
+    }
+  },
+
+  suggestDescription: async (data: { jobTitle: string; jobLevel: string }) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load('token')}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${API_URL}/exam/suggestDescription`,
+        data,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      const statusCode = error.response.data.statusCode;
+      const message = error.response.data.message;
+
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -90,13 +132,17 @@ const examService = {
   },
 
   createExam: async (exam: {
-    title: string;
+    jobTitle: string;
+    jobLevel: string;
+    description: string;
     durationInHours: number;
     submissionInHours: number;
+    showScore: boolean;
+    isPublic: boolean;
   }) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -106,11 +152,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -131,7 +180,7 @@ const examService = {
   ) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -145,11 +194,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -161,7 +213,7 @@ const examService = {
   switchStatus: async (examId: number, status: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -174,11 +226,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -196,7 +251,7 @@ const examService = {
   ) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -210,11 +265,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -226,7 +284,7 @@ const examService = {
   resendInvitation: async (invitationId: number) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -239,11 +297,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -255,7 +316,7 @@ const examService = {
   generateCorrection: async (answerSheetId: number) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -268,11 +329,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -284,7 +348,7 @@ const examService = {
   getInvitation: async (examId: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -297,11 +361,14 @@ const examService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -313,7 +380,7 @@ const examService = {
   getCandidates: async (examId: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
 

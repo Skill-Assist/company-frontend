@@ -7,9 +7,13 @@
   --primary-4: #418265;
   --secondary: #3e4d5c;
   --secondary-2: #637381;
-
+  --secondary-3: #212B36;
+  
+  --neutral-600: #404040;
+  --neutral-500: #5E586B;
   --neutral-200: #cdcdcd;
   --neutral-100: #e4e4e4;
+  --neutral-75: #f2f2f2;
   --neutral-50: #f4f6f8;
   --neutral-0: #ffffff;
 
@@ -21,7 +25,6 @@
 
   --border-radius: 1.2rem;
 
-  // font-size: 62.5%;
 }
 
 * {
@@ -56,7 +59,7 @@
 }
 
 body {
-  background: var(--neutral-50);
+  background: var(--neutral-75);
   margin: auto;
   overflow-y: hidden;
 }

@@ -27,7 +27,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
             onClick={() =>
               toast.loading('Feature em desenvolvimento', {
                 duration: 3000,
-                position: 'top-right',
+                position: 'top-center',
               })
             }
           />

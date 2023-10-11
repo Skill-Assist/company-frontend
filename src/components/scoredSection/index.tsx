@@ -200,11 +200,7 @@ const ScoredSection: FC<Props> = ({
                 </div>
                 <hr />
                 <div className={styles.answerContent}>
-                  <h3
-                    onClick={() => {
-                      console.log(modalContent);
-                    }}
-                  >
+                  <h3>
                     Resposta do usuário
                   </h3>
                   <p>
@@ -227,7 +223,7 @@ const ScoredSection: FC<Props> = ({
                           onClick={() => {
                             toast.loading('Feature em desenvolvimento', {
                               duration: 3000,
-                              position: 'top-right',
+                              position: 'top-center',
                             });
                           }}
                         />

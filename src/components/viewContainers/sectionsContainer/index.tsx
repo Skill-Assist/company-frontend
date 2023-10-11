@@ -99,7 +99,7 @@ const SectionsContainer: FC<Props> = ({
     if (response.status >= 200 && response.status < 300) {
       toast.success('Seção criada com sucesso!', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
       setSectionName('');
       setSectionDescription('');
@@ -111,7 +111,7 @@ const SectionsContainer: FC<Props> = ({
     } else {
       toast.error('Erro ao criar seção', {
         duration: 3000,
-        position: 'top-right',
+        position: 'top-center',
       });
     }
   };
@@ -152,7 +152,7 @@ const SectionsContainer: FC<Props> = ({
                       onClick={() =>
                         toast.loading('Feature em desenvolvimento', {
                           duration: 3000,
-                          position: 'top-right',
+                          position: 'top-center',
                         })
                       }
                     />

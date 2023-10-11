@@ -4,15 +4,13 @@ import { User } from "./user";
 
 export type Exam = {
   id: number,
-  title: string,
-  subtitle: string,
-  level: string,
+  jobTitle: string,
+  jobLevel: string,
   durationInHours: number,
   submissionInHours: number,
-  dateToArchive: Date,
   showScore: boolean,
   isPublic: boolean,
-  status: "live" | "archived" | "draft" | "published",
+  status: "live" | "draft" | "published",
   createdByRef?: User
   answerSheetsRef?: AnswerSheet
   __sections__?: Section[]

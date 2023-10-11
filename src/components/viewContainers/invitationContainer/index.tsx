@@ -278,8 +278,6 @@ const InvitationContainer = () => {
     setCorrectionLoading(true);
     const response = await examService.generateCorrection(answerSheetId);
 
-    console.log(response);
-
     if (response.status >= 200 && response.status < 300) {
       toast.success('Correção gerada com sucesso!');
       setCorrectionLoading(false);
@@ -398,7 +396,7 @@ const InvitationContainer = () => {
                     <td>
                       <div className={styles.userTd}>
                         <Image
-                          src={candidate.logo ? candidate.logo : '/user.png'}
+                          src={candidate.logo ? candidate.logo : '/user.svg'}
                           alt="avatar"
                           width={40}
                           height={40}

@@ -90,7 +90,7 @@ const Home = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header active={0}>
+      <Layout sidebar header>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -116,7 +116,7 @@ const Home = () => {
     return;
   } else
     return (
-      <Layout sidebar header active={0}>
+      <Layout sidebar header>
         <div className={styles.container}>
           <div className={styles.introContainer}>
             <h1>
@@ -134,7 +134,7 @@ const Home = () => {
                 onClick={() => {
                   toast.loading('Feature em desenvolvimento', {
                     duration: 3000,
-                    position: 'top-right',
+                    position: 'top-center',
                   });
                 }}
               >
@@ -214,7 +214,7 @@ const Home = () => {
                       <td>
                         <div className={styles.userTd}>
                           <Image
-                            src={candidate.logo ? candidate.logo : '/user.png'}
+                            src={candidate.logo ? candidate.logo : '/user.svg'}
                             alt="avatar"
                             width={40}
                             height={40}

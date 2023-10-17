@@ -61,6 +61,7 @@ const InputField: FC<Props> = ({
           id={label}
           required={required}
           placeholder={placeholder}
+          maxLength={max}
           rows={rows}
           onChange={(event) => {
             setState(event.target.value);
@@ -73,6 +74,7 @@ const InputField: FC<Props> = ({
           id={label}
           required={required}
           placeholder={placeholder}
+          maxLength={max}
           style={{ height: '56px' }}
           onChange={(event) => {
             setState(event.target.value);

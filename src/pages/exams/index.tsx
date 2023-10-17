@@ -45,10 +45,6 @@ const Exams: FC = () => {
         (exam: Exam) => exam.status === "draft"
       );
 
-      let archivedExamsData = ownedExamsResponse.filter(
-        (exam: Exam) => exam.status === "archived"
-      );
-
       setCardsRows([
         {
           title: "Em andamento",
@@ -63,13 +59,6 @@ const Exams: FC = () => {
           cards: draftExamsData,
           open: true,
           placeholder: "Você ainda não possui rascunhos",
-        },
-        {
-          title: "Arquivados",
-          owner: profileExamsResponse,
-          cards: archivedExamsData,
-          open: true,
-          placeholder: "Você ainda não possui testes arquivados",
         },
       ]);
 
@@ -94,7 +83,7 @@ const Exams: FC = () => {
   };
 
   return (
-    <Layout sidebar header active={1}>
+    <Layout sidebar header>
       <div className={styles.container}>
         {!loading && allExams.length === 0 ? (
           <Placeholder

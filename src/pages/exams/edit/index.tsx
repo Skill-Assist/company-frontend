@@ -63,7 +63,7 @@ const suggestDescription = async (
   }
 };
 
-const CreateExam: FC = () => {
+const EditExam: FC = () => {
   const [createLoading, setCreateLoading] = useState(false);
   const [descriptionLoading, setDescriptionLoading] = useState(false);
 
@@ -396,4 +396,4 @@ const CreateExam: FC = () => {
   );
 };
 
-export default CreateExam;
+export default EditExam;

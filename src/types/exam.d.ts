@@ -6,6 +6,7 @@ export type Exam = {
   id: number,
   jobTitle: string,
   jobLevel: string,
+  description: string,
   durationInHours: number,
   submissionInHours: number,
   showScore: boolean,

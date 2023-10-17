@@ -1,16 +1,7 @@
-import { FC, useState, useEffect, useRef } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
-import { BiPencil } from 'react-icons/bi';
-import { TbInfoSquareRounded } from 'react-icons/tb';
-import { toast } from 'react-hot-toast';
-import Button from '@mui/material/Button';
+import { FC } from 'react';
 
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-
-import examService from '@/services/examService';
-
-import { Exam } from '@/types/exam';
 
 import styles from './styles.module.scss';
 

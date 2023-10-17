@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import Image from 'next/image';
 
 interface Props {
-  label: string;
+  label?: string;
   required?: boolean;
   options: string[];
   onChange: (value: string) => void;
@@ -20,9 +20,11 @@ const SelectField: FC<Props> = ({
   const selectRef = useRef<HTMLSelectElement>(null);
   return (
     <div className={styles.field}>
-      <label htmlFor={label}>
-        {label} <span>{required && '*'}</span>
-      </label>
+      {label && (
+        <label htmlFor={label}>
+          {label} <span>{required && '*'}</span>
+        </label>
+      )}
       <select
         id={label}
         onChange={(e) => onChange(e.target.value)}

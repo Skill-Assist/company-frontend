@@ -50,7 +50,7 @@ const SectionPage = () => {
         setSectionData(response.data);
         localStorage.setItem('sectionName', response.data.name || '');
         setPageLoading(false);
-        return response.data; 
+        return response.data;
       } else {
         toast.error('Erro ao buscar seção!');
         setPageLoading(false);
@@ -64,7 +64,7 @@ const SectionPage = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header active={1}>
+      <Layout sidebar header>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -80,19 +80,13 @@ const SectionPage = () => {
       </Layout>
     );
   } else if (!sectionData) {
-    <Layout sidebar header active={2}>
+    <Layout sidebar header>
       <div className="loadingContainer">Erro ao buscar teste</div>
     </Layout>;
   } else {
     return (
       <>
-        <Layout
-          sidebar
-          sidebarClosed
-          header
-          goBack
-          contentClassName={styles.p0}
-        >
+        <Layout sidebar header goBack>
           <div className={styles.container}>
             <QuestionsContainer fetchOwnSection={fetchOwnSection} />
             <motion.div

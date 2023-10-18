@@ -16,6 +16,9 @@ type Props = {
     width: string;
     height: string;
   };
+  fontSize?: string;
+  fontWeight?: string;
+  disabled?: boolean;
 };
 
 const Button: FC<Props> = ({
@@ -28,6 +31,9 @@ const Button: FC<Props> = ({
   borderColor,
   boxShadow,
   dimensions,
+  fontSize,
+  fontWeight,
+  disabled,
 }: Props) => {
   return (
     <>
@@ -43,9 +49,13 @@ const Button: FC<Props> = ({
               : 'none',
             width: dimensions?.width ? dimensions.width : '164px',
             height: dimensions?.height ? dimensions.height : '41px',
+            fontSize: fontSize ? fontSize : '16px',
+            fontWeight: fontWeight ? fontWeight : '600',
           }}
+
           type={type}
           onClick={onClick}
+          disabled={disabled}
         >
           {children}
         </button>
@@ -55,9 +65,14 @@ const Button: FC<Props> = ({
           style={{
             color: fontColor,
             backgroundColor: backgroundColor,
-            borderColor: borderColor ? borderColor : backgroundColor,
             width: dimensions?.width ? dimensions.width : '164px',
             height: dimensions?.height ? dimensions.height : '41px',
+            border: borderColor ? `1px solid ${borderColor}` : 'none',
+            boxShadow: boxShadow
+              ? '4px 4px 25px 0px rgba(40, 89, 67, 0.25)'
+              : 'none',
+            fontSize: fontSize ? fontSize : '16px',
+            fontWeight: fontWeight ? fontWeight : '600',
           }}
           href={url ? url : '#'}
         >

@@ -18,4 +18,9 @@
   &:hover {
     scale: 1.02;
   }
+
+  &:disabled {
+    background: #A8A8A8!important;
+    font-weight: 400!important;
+  }
 }

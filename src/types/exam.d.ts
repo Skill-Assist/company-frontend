@@ -11,7 +11,7 @@ export type Exam = {
   submissionInHours: number,
   showScore: boolean,
   isPublic: boolean,
-  status: "live" | "draft" | "published",
+  status: "published" | "draft" | "archived",
   createdByRef?: User
   answerSheetsRef?: AnswerSheet
   __sections__?: Section[]

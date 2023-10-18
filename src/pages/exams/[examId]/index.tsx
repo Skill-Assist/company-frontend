@@ -188,7 +188,7 @@ const ExamPage = () => {
                     type="link"
                     backgroundColor="var(--primary-4)"
                     fontColor="var(--neutral-0)"
-                    url={`/edit/${examData.id}`}
+                    url={`/exams/edit/${examData.id}`}
                     dimensions={{ width: '106px', height: ' 41px' }}
                   >
                     Editar
@@ -259,7 +259,7 @@ const ExamPage = () => {
                 ) : (
                   <div className={styles.modalContent}>
                     <div className={styles.lottie}>
-                      <Lottie animationData={warning} />
+                      <Lottie animationData={warning} loop={false}/>
                     </div>
                     <h1>
                       Você realmente deseja excluir o teste “{examData.jobTitle}

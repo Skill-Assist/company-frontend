@@ -7,6 +7,7 @@ import Image from 'next/image';
 interface Props {
   label?: string;
   required?: boolean;
+  value?: string;
   options: string[];
   onChange: (value: string) => void;
 }
@@ -14,6 +15,7 @@ interface Props {
 const SelectField: FC<Props> = ({
   label,
   required,
+  value,
   options,
   onChange,
 }: Props) => {
@@ -29,6 +31,7 @@ const SelectField: FC<Props> = ({
         id={label}
         onChange={(e) => onChange(e.target.value)}
         ref={selectRef}
+        value={value}
       >
         <option value="">Selecionar</option>
         {options.map((option) => (

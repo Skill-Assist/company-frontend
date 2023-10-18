@@ -170,13 +170,15 @@ const examService = {
 
   updateExam: async (
     updatedExam: {
-      subtitle?: string | null;
-      level?: string | null;
-      dateToArchive?: Date | null;
+      jobTitle?: string | null;
+      jobLevel?: string | null;
+      description?: string | null;
+      durationInHours?: number | null;
+      submissionInHours?: number | null;
       showScore?: boolean | null;
       isPublic?: boolean | null;
     },
-    examId: number
+    examId: string
   ) => {
     let config = {
       headers: {

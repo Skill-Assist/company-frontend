@@ -13,6 +13,7 @@ interface Props {
   examSubmissionDay?: number;
   examShowScore?: boolean;
   examIsPublic?: boolean;
+  editing?: boolean;
 }
 
 const ExamPreview: FC<Props> = ({
@@ -23,6 +24,7 @@ const ExamPreview: FC<Props> = ({
   examSubmissionDay,
   examShowScore,
   examIsPublic,
+  editing,
 }: Props) => {
   let readableDuration = '';
 
@@ -103,7 +105,9 @@ const ExamPreview: FC<Props> = ({
         </div>
       </div>
 
-      <button type='submit' form='createExam'>Criar teste</button>
+      <button type="submit" form={editing ? 'updateExam' : 'createExam'}>
+        {editing ? 'Salvar alterações' : 'Criar teste'}
+      </button>
     </div>
   );
 };

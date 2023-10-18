@@ -48,8 +48,6 @@ const suggestDescription = async (
     jobLevel,
   });
 
-  console.log(response);
-
   if (response.status >= 200 && response.status < 300) {
     setDescription(response.data);
     setDescriptionLoading(false);
@@ -89,7 +87,7 @@ const CreateExam: FC = () => {
       if (jobTitle !== '' && jobLevel !== '' && description === '') {
         suggestDescription(
           jobTitle,
-          jobLevel,
+          jobLevel.toLowerCase(),
           setDescription,
           setDescriptionLoading
         );
@@ -99,7 +97,7 @@ const CreateExam: FC = () => {
         if (jobTitle !== '' && jobLevel !== '' && description === '') {
           suggestDescription(
             jobTitle,
-            jobLevel,
+            jobLevel.toLowerCase(),
             setDescription,
             setDescriptionLoading
           );
@@ -156,7 +154,7 @@ const CreateExam: FC = () => {
 
     const exam = {
       jobTitle,
-      jobLevel,
+      jobLevel: jobLevel.toLowerCase(),
       description,
       durationInHours,
       submissionInHours,
@@ -193,7 +191,7 @@ const CreateExam: FC = () => {
           <div className={styles.container}>
             <div className={styles.content}>
               <div className={styles.intro}>
-                <h1 onClick={() => setShowModal(true)}>
+                <h1>
                   Vamos criar um novo teste!
                 </h1>
                 <p>Para isso, precisamos de algumas informações. </p>
@@ -367,7 +365,7 @@ const CreateExam: FC = () => {
           >
             <div className={styles.modalContent}>
               <div className={styles.lottie}>
-                <Lottie animationData={examCreated} />
+                <Lottie animationData={examCreated} loop={false}/>
               </div>
               <h1 onClick={() => setShowModal(false)}>
                 Seu novo teste foi criado!

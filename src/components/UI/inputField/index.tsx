@@ -12,7 +12,7 @@ interface Props {
   helperText?: string;
   rows?: number;
   setState: (value: any) => void;
-  value?: string;
+  value?: string | number;
   counter?: boolean;
   innerText?: string;
 }
@@ -53,6 +53,7 @@ const InputField: FC<Props> = ({
               }
             }}
             style={{ height: '56px' }}
+            defaultValue={value}
           />
           {innerText && <span className={styles.innerText}>{innerText}</span>}
         </>
@@ -66,7 +67,7 @@ const InputField: FC<Props> = ({
           onChange={(event) => {
             setState(event.target.value);
           }}
-          value={value}
+          defaultValue={value}
         />
       ) : (
         <input
@@ -75,15 +76,21 @@ const InputField: FC<Props> = ({
           required={required}
           placeholder={placeholder}
           maxLength={max}
-          style={{ height: '56px' }}
+          style={{height: '56px'}}
           onChange={(event) => {
             setState(event.target.value);
           }}
+          defaultValue={value}
         />
       )}
       <div>
         <p>{helperText}</p>
-        <p>{counter && max && `${value?.length}/${max}`}</p>
+        <p>
+          {counter &&
+            max &&
+            typeof value === 'string' &&
+            `${value?.length}/${max}`}
+        </p>
       </div>
     </div>
   );

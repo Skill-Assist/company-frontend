@@ -20,6 +20,7 @@ import styles from './styles.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import Button from '@/components/UI/button';
 import { CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const previewDropIn = {
   hidden: {
@@ -48,8 +49,6 @@ const suggestDescription = async (
     jobLevel,
   });
 
-  console.log(response);
-
   if (response.status >= 200 && response.status < 300) {
     setDescription(response.data);
     setDescriptionLoading(false);
@@ -64,7 +63,10 @@ const suggestDescription = async (
 };
 
 const EditExam: FC = () => {
-  const [createLoading, setCreateLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [examData, setExamData] = useState<Exam>();
+
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [descriptionLoading, setDescriptionLoading] = useState(false);
 
   const [jobTitle, setJobTitle] = useState('');
@@ -79,9 +81,125 @@ const EditExam: FC = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const [examCreatedData, setExamCreatedData] = useState<Exam>();
+  const [examUpdatedData, setExamUpdatedData] = useState<Exam>();
+
+  const router = useRouter();
 
   let timer: NodeJS.Timeout | undefined;
+
+  const handleIsPublicClick = (event: any): void => {
+    if (event.target.value === 'Sim') {
+      setIsPublic(true);
+    } else {
+      setIsPublic(false);
+    }
+  };
+
+  const handleShowScoreClick = (event: any): void => {
+    event.preventDefault();
+    if (event.target.value === 'Sim') {
+      setShowScore(true);
+    } else {
+      setShowScore(false);
+    }
+  };
+
+  const fetchOwnExam = async () => {
+    const examId = router.query.examId;
+
+    if (examId && typeof examId === 'string') {
+      const response = await examService.getOwnExam(examId);
+
+      if (response.status >= 200 && response.status < 300) {
+        setExamData(response.data);
+        setJobTitle(response.data.jobTitle[0].toUpperCase() + response.data.jobTitle.slice(1));
+        setLevel(
+          response.data.jobLevel[0].toUpperCase() +
+            response.data.jobLevel.slice(1)
+        );
+        setDescription(response.data.description);
+        setExamDuration(
+          `${Math.floor(response.data.durationInHours) < 10 && '0'}${Math.floor(
+            response.data.durationInHours
+          )}:${Math.floor(
+            (response.data.durationInHours % 1) * 60
+          ).toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+          })}`
+        );
+        setExamSubmissionDays(response.data.submissionInHours / 24);
+        setShowScore(response.data.showScore);
+        setIsPublic(response.data.isPublic);
+        setPageLoading(false);
+      } else {
+        toast.error('Erro ao buscar teste!');
+        setPageLoading(false);
+      }
+    }
+  };
+
+  const updateExamHandler = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !jobTitle ||
+      !jobLevel ||
+      !description ||
+      !examDuration ||
+      !examSubmissionDays
+    ) {
+      toast.error('Preencha todos os campos', {
+        duration: 3000,
+        position: 'top-center',
+      });
+      return;
+    }
+    setUpdateLoading(true);
+
+    const durationInHours = +(
+      Number(examDuration.split(':')[0]) +
+      Number(examDuration.split(':')[1]) / 60
+    ).toFixed(2);
+
+    const submissionInHours = examSubmissionDays * 24;
+
+    const exam = {
+      jobTitle,
+      jobLevel: jobLevel.toLowerCase(),
+      description,
+      durationInHours,
+      submissionInHours,
+      showScore,
+      isPublic,
+    };
+
+    const response = await examService.updateExam(
+      exam,
+      router.query.examId as string
+    );
+
+    console.log(response)
+
+    if (response.status >= 200 && response.status < 300) {
+      localStorage.setItem('examId', response.data.id);
+      setUpdateLoading(false);
+      setExamUpdatedData(response.data);
+      setShowModal(true);
+      return;
+    } else {
+      setUpdateLoading(false);
+      toast.error('Erro ao criar teste', {
+        duration: 3000,
+        position: 'top-center',
+      });
+      return;
+    }
+  };
+
+  useEffect(() => {
+    fetchOwnExam();
+  }, [router.query.examId]);
 
   useEffect(() => {
     if (jobLevel !== prevJobLevel.current) {
@@ -89,7 +207,7 @@ const EditExam: FC = () => {
       if (jobTitle !== '' && jobLevel !== '' && description === '') {
         suggestDescription(
           jobTitle,
-          jobLevel,
+          jobLevel.toLowerCase(),
           setDescription,
           setDescriptionLoading
         );
@@ -112,80 +230,10 @@ const EditExam: FC = () => {
     };
   }, [jobTitle, jobLevel]);
 
-  const handleIsPublicClick = (event: any): void => {
-    if (event.target.value === 'Sim') {
-      setIsPublic(true);
-    } else {
-      setIsPublic(false);
-    }
-  };
-
-  const handleShowScoreClick = (event: any): void => {
-    event.preventDefault();
-    if (event.target.value === 'Sim') {
-      setShowScore(true);
-    } else {
-      setShowScore(false);
-    }
-  };
-
-  const createExamHandler = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !jobTitle ||
-      !jobLevel ||
-      !description ||
-      !examDuration ||
-      !examSubmissionDays
-    ) {
-      toast.error('Preencha todos os campos', {
-        duration: 3000,
-        position: 'top-center',
-      });
-      return;
-    }
-    setCreateLoading(true);
-
-    const durationInHours = +(
-      Number(examDuration.split(':')[0]) +
-      Number(examDuration.split(':')[1]) / 60
-    ).toFixed(2);
-
-    const submissionInHours = examSubmissionDays * 24;
-
-    const exam = {
-      jobTitle,
-      jobLevel,
-      description,
-      durationInHours,
-      submissionInHours,
-      showScore,
-      isPublic,
-    };
-
-    const response = await examService.createExam(exam);
-
-    if (response.status >= 200 && response.status < 300) {
-      localStorage.setItem('examId', response.data.id);
-      setCreateLoading(false);
-      setExamCreatedData(response.data);
-      setShowModal(true);
-      return;
-    } else {
-      setCreateLoading(false);
-      toast.error('Erro ao criar teste', {
-        duration: 3000,
-        position: 'top-center',
-      });
-      return;
-    }
-  };
-
   return (
     <>
       <Layout sidebar header>
-        {createLoading ? (
+        {updateLoading || pageLoading || !examData ? (
           <div className="loadingContainer">
             <CircularProgress style={{ color: 'var(--primary)' }} />
           </div>
@@ -193,17 +241,16 @@ const EditExam: FC = () => {
           <div className={styles.container}>
             <div className={styles.content}>
               <div className={styles.intro}>
-                <h1 onClick={() => setShowModal(true)}>
-                  Vamos criar um novo teste!
+                <h1 onClick={() => console.log(examData)}>
+                  Editando o teste "{examData.jobTitle[0].toUpperCase() + examData.jobTitle.slice(1)}"{" "}
                 </h1>
-                <p>Para isso, precisamos de algumas informações. </p>
                 <p>
-                  Ah, algumas delas serão geradas automaticamente e você poderá
-                  editá-las!
+                  Você pode alterar as informações do teste sempre que quiser
+                  antes dele ser publicado!
                 </p>
               </div>
 
-              <form onSubmit={createExamHandler} id="createExam">
+              <form onSubmit={updateExamHandler} id="updateExam">
                 <p className={styles.subtitle}>
                   Informações da vaga em que o teste será usado:
                 </p>
@@ -221,6 +268,7 @@ const EditExam: FC = () => {
                   <SelectField
                     label="Nível da vaga"
                     required
+                    value={jobLevel}
                     options={[
                       'Estágio',
                       'Trainee',
@@ -257,6 +305,7 @@ const EditExam: FC = () => {
                       required
                       helperText="Tempo de resposta após o início do teste."
                       setState={setExamDuration}
+                      value={examDuration}
                     />
                     <InputField
                       type="number"
@@ -266,6 +315,7 @@ const EditExam: FC = () => {
                       helperText="Prazo para o candidato responder ao teste após aceitar o convite (finalizando ás 23:59 do último dia)."
                       setState={setExamSubmissionDays}
                       innerText={examSubmissionDays === 1 ? 'dia' : 'dias'}
+                      value={examSubmissionDays}
                     />
                   </div>
                   <div className={styles.field}>
@@ -344,12 +394,13 @@ const EditExam: FC = () => {
             >
               <ExamPreview
                 examTitle={jobTitle}
+                examLevel={jobLevel}
                 examDescription={description}
                 examDuration={examDuration}
                 examSubmissionDay={examSubmissionDays}
-                examLevel={jobLevel}
                 examShowScore={showScore}
                 examIsPublic={isPublic}
+                editing
               />
             </motion.div>
           </div>
@@ -367,15 +418,15 @@ const EditExam: FC = () => {
           >
             <div className={styles.modalContent}>
               <div className={styles.lottie}>
-                <Lottie animationData={examCreated} />
+                <Lottie animationData={examCreated} loop={false}/>
               </div>
               <h1 onClick={() => setShowModal(false)}>
-                Seu novo teste foi criado!
+                Seu teste foi editado!
               </h1>
               <p>
                 Por enquanto seu teste{' '}
-                <span>“{examCreatedData?.jobTitle}”</span> está como{' '}
-                <span>RASCUNHO</span> e ainda pode ser editado. Para publicá-lo
+                <span>“{examUpdatedData?.jobTitle}”</span> está como{' '}
+                <span>RASCUNHO</span> e pode ser editado novamente. Para publicá-lo
                 e começar a convidar candidatos, basta acessá-lo na página “Seus
                 testes” e alterar seu status. Agora, você pode começar a criar
                 as seções do seu teste!
@@ -384,7 +435,7 @@ const EditExam: FC = () => {
                 fontColor="var(--neutral-0)"
                 backgroundColor="var(--primary)"
                 type="link"
-                url={`/exams/${examCreatedData?.id}`}
+                url={`/exams/${examUpdatedData?.id}`}
               >
                 Vamos lá!
               </Button>

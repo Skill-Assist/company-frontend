@@ -43,13 +43,13 @@ const Button: FC<Props> = ({
           style={{
             color: fontColor,
             backgroundColor: backgroundColor,
-            border: borderColor ? `1px solid ${borderColor}` : 'none',
+            border: borderColor ? `.1rem solid ${borderColor}` : 'none',
             boxShadow: boxShadow
-              ? '4px 4px 25px 0px rgba(40, 89, 67, 0.25)'
+              ? '.4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25)'
               : 'none',
-            width: dimensions?.width ? dimensions.width : '164px',
-            height: dimensions?.height ? dimensions.height : '41px',
-            fontSize: fontSize ? fontSize : '16px',
+            width: dimensions?.width ? dimensions.width : '16.4rem',
+            height: dimensions?.height ? dimensions.height : '4.1rem',
+            fontSize: fontSize ? fontSize : '1.6rem',
             fontWeight: fontWeight ? fontWeight : '600',
           }}
 
@@ -65,13 +65,13 @@ const Button: FC<Props> = ({
           style={{
             color: fontColor,
             backgroundColor: backgroundColor,
-            width: dimensions?.width ? dimensions.width : '164px',
-            height: dimensions?.height ? dimensions.height : '41px',
-            border: borderColor ? `1px solid ${borderColor}` : 'none',
+            width: dimensions?.width ? dimensions.width : '16.4rem',
+            height: dimensions?.height ? dimensions.height : '4.1rem',
+            border: borderColor ? `.1rem solid ${borderColor}` : 'none',
             boxShadow: boxShadow
-              ? '4px 4px 25px 0px rgba(40, 89, 67, 0.25)'
+              ? '.4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25)'
               : 'none',
-            fontSize: fontSize ? fontSize : '16px',
+            fontSize: fontSize ? fontSize : '1.6rem',
             fontWeight: fontWeight ? fontWeight : '600',
           }}
           href={url ? url : '#'}

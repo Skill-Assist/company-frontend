@@ -11,13 +11,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   transition: all 400ms ease;
 }
 
 .withHeader{
-  height: calc(100vh - 82px);
+  height: calc(100vh - 8.2rem);
 }
 
 .noHeader{

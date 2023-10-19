@@ -5,32 +5,36 @@
 
   header {
     h1 {
-      margin-left: 80px;
+      margin-left: 8.0rem;
       color: var(--primary);
-      font-size: 35px;
+      font-size: 3.5rem;
       font-weight: 600;
-      margin-bottom: 15px;
+      margin-bottom: 1.5rem;
+
+      span {
+        font-size: 3.5rem
+      }
     }
   }
 }
 
 .examInfo {
   position: relative;
-  padding: 0 80px 40px;
+  padding: 0 8.0rem 4.0rem;
 
   opacity: 1;
-  max-height: 110px;
+  max-height: 11.0rem;
   overflow-y: hidden;
   transition: all 1000ms ease;
 
-  border-radius: 0px 0px 40px 40px;
+  border-radius: .0rem .0rem 4.0rem 4.0rem;
   background: var(--neutral-75);
-  box-shadow: 0px 11px 30px -27px var(--primary);
+  box-shadow: .0rem 1.1rem 3.0rem -2.7rem var(--primary);
 
   ul {
     display: flex;
     flex-direction: column;
-    gap: 11px;
+    gap: 1.1rem;
     max-width: 50%;
 
     li {
@@ -42,15 +46,15 @@
       span {
         color: var(--primary);
         font-weight: 500;
-        margin-left: 10px;
+        margin-left: 1.0rem;
       }
     }
   }
 }
 
 .open {
-  margin-top: 15px;
-  max-height: 1000px;
+  margin-top: 1.5rem;
+  max-height: 100.0rem;
   opacity: 1;
   transition: all 1000ms ease;
 }
@@ -59,19 +63,19 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 3.0rem;
 }
 
 .statusContainer {
   display: flex;
   flex-direction: column;
-  width: 260px;
+  width: 26.0rem;
 
   div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 1.0rem;
 
     p {
       color: #000;
@@ -94,7 +98,7 @@
   div {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1.0rem;
     color: var(--neutral-500);
     max-width: 50%;
 
@@ -109,18 +113,18 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 7px;
-  margin-top: 30px;
+  gap: .7rem;
+  margin-top: 3.0rem;
 
   button {
     color: var(--neutral-0);
     text-align: center;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 600;
 
     border: none;
-    border-radius: 5px;
-    box-shadow: 4px 4px 25px 0px rgba(40, 89, 67, 0.25);
+    border-radius: .5rem;
+    box-shadow: .4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25);
   }
 }
 
@@ -130,13 +134,13 @@
   left: 50%;
   transform: translateX(-50%);
   width: 10%;
-  height: 50px;
+  height: 5.0rem;
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
-    font-size: 27px !important;
+    font-size: 2.7rem !important;
     fill: rgba(0, 0, 0, 0.54) !important;
     cursor: pointer;
   }
@@ -149,7 +153,7 @@
   justify-content: center;
 
   div {
-    height: 176px;
+    height: 17.6rem;
   }
 }
 
@@ -158,17 +162,17 @@
 
   h1 {
     color: var(--primary);
-    font-size: 30px;
+    font-size: 3.0rem;
     font-weight: 700;
     line-height: 186.4%;
-    margin-bottom: 10px;
+    margin-bottom: 1.0rem;
   }
 
   p {
     color: var(--secondary-3);
-    font-size: 18px;
+    font-size: 1.8rem;
     line-height: 186.4%;
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
   }
 
   div {
@@ -176,7 +180,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 1.5rem;
   }
 }
 
@@ -185,11 +189,11 @@
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 1.5rem;
 
   li {
     position: relative;
-    font-size: 18px;
+    font-size: 1.8rem;
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
@@ -202,7 +206,7 @@
 
     &:after {
       position: absolute;
-      bottom: -10px;
+      bottom: -1.0rem;
       left: 0;
       margin: auto;
       width: 0%;
@@ -210,7 +214,7 @@
       color: transparent;
       background: var(--primary);
       z-index: -1;
-      height: 2px;
+      height: .2rem;
     }
 
     &:hover:after {
@@ -235,12 +239,12 @@
 }
 
 .switchStatusModalContent {
-  padding: 10px 70px;
+  padding: 1.0rem 7.0rem;
 
   h1 {
     color: var(--primary);
     text-align: center;
-    font-size: 30px;
+    font-size: 3.0rem;
     font-weight: 700;
     line-height: 186.4%;
   }
@@ -248,7 +252,7 @@
   .status {
     color: var(--secondary-3);
     text-align: center;
-    font-size: 16px;
+    font-size: 1.6rem;
     line-height: 186.4%;
 
     span {
@@ -258,43 +262,43 @@
 
   .secondLine {
     color: var(--secondary-3);
-    font-size: 18px;
+    font-size: 1.8rem;
     line-height: 186.4%;
     text-align: center;
 
     span {
       color: var(--primary-4);
-      font-size: 18px;
+      font-size: 1.8rem;
       font-weight: 600;
       line-height: 186.4%;
     }
   }
 
   .changes {
-    border-radius: 10px;
-    border: 1px solid rgba(94, 88, 107, 0.27);
+    border-radius: 1.0rem;
+    border: .1rem solid rgba(94, 88, 107, 0.27);
     background: var(--neutral-75);
-    margin-bottom: 10px;
+    margin-bottom: 1.0rem;
 
     ul {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      padding: 15px 40px;
+      gap: .7rem;
+      padding: 1.5rem 4.0rem;
       width: fit-content;
 
       li {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 1.0rem;
 
         p {
           color: var(--secondary-3);
-          font-size: 14px;
+          font-size: 1.4rem;
           line-height: 186.4%;
 
           span {
-            font-size: 14px;
+            font-size: 1.4rem;
             font-weight: 500;
             line-height: 186.4%;
           }
@@ -308,18 +312,18 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-left: 30px;
+  gap: 1.0rem;
+  margin-left: 3.0rem;
 
   .label {
     color: var(--secondary-3);
-    font-size: 14px;
+    font-size: 1.4rem;
     line-height: 186.4%;
   }
 
   .checkboxContainer {
     position: relative;
-    font-size: 22px;
+    font-size: 2.2rem;
     transition: 300ms;
     cursor: pointer;
 
@@ -344,20 +348,20 @@
   .checkmark {
     transition: 300ms;
     display: block;
-    height: 22px;
-    width: 22px;
-    border: 3px solid var(--primary-4);
-    border-radius: 2px;
+    height: 2.2rem;
+    width: 2.2rem;
+    border: .3rem solid var(--primary-4);
+    border-radius: .2rem;
 
     &::after {
       content: '';
       display: none;
       position: absolute;
-      left: 7px;
-      width: 5px;
-      height: 10px;
+      left: .7rem;
+      width: .5rem;
+      height: 1.0rem;
       border: solid white;
-      border-width: 0 3px 3px 0;
+      border-width: 0 .3rem .3rem 0;
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg);
@@ -371,10 +375,10 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin: 0px 30px 10px;
+  margin: .0rem 3.0rem 1.0rem;
 
   span {
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 600;
     line-height: 186.4%;
     text-align: center;
@@ -384,7 +388,7 @@
 
   p {
     color: var(--secondary-3);
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 500;
     line-height: 186.4%;
     
@@ -398,16 +402,16 @@
 .noPendingExams {
   color: var(--secondary-3);
   text-align: center;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 500;
   line-height: 186.4%;
-  padding: 10px 30px;
+  padding: 1.0rem 3.0rem;
 }
 
 .actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }

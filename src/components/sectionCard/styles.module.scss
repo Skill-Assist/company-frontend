@@ -1,0 +1,52 @@
+.section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2.4rem;
+  margin-bottom: 3rem;
+  border-radius: 10px;
+  border: 2px solid rgb(40, 89, 67, 0.3);
+  box-shadow: 0px 0px 9px 3px rgb(40, 89, 67, 0.3);
+}
+
+.cardHeader {
+  h3 {
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+}
+
+.formsContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2rem;
+}
+
+.firstRow {
+  display: grid;
+  grid-template-columns: 5.1fr 2.2fr 2.5fr;
+  gap: 5.8rem;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  line-height: 200%;
+  
+  
+  p {
+    color: var(--primary);
+    font-weight: 500;
+    
+    span {
+      color: var(--neutral-500);
+      font-weight: 400;
+      margin-right: 0.4rem;
+    }
+  }
+}

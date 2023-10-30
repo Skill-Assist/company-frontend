@@ -1,7 +1,7 @@
-import { SectionToAnswerSheet } from "@/types/sectionToAnswerSheet";
-import axios from "axios";
-import cookie from "react-cookies";
-import { toast } from "react-hot-toast";
+import { SectionToAnswerSheet } from '@/types/sectionToAnswerSheet';
+import axios from 'axios';
+import cookie from 'react-cookies';
+import { toast } from 'react-hot-toast';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,7 +17,7 @@ const sectionService = {
   ) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -31,11 +31,14 @@ const sectionService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -58,7 +61,7 @@ const sectionService = {
   ) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -72,11 +75,14 @@ const sectionService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -88,7 +94,7 @@ const sectionService = {
   getOwnSection: async (sectionId: string) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -101,11 +107,14 @@ const sectionService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);
@@ -119,7 +128,7 @@ const sectionService = {
   ) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${cookie.load("token")}`,
+        Authorization: `Bearer ${cookie.load('token')}`,
       },
     };
     try {
@@ -141,11 +150,46 @@ const sectionService = {
       const statusCode = error.response.data.statusCode;
       const message = error.response.data.message;
 
-      if (statusCode === 418 || message.includes("Invalid token")) {
-        cookie.remove("token");
-        toast.error("Erro de conexão. Verifique sua internet e tente novamente...", {
-          icon: "📶",
-        });
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
+        setTimeout(() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+        }, 2000);
+      }
+      return error.response;
+    }
+  },
+
+  suggestSections: async (examId: string) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${cookie.load('token')}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${API_URL}/section/suggestDescription?examId=${examId}`,
+        config
+      );
+      return response;
+    } catch (error: any) {
+      const statusCode = error.response.data.statusCode;
+      const message = error.response.data.message;
+
+      if (statusCode === 418 || message.includes('Invalid token')) {
+        cookie.remove('token');
+        toast.error(
+          'Erro de conexão. Verifique sua internet e tente novamente...',
+          {
+            icon: '📶',
+          }
+        );
         setTimeout(() => {
           window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
         }, 2000);

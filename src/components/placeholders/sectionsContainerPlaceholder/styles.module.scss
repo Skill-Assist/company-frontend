@@ -6,51 +6,41 @@
   height: 100%;
   width: 100%;
   gap: 10px;
+  margin-top: 3rem;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 30px;
   gap: 10px;
+  text-align: center;
 
-  h1{
-    font-size: 2rem;
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
     color: var(--primary);
   }
 
-  p{
-    font-size: 1.2rem;
-    color: var(--secondary-2);
-  }
-
-  button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 300px;
-    height: 50px;
-    border-radius: 10px;
-    background-color: var(--primary);
-    color: var(--neutral-0);
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-    border: none;
-
-    &:hover{
-      scale: 1.05;
+  p {
+    font-size: 2rem;
+    color: var(--primary-4);
+    font-weight: 500;
+    line-height: 150.9%;
+    
+    span {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 150.9%;
     }
   }
 }
 
 .view {
-  height: 50%;
-  width: 50%;
+  height: 36rem;
+  width: 36rem;
   position: relative;
 
   div {

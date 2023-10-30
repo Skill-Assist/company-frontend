@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 import Layout from '@/components/layout';
 import QuestionsContainer from '@/components/viewContainers/questionsContainer';
-import SectionSideBar from '@/components/sidebars/sectionSideBar';
+import SectionSideBar from '@/components/sectionSideBar';
 import Modal from '@/components/modal';
 
 import sectionService from '@/services/sectionService';

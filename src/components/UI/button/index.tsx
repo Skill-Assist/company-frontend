@@ -45,7 +45,7 @@ const Button: FC<Props> = ({
             backgroundColor: backgroundColor,
             border: borderColor ? `.1rem solid ${borderColor}` : 'none',
             boxShadow: boxShadow
-              ? '.4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25)'
+              ? '.4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25)'
               : 'none',
             width: dimensions?.width ? dimensions.width : '16.4rem',
             height: dimensions?.height ? dimensions.height : '4.1rem',
@@ -69,7 +69,7 @@ const Button: FC<Props> = ({
             height: dimensions?.height ? dimensions.height : '4.1rem',
             border: borderColor ? `.1rem solid ${borderColor}` : 'none',
             boxShadow: boxShadow
-              ? '.4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25)'
+              ? '.4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25)'
               : 'none',
             fontSize: fontSize ? fontSize : '1.6rem',
             fontWeight: fontWeight ? fontWeight : '600',

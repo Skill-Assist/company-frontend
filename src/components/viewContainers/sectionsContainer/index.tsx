@@ -1,45 +1,68 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
-import { Tooltip } from '@nextui-org/react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { BsFillTrashFill } from 'react-icons/bs';
-import { AiOutlinePlus, AiOutlineQuestionCircle } from 'react-icons/ai';
+import Image from 'next/image';
 
-import SectionsContainerPlaceholder from '../../placeholders/sectionsContainerPlaceholder';
+import Plus from '@public/icons/mui/plus.svg';
+import DisablePlus from '@public/icons/mui/disablePlus.svg';
+
+import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
+import Button from '@/components/UI/button';
+import SectionForm from '@/components/sectionForm';
 
 import sectionService from '@/services/sectionService';
 
 import { Section } from '@/types/section';
 
+import { CircularProgress } from '@mui/material';
+
 import styles from './styles.module.scss';
+import SectionCard from '@/components/sectionCard';
 
 interface Props {
   sections: Section[] | undefined;
   examId: number;
   examDuration: number;
   onCreateSection: () => void;
+  headerOpen: boolean;
 }
 
 const dropIn = {
   hidden: {
-    y: '-100vh',
     opacity: 0,
   },
   visible: {
-    y: '0',
     opacity: 1,
-    transition: {
-      duration: 0.1,
-      type: 'spring',
-      damping: 25,
-      stiffness: 500,
-    },
+    duration: 0.4,
   },
   exit: {
-    y: '100vh',
     opacity: 0,
   },
+};
+
+const fetchSectionsSuggestions = async (
+  examId: string,
+  setSectionsSuggestions: (value: Section[]) => void,
+  setSuggestionsLoading: (value: boolean) => void
+) => {
+  setSuggestionsLoading(true);
+
+  const response = await sectionService.suggestSections(examId);
+
+  console.log(response);
+
+  if (response.status >= 200 && response.status < 300) {
+    setSectionsSuggestions(response.data);
+    setSuggestionsLoading(false);
+  } else {
+    toast.error('Erro ao sugerir seções', {
+      duration: 3000,
+      position: 'top-center',
+    });
+    setSuggestionsLoading(false);
+  }
 };
 
 const SectionsContainer: FC<Props> = ({
@@ -47,267 +70,173 @@ const SectionsContainer: FC<Props> = ({
   sections,
   examDuration,
   onCreateSection,
+  headerOpen,
 }: Props) => {
   const [newSection, setNewSection] = useState(false);
-  const [sectionName, setSectionName] = useState('');
-  const [sectionDescription, setSectionDescription] = useState('');
-  const [sectionWeight, setSectionWeight] = useState(0);
-  const [sectionDuration, setSectionDuration] = useState(0);
-  const [remainingWeight, setRemainingWeight] = useState(1);
-  const [remainingDuration, setRemainingDuration] = useState(examDuration);
+
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const [sectionsSuggestions, setSectionsSuggestions] = useState<
+    {
+      name: string;
+      description: string;
+    }[]
+  >();
 
   useEffect(() => {
-    let totalWeight = 0;
-    let totalDuration = 0;
-
-    if (sections) {
-      totalWeight = sections.reduce(
-        (total, section) => total + Number(section.weight),
-        0
+    if (!sections || sections.length === 0) {
+      console.log('oi');
+      fetchSectionsSuggestions(
+        examId.toString(),
+        setSectionsSuggestions,
+        setSuggestionsLoading
       );
-
-      totalDuration = sections.reduce(
-        (total, section) => total + Number(section.durationInHours),
-        0
-      );
-    }
-
-    if (sectionWeight) {
-      totalWeight = +totalWeight + sectionWeight / 100;
-    }
-
-    if (sectionDuration) {
-      totalDuration = +totalDuration + sectionDuration;
-    }
-
-    setRemainingWeight(1 - totalWeight);
-    setRemainingDuration(examDuration - totalDuration);
-  }, [sectionWeight, sectionDuration, sections, examDuration]);
-
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const newSection = {
-      name: sectionName,
-      description: sectionDescription,
-      weight: sectionWeight / 100,
-      durationInHours: sectionDuration,
-    };
-
-    const response = await sectionService.createSection(examId, newSection);
-
-    if (response.status >= 200 && response.status < 300) {
-      toast.success('Seção criada com sucesso!', {
-        duration: 3000,
-        position: 'top-center',
-      });
-      setSectionName('');
-      setSectionDescription('');
-      setSectionWeight(0);
-      setSectionDuration(0);
-      setNewSection(false);
-
-      onCreateSection();
     } else {
-      toast.error('Erro ao criar seção', {
-        duration: 3000,
-        position: 'top-center',
-      });
+      setSectionsSuggestions(undefined);
     }
-  };
+  }, []);
 
   return (
     <div className={styles.container}>
-      <>
-        <div className={styles.sectionsContainer}>
-          <div className={styles.sectionContainerHeader}>
-            {sections && sections.length > 0 && (
-              <>
-                <button onClick={() => setNewSection(true)}>
-                  Nova seção <AiOutlinePlus size={25} />
-                </button>
-              </>
+      <div className={styles.sectionsContainer}>
+        <div className={styles.sectionContainerHeader}>
+          <h2 onClick={() => console.log(sectionsSuggestions)}>
+            Nós oferecemos um sistema de recomendação de{' '}
+            <span>seções prontas e personalizadas</span> para o objetivo do seu
+            teste, e que irão facilitar a navegação pelas questões!
+          </h2>
+          <Button
+            onClick={() => setNewSection(true)}
+            backgroundColor="var(--primary-4)"
+            fontColor="var(--neutral-0)"
+            fontSize="1.8rem"
+            fontWeight="400"
+            type="button"
+            dimensions={{ width: '25rem!important', height: '5rem' }}
+            disabled={(sectionsSuggestions && sectionsSuggestions.length > 0) || suggestionsLoading}
+          >
+            <div className={styles.newSectionBtn}>
+              <Image
+                src={
+                  sectionsSuggestions && sectionsSuggestions.length > 0
+                    ? DisablePlus
+                    : Plus
+                }
+                width={44}
+                height={44}
+                alt="plus_icon"
+                style={
+                  sectionsSuggestions && sectionsSuggestions.length > 0
+                    ? { borderColor: '#8C8895' }
+                    : {}
+                }
+              />
+              Criar nova seção
+            </div>
+          </Button>
+        </div>
+        <div
+          className={`${styles.sectionContent} ${
+            headerOpen ? styles.headerOpen : null
+          }`}
+        >
+          <AnimatePresence
+            initial={false}
+            mode="wait"
+            onExitComplete={() => null}
+          >
+            {suggestionsLoading ? (
+              <div className="loadingContainer">
+                <CircularProgress style={{ color: 'var(--primary)' }} />
+              </div>
+            ) : (
+              sectionsSuggestions &&
+              sectionsSuggestions.length > 0 &&
+              sectionsSuggestions.map((suggestion, index) => {
+                return (
+                  <SectionForm
+                    isSuggestion
+                    key={suggestion.name + index}
+                    sectionIndex={index}
+                    suggestionName={suggestion.name}
+                    suggestionDescription={suggestion.description}
+                    examDuration={examDuration}
+                    examId={examId}
+                    sections={sections}
+                    onCreateSection={onCreateSection}
+                    sectionsSuggestions={sectionsSuggestions}
+                    setSectionsSuggestions={setSectionsSuggestions}
+                  />
+                );
+              })
             )}
-          </div>
 
-          {/* MAP DE SECTIONS EXISTENTES */}
-          {sections &&
-            sections.length > 0 &&
-            sections.map((section, index) => {
-              return (
+            {/* FORMULÁRIO DE NOVA SECTION */}
+            {!suggestionsLoading && newSection && (
+              <motion.div
+                variants={dropIn}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <SectionForm
+                  key={Math.random()}
+                  sectionIndex={sections ? sections.length : 1}
+                  examDuration={examDuration}
+                  examId={examId}
+                  sections={sections}
+                  onCreateSection={onCreateSection}
+                  setNewSection={setNewSection}
+                />
+              </motion.div>
+            )}
+
+            {!suggestionsLoading &&
+              (newSection ||
+                (sectionsSuggestions && sectionsSuggestions?.length > 0)) &&
+              sections &&
+              sections.length > 0 && <div className={styles.divisor}>.</div>}
+
+            {/* MAP DE SECTIONS EXISTENTES */}
+            {!suggestionsLoading &&
+              sections &&
+              sections.length > 0 &&
+              sections.map((section, index) => {
+                return (
+                  <motion.div
+                    variants={dropIn}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    key={section.id}
+                  >
+                    <SectionCard
+                      section={section}
+                      index={index}
+                      examId={examId}
+                    />
+                  </motion.div>
+                );
+              })}
+            {/* PLACEHOLDER */}
+            {!suggestionsLoading &&
+              !newSection &&
+              sectionsSuggestions?.length === 0 &&
+              sections?.length === 0 && (
                 <motion.div
-                  className={styles.section}
+                  className={styles.placeholderContainer}
                   variants={dropIn}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  key={section.id}
                 >
-                  <div className={styles.cardHeader}>
-                    <h3>Seção {index + 1}</h3>
-                    <BsFillTrashFill
-                      className={styles.deleteIcon}
-                      size={20}
-                      fill="var(--warning)"
-                      onClick={() =>
-                        toast.loading('Feature em desenvolvimento', {
-                          duration: 3000,
-                          position: 'top-center',
-                        })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <div className={styles.formsContent}>
-                      <div>
-                        <div className={styles.infoBox}>
-                          <span>Nome da seção:</span>
-                          <p>{section.name}</p>
-                        </div>
-                        <div className={styles.infoBox}>
-                          <span>Descrição</span>
-                          <p>{section.description}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <div className={styles.infoBox}>
-                          <div>
-                            <span>Peso da seção</span>
-                            <p>{+section.weight * 100}%</p>
-                          </div>
-                        </div>
-                        <div className={styles.infoBox}>
-                          <span>Duração da seção</span>
-                          <p>
-                            {section.durationInHours > 1
-                              ? section.durationInHours + ' horas'
-                              : section.durationInHours + ' hora'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.buttonContainer}>
-                      <Link href={`/exams/${examId}/${section.id}`}>
-                        Ver Seção
-                      </Link>
-                    </div>
-                  </div>
+                  <SectionsContainerPlaceholder
+                    onClick={() => setNewSection(true)}
+                  />
                 </motion.div>
-              );
-            })}
-
-          {/* FORMULÁRIO DE NOVA SECTION */}
-          {newSection && (
-            <motion.div
-              className={styles.section}
-              variants={dropIn}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <div className={styles.cardHeader}>
-                <h3>Nova seção</h3>
-                <BsFillTrashFill
-                  className={styles.deleteIcon}
-                  size={20}
-                  fill="var(--warning)"
-                  onClick={() => setNewSection(false)}
-                />
-              </div>
-              <form onSubmit={submitHandler}>
-                <div className={styles.formsContent}>
-                  <div>
-                    <div className={styles.field}>
-                      <label>Nome da seção</label>
-                      <input
-                        required
-                        type="text"
-                        placeholder="Insira o nome..."
-                        value={sectionName}
-                        onChange={(e) => setSectionName(e.target.value)}
-                        minLength={3}
-                        maxLength={15}
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <label>Descrição</label>
-                      <textarea
-                        required
-                        placeholder="Insira a descrição..."
-                        minLength={15}
-                        maxLength={100}
-                        rows={1}
-                        value={sectionDescription}
-                        onChange={(e) => setSectionDescription(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className={styles.field}>
-                      <div>
-                        <label>Peso da seção (%)</label>
-                        <Tooltip
-                          className={styles.tooltip}
-                          content={
-                            'De 0 a 100, quantos porcentos da nota total você deseja que essa seção represente?'
-                          }
-                        >
-                          <AiOutlineQuestionCircle fill="var(--secondary-2)" />
-                        </Tooltip>
-                      </div>
-                      <input
-                        required
-                        type="number"
-                        max={sectionWeight + remainingWeight * 100}
-                        min={1}
-                        onChange={(e) =>
-                          setSectionWeight(Number(e.target.value))
-                        }
-                      />
-                      <span className={styles.remainingWeight}>
-                        {(remainingWeight * 100).toFixed(0)}% do peso total
-                        restante
-                      </span>
-                    </div>
-                    <div className={styles.field}>
-                      <label>Duração da seção (hrs)</label>
-                      <input
-                        required
-                        type="number"
-                        max={remainingDuration + sectionDuration}
-                        onChange={(e) =>
-                          setSectionDuration(Number(e.target.value))
-                        }
-                      />
-                      <span className={styles.remainingHours}>
-                        {Number.isInteger(remainingDuration) ? remainingDuration.toFixed(0) : remainingDuration.toFixed(2)} horas restantes
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.buttonContainer}>
-                  <button type="submit">Criar seção</button>
-                </div>
-              </form>
-            </motion.div>
-          )}
+              )}
+          </AnimatePresence>
         </div>
-      </>
-
-      {/* PLACEHOLDER */}
-      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-        {sections && sections?.length === 0 && !newSection && (
-          <motion.div
-            className={styles.placeholderContainer}
-            variants={dropIn}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <SectionsContainerPlaceholder onClick={() => setNewSection(true)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 };

@@ -26,6 +26,8 @@ import { Exam } from '@/types/exam';
 import styles from './styles.module.scss';
 import Button from '@/components/UI/button';
 import { CircularProgress } from '@mui/material';
+import InvitationContainer from '@/components/viewContainers/invitationContainer';
+import SectionsContainer from '@/components/viewContainers/sectionsContainer';
 
 const ExamPage = () => {
   const [pageLoading, setPageLoading] = useState(true);
@@ -171,8 +173,14 @@ const ExamPage = () => {
         <Layout sidebar header goBack>
           <div className={styles.container}>
             <header>
-              <h1 onClick={checkIfArchivableHandler}>
-                Teste <span>"{examData.jobTitle}"</span>
+              <h1>
+                Teste{' '}
+                <span>
+                  "
+                  {examData.jobTitle[0].toLocaleUpperCase() +
+                    examData.jobTitle.slice(1)}
+                  "
+                </span>
               </h1>
               <div className={`${styles.examInfo} ${open ? styles.open : ''}`}>
                 <div className={styles.firstRow}>
@@ -221,7 +229,6 @@ const ExamPage = () => {
                       type="button"
                       dimensions={{ width: '260px', height: '60px' }}
                       fontSize="20px"
-                      fontWeight="400"
                       onClick={checkIfArchivableHandler}
                     >
                       {examData.status === 'draft'
@@ -297,21 +304,20 @@ const ExamPage = () => {
                 </div>
               </div>
             </header>
-            {/* <div>
+            <>
               <nav>
                 <ul className={styles.stroke}>
-                  <li
-                    className={showSectionsPage ? styles.active : ''}
-                    onClick={() => setShowSectionsPage(true)}
-                  >
-                    Seções
+                  <li onClick={() => setShowSectionsPage(true)}>
+                    Seções do teste
                   </li>
+                  <li onClick={() => setShowSectionsPage(false)}>Candidatos</li>
                   <li
-                    className={!showSectionsPage ? styles.active : ''}
-                    onClick={() => setShowSectionsPage(false)}
-                  >
-                    Candidatos
-                  </li>
+                    className={
+                      showSectionsPage
+                        ? styles.sectionActive
+                        : styles.candidateActive
+                    }
+                  ></li>
                 </ul>
               </nav>
               {showSectionsPage ? (
@@ -320,11 +326,12 @@ const ExamPage = () => {
                   examDuration={examData.durationInHours}
                   examId={examData.id}
                   onCreateSection={fetchOwnExam}
+                  headerOpen={open}
                 />
               ) : (
                 <InvitationContainer />
               )}
-            </div> */}
+            </>
           </div>
         </Layout>
         <AnimatePresence

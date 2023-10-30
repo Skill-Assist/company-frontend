@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Logo from '@public/white_logo.svg';
-import Dashboard from '@public/icons/dashboard.svg';
-import Exams from '@public/icons/exams.svg';
-import Suport from '@public/icons/support.svg';
+import Dashboard from '@public/icons/mui/dashboard.svg';
+import Exams from '@public/icons/mui/exams.svg';
+import Suport from '@public/icons/mui/support.svg';
 
 import styles from './styles.module.scss';
 

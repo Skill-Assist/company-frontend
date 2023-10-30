@@ -3,7 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import Lottie from 'lottie-react';
+import Skeleton from 'react-loading-skeleton';
 
+import Button from '@/components/UI/button';
 import Layout from '@/components/layout';
 import ExamPreview from '@/components/examPreview';
 import SelectField from '@/components/UI/selectField';
@@ -16,10 +18,9 @@ import examService from '@/services/examService';
 
 import { Exam } from '@/types/exam';
 
-import styles from './styles.module.scss';
-import Skeleton from 'react-loading-skeleton';
-import Button from '@/components/UI/button';
 import { CircularProgress } from '@mui/material';
+
+import styles from './styles.module.scss';
 
 const previewDropIn = {
   hidden: {
@@ -162,6 +163,8 @@ const CreateExam: FC = () => {
       isPublic,
     };
 
+    console.log(exam);
+
     const response = await examService.createExam(exam);
 
     if (response.status >= 200 && response.status < 300) {
@@ -191,9 +194,7 @@ const CreateExam: FC = () => {
           <div className={styles.container}>
             <div className={styles.content}>
               <div className={styles.intro}>
-                <h1>
-                  Vamos criar um novo teste!
-                </h1>
+                <h1>Vamos criar um novo teste!</h1>
                 <p>Para isso, precisamos de algumas informações. </p>
                 <p>
                   Ah, algumas delas serão geradas automaticamente e você poderá
@@ -365,11 +366,9 @@ const CreateExam: FC = () => {
           >
             <div className={styles.modalContent}>
               <div className={styles.lottie}>
-                <Lottie animationData={examCreated} loop={false}/>
+                <Lottie animationData={examCreated} loop={false} />
               </div>
-              <h1 onClick={() => setShowModal(false)}>
-                Seu novo teste foi criado!
-              </h1>
+              <h1>Seu novo teste foi criado!</h1>
               <p>
                 Por enquanto seu teste{' '}
                 <span>“{examCreatedData?.jobTitle}”</span> está como{' '}

@@ -105,7 +105,7 @@ const Profile = () => {
 
   if (pageLoading) {
     return (
-      <Layout sidebar header active={10}>
+      <Layout sidebar header>
         <div className="loadingContainer">
           <TailSpin
             height="80"
@@ -122,22 +122,19 @@ const Profile = () => {
     );
   } else if (!user) {
     cookie.remove('token');
-    toast.error('Erro de conexão. Verifique sua internet e tente novamente...', {
-      icon: '📶',
-    });
+    toast.error(
+      'Erro de conexão. Verifique sua internet e tente novamente...',
+      {
+        icon: '📶',
+      }
+    );
     setTimeout(() => {
       window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
     }, 2000);
     return;
   } else
     return (
-      <Layout
-        header
-        sidebar
-        sidebarClosed
-        goBack
-        contentClassName={styles.p0}
-      >
+      <Layout header sidebar goBack>
         <header className={styles.header}>
           <div className={styles.bannner} />
           <div className={styles.mainInfos}>
@@ -147,7 +144,7 @@ const Profile = () => {
             >
               {!isEditing && (
                 <>
-                  <BiPencil size={30} className={styles.editIcon}/>
+                  <BiPencil size={30} className={styles.editIcon} />
                   <Image
                     src={logo !== '' ? logo : user.logo}
                     height={100}

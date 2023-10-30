@@ -1,0 +1,48 @@
+.section {
+  position: relative;
+  border-radius: 1rem;
+  border: 0.1rem solid var(--primary);
+  background-color: #eff0ef;
+  width: 100%;
+  padding: 2.4rem;
+}
+
+.cardHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h3 {
+    color: var(--primary);
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
+}
+
+.formsContent{
+  display: flex;
+  flex-direction: column;
+}
+
+.firstRow{
+  display: grid;
+  grid-template-columns: 4fr 2.5fr 2.5fr;
+  gap: 1.6rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2.2rem;
+}

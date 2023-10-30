@@ -1,16 +1,18 @@
 .button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
   background: var(--primary);
   color: var(--neutral-0);
-  box-shadow: .4rem .4rem 2.5rem .0rem rgba(40, 89, 67, 0.25);
+  box-shadow: .4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25);
   border: none;
   border-radius: .5rem;
 
   font-size: 1.6rem;
   font-weight: 600;
+  white-space: nowrap;
 
   cursor: pointer;
   transition: 400ms;
@@ -20,7 +22,14 @@
   }
 
   &:disabled {
-    background: #A8A8A8!important;
+    background: var(--bg_disabled)!important;
+    color: var(--font_disabled)!important;
     font-weight: 400!important;
+
+    cursor: not-allowed;
+
+    &:hover {
+      scale: 1;
+    }
   }
 }

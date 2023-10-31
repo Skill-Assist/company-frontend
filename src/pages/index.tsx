@@ -230,7 +230,7 @@ const Home = () => {
                 ) : (
                   <tr>
                     <td colSpan={3} style={{ textAlign: 'center' }}>
-                      <p style={{ color: 'var(--secondary-2)' }}>
+                      <p style={{ color: 'var(--cinza-4)' }}>
                         Nenhum candidato encontrado
                       </p>
                     </td>

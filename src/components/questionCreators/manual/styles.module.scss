@@ -1,13 +1,13 @@
 .container {
   height: 100%;
-  color: var(--secondary-2);
+  color: var(--cinza-4);
   overflow-y: scroll;
   padding-right: 10px;
 }
 
 .header {
   position: fixed;
-  background-color: var(--neutral-50);
+  background-color: var(--cinza-6);
   z-index: 1000;
   height: 42px;
   padding-bottom: 50px;
@@ -16,7 +16,7 @@
   h1 {
     font-size: 20px;
     font-weight: 600;
-    color: var(--secondary) !important;
+    color: var(--cinza-4) !important;
   }
 
   p {
@@ -36,53 +36,53 @@
     gap: 10px;
 
     h3 {
-      color: var(--secondary);
+      color: var(--cinza-4);
       font-weight: 500;
     }
 
     select {
       background: transparent;
       border: none;
-      border-bottom: 1px solid var(--neutral-100);
+      border-bottom: 1px solid var(--cinza-2);
       padding: 10px 5px;
       font-size: 16px;
-      color: var(--secondary-2);
+      color: var(--cinza-4);
       transition: 300ms;
       cursor: pointer;
 
       &:focus {
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
+        color: var(--green-1);
+        border-bottom: 1px solid var(--green-1);
       }
 
       option {
         padding: 5px;
 
         &:hover {
-          background-color: var(--primary-2);
+          background-color: var(--green-3);
         }
       }
     }
 
     input {
-      background: var(--neutral-0);
-      border: 1px solid var(--neutral-100);
+      background: var(--white);
+      border: 1px solid var(--cinza-2);
       border-radius: 5px;
       padding: 6px 4px;
       width: 40%;
       margin-right: 5px;
       font-size: 16px;
-      color: var(--secondary-2);
+      color: var(--cinza-4);
       transition: 300ms;
       cursor: pointer;
 
       &::placeholder {
-        color: var(--neutral-200);
+        color: var(--cinza-2);
       }
 
       &:focus {
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
+        color: var(--green-1);
+        border-bottom: 1px solid var(--green-1);
       }
     }
   }
@@ -96,12 +96,12 @@
   gap: 10px;
 
   h3 {
-    color: var(--secondary);
+    color: var(--cinza-4);
     font-weight: 500;
   }
 
   span {
-    color: var(--secondary-2) !important;
+    color: var(--cinza-4) !important;
   }
 }
 
@@ -113,7 +113,7 @@
   flex-direction: column;
 
   h3 {
-    color: var(--secondary);
+    color: var(--cinza-4);
     font-weight: 500;
     margin-bottom: 10px;
   }
@@ -132,8 +132,8 @@
     font-size: 14px;
     font-weight: 500;
     transition: 300ms;
-    background-color: var(--primary);
-    color: var(--neutral-50);
+    background-color: var(--green-1);
+    color: var(--cinza-6);
 
     &:hover {
       scale: 1.05;
@@ -149,7 +149,7 @@
   margin: 10px 0;
 
   h4 {
-    color: var(--secondary-2);
+    color: var(--cinza-4);
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 5px;
@@ -157,14 +157,14 @@
   }
 
   input {
-    background: var(--neutral-0);
-    border: 1px solid var(--neutral-100);
+    background: var(--white);
+    border: 1px solid var(--cinza-2);
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 14px;
 
     &::placeholder {
-      color: var(--neutral-200);
+      color: var(--cinza-2);
     }
   }
 }
@@ -183,7 +183,7 @@
   transition: 300ms;
 
   &:hover input ~ .checkmark {
-    background-color: var(--primary-2);
+    background-color: var(--green-3);
   }
 
   input {
@@ -195,7 +195,7 @@
     width: 0;
 
     &:checked ~ .checkmark {
-      background-color: var(--primary);
+      background-color: var(--green-1);
     }
 
     &:checked ~ .checkmark:after {
@@ -212,7 +212,7 @@
   height: 20px;
   width: 20px;
   border-radius: 6px;
-  background-color: var(--neutral-100);
+  background-color: var(--cinza-2);
   transform: translateX(-50%);
 
   &::after {
@@ -241,7 +241,7 @@
   flex-direction: column;
 
   h3 {
-    color: var(--secondary);
+    color: var(--cinza-4);
     font-weight: 500;
     margin-bottom: 10px;
   }
@@ -261,20 +261,20 @@
     gap: 5px;
 
     label {
-      color: var(--secondary-2);
+      color: var(--cinza-4);
       font-weight: 500;
     }
 
     input {
       width: 100%;
-      background: var(--neutral-0);
-      border: 1px solid var(--neutral-100);
+      background: var(--white);
+      border: 1px solid var(--cinza-2);
       border-radius: 5px;
       padding: 10px 15px;
       font-size: 14px;
 
       &::placeholder {
-        color: var(--neutral-200);
+        color: var(--cinza-2);
       }
     }
   }
@@ -286,8 +286,8 @@
     padding: 4px 18px;
     font-size: 14px;
     font-weight: 500;
-    color: var(--neutral-0);
-    background-color: var(--primary);
+    color: var(--white);
+    background-color: var(--green-1);
     margin: 0 0 5px 15px;
     transition: 300ms;
     cursor: pointer;
@@ -297,8 +297,8 @@
     }
 
     &:disabled {
-      color: var(--secondary-2);
-      background-color: var(--neutral-100);
+      color: var(--cinza-4);
+      background-color: var(--cinza-2);
       cursor: not-allowed;
     }
   }
@@ -311,34 +311,34 @@
   gap: 10px;
   padding: 10px 15px;
   border-radius: 10px;
-  background-color: var(--neutral-50);
+  background-color: var(--cinza-6);
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   margin: 15px 5px;
 
   h3 {
-    color: var(--secondary-2);
+    color: var(--cinza-4);
     font-weight: 500;
   }
 
   input,
   textarea {
-    background: var(--neutral-0);
-    border: 1px solid var(--neutral-100);
+    background: var(--white);
+    border: 1px solid var(--cinza-2);
     border-radius: 5px;
     padding: 6px 5px;
     width: 80px;
     margin: 0 5px;
     font-size: 16px;
-    color: var(--secondary-2);
+    color: var(--cinza-4);
     transition: 300ms;
 
     &::placeholder {
-      color: var(--neutral-200);
+      color: var(--cinza-2);
     }
 
     &:focus {
-      color: var(--primary);
-      border: 1px solid var(--primary);
+      color: var(--green-1);
+      border: 1px solid var(--green-1);
     }
 
     &::-webkit-outer-spin-button,
@@ -371,7 +371,7 @@
   label {
     font-size: 16px;
     font-weight: 500;
-    color: var(--primary);
+    color: var(--green-1);
     margin-left: 10px;
   }
 }
@@ -389,7 +389,7 @@
     label {
       font-size: 12px;
       font-weight: 500;
-      color: var(--primary);
+      color: var(--green-1);
       text-align: center;
       margin-right: 5px;
     }
@@ -406,7 +406,7 @@
   }
 
   svg {
-    fill: var(--warning);
+    fill: var(--vermelho-1);
     cursor: pointer;
     transition: 400ms;
 
@@ -425,7 +425,7 @@
     margin-bottom: 15px;
 
     h4 {
-      color: var(--secondary);
+      color: var(--cinza-4);
       font-size: 16px;
       font-weight: 500;
       margin-bottom: 5px;
@@ -434,42 +434,42 @@
     input {
       background: transparent;
       border: none;
-      border-bottom: 1px solid var(--neutral-100);
+      border-bottom: 1px solid var(--cinza-2);
       padding: 2px 5px;
       margin-right: 5px;
       font-size: 16px;
-      color: var(--secondary-2);
+      color: var(--cinza-4);
       transition: 300ms;
       cursor: pointer;
       width: 80px;
 
       &:focus {
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
+        color: var(--green-1);
+        border-bottom: 1px solid var(--green-1);
       }
     }
 
     select {
       background: transparent;
       border: none;
-      border-bottom: 1px solid var(--neutral-100);
+      border-bottom: 1px solid var(--cinza-2);
       padding: 2px 5px;
       font-size: 16px;
-      color: var(--secondary-2);
+      color: var(--cinza-4);
       transition: 300ms;
       cursor: pointer;
       width: 80px;
 
       &:focus {
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
+        color: var(--green-1);
+        border-bottom: 1px solid var(--green-1);
       }
 
       option {
         padding: 5px;
 
         &:hover {
-          background-color: var(--primary-2);
+          background-color: var(--green-3);
         }
       }
     }
@@ -506,13 +506,13 @@
 }
 
 .cancel {
-  background-color: var(--neutral-100);
-  color: var(--secondary-2);
+  background-color: var(--cinza-2);
+  color: var(--cinza-4);
 }
 
 .submit {
-  background-color: var(--primary);
-  color: var(--neutral-50);
+  background-color: var(--green-1);
+  color: var(--cinza-6);
 }
 
 .techOptions {

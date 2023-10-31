@@ -16,12 +16,12 @@
 
   h1{
     font-size: 2rem;
-    color: var(--primary);
+    color: var(--green-1);
   }
 
   p{
     font-size: 1.2rem;
-    color: var(--secondary-2);
+    color: var(--cinza-4);
   }
 
   a{
@@ -32,8 +32,8 @@
     max-width: 300px;
     height: 50px;
     border-radius: 10px;
-    background-color: var(--primary);
-    color: var(--neutral-0);
+    background-color: var(--green-1);
+    color: var(--white);
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;

@@ -100,7 +100,7 @@ const Exams: FC = () => {
                 placeholder="Pesquisar convites"
               />
               <Link href={`/exams/create`}>
-                <AiFillPlusCircle size={25} fill="var(--primary)" />
+                <AiFillPlusCircle size={25} fill="var(--green-1)" />
                 <span>Novo teste</span>
               </Link>
             </div>

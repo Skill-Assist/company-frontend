@@ -19,17 +19,17 @@
     gap: .5rem;
     padding: .5rem 1rem;
     background: none;
-    border: .1rem solid var(--secondary-2);
+    border: .1rem solid var(--cinza-4);
     border-radius: 1.5rem;
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--primary);
+    color: var(--green-1);
     transition: 300ms ease-in-out;
 
     &:hover{
       scale: 1.05;
-      background: var(--primary);
-      color: var(--neutral-0);
+      background: var(--green-1);
+      color: var(--white);
     }
 
     svg{
@@ -37,7 +37,7 @@
     }
 
     &:hover svg{
-      fill: var(--primary-2);
+      fill: var(--green-3);
     }
   }
 }
@@ -70,7 +70,7 @@
   align-items: center;
   width: 100%;
   font-size: 1.6rem;
-  color: var(--secondary-2);
+  color: var(--cinza-4);
   margin: .5rem 0;
 
   p{
@@ -81,6 +81,6 @@
 
   hr{
     width: 100%;
-    color: var(--secondary-2);
+    color: var(--cinza-4);
   }
 }

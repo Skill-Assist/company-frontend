@@ -191,8 +191,8 @@ const InvitationContainer = () => {
         return (
           <p
             style={{
-              backgroundColor: 'var(--neutral-50)',
-              color: 'var(--secondary)',
+              backgroundColor: 'var(--cinza-6)',
+              color: 'var(--cinza-4)',
             }}
             className={styles.status}
           >
@@ -203,8 +203,8 @@ const InvitationContainer = () => {
         return (
           <p
             style={{
-              backgroundColor: 'var(--success)',
-              color: 'var(--neutral-0)',
+              backgroundColor: 'var(--green-3)',
+              color: 'var(--white)',
             }}
             className={styles.status}
           >
@@ -215,8 +215,8 @@ const InvitationContainer = () => {
         return (
           <p
             style={{
-              backgroundColor: 'var(--warning)',
-              color: 'var(--neutral-0)',
+              backgroundColor: 'var(--vermelho-1)',
+              color: 'var(--white)',
             }}
             className={styles.status}
           >
@@ -228,7 +228,7 @@ const InvitationContainer = () => {
           <p
             style={{
               backgroundColor: 'var(--alert)',
-              color: 'var(--neutral-0)',
+              color: 'var(--white)',
             }}
             className={styles.status}
           >
@@ -239,8 +239,8 @@ const InvitationContainer = () => {
         return (
           <p
             style={{
-              backgroundColor: 'var(--secondary-2)',
-              color: 'var(--neutral-0)',
+              backgroundColor: 'var(--cinza-4)',
+              color: 'var(--white)',
             }}
             className={styles.status}
           >
@@ -252,7 +252,7 @@ const InvitationContainer = () => {
           <p
             style={{
               backgroundColor: '#59a15f',
-              color: 'var(--neutral-0)',
+              color: 'var(--white)',
             }}
             className={styles.status}
           >
@@ -458,7 +458,7 @@ const InvitationContainer = () => {
                             }}
                             type="button"
                           >
-                            <GiNotebook fill="var(--primary-2)" size={25} />
+                            <GiNotebook fill="var(--green-3)" size={25} />
                           </button>
                         </Tooltip>
                         <Tooltip
@@ -479,7 +479,7 @@ const InvitationContainer = () => {
                             }}
                             type="button"
                           >
-                            <AiOutlineSend fill="var(--primary)" size={25} />
+                            <AiOutlineSend fill="var(--green-1)" size={25} />
                           </button>
                         </Tooltip>
                       </div>
@@ -489,7 +489,7 @@ const InvitationContainer = () => {
               ) : (
                 <tr>
                   <td colSpan={3} style={{ textAlign: 'center' }}>
-                    <p style={{ color: 'var(--secondary-2)' }}>
+                    <p style={{ color: 'var(--cinza-4)' }}>
                       Nenhum candidato encontrado
                     </p>
                   </td>

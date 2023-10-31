@@ -385,8 +385,8 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                 ...theme,
                 colors: {
                   ...theme.colors,
-                  primary25: 'var(--neutral-50)',
-                  primary: 'var(--primary-2)',
+                  primary25: 'var(--cinza-6)',
+                  primary: 'var(--green-3)',
                 },
               })}
               components={animatedComponents}
@@ -545,7 +545,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -566,7 +566,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               />
                             </div>
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -612,7 +612,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -634,7 +634,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             </div>
 
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -680,7 +680,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -701,7 +701,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               />
                             </div>
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -823,7 +823,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -844,7 +844,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               />
                             </div>
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -890,7 +890,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -912,7 +912,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             </div>
 
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -958,7 +958,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                           </div>
                           <div className={styles.criteriaValues}>
                             <div>
-                              <label style={{ color: 'var(--primary-2)' }}>
+                              <label style={{ color: 'var(--green-3)' }}>
                                 Max
                               </label>
                               <input
@@ -979,7 +979,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               />
                             </div>
                             <div>
-                              <label style={{ color: 'var(--warning)' }}>
+                              <label style={{ color: 'var(--vermelho-1)' }}>
                                 Min
                               </label>
                               <input
@@ -1112,7 +1112,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             </div>
                             <div className={styles.criteriaValues}>
                               <div>
-                                <label style={{ color: 'var(--primary-2)' }}>
+                                <label style={{ color: 'var(--green-3)' }}>
                                   Max
                                 </label>
                                 <input
@@ -1133,7 +1133,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 />
                               </div>
                               <div>
-                                <label style={{ color: 'var(--warning)' }}>
+                                <label style={{ color: 'var(--vermelho-1)' }}>
                                   Min
                                 </label>
                                 <input
@@ -1179,7 +1179,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             </div>
                             <div className={styles.criteriaValues}>
                               <div>
-                                <label style={{ color: 'var(--primary-2)' }}>
+                                <label style={{ color: 'var(--green-3)' }}>
                                   Max
                                 </label>
                                 <input
@@ -1201,7 +1201,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
 
                               <div>
-                                <label style={{ color: 'var(--warning)' }}>
+                                <label style={{ color: 'var(--vermelho-1)' }}>
                                   Min
                                 </label>
                                 <input
@@ -1247,7 +1247,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                             </div>
                             <div className={styles.criteriaValues}>
                               <div>
-                                <label style={{ color: 'var(--primary-2)' }}>
+                                <label style={{ color: 'var(--green-3)' }}>
                                   Max
                                 </label>
                                 <input
@@ -1268,7 +1268,7 @@ const ManualCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 />
                               </div>
                               <div>
-                                <label style={{ color: 'var(--warning)' }}>
+                                <label style={{ color: 'var(--vermelho-1)' }}>
                                   Min
                                 </label>
                                 <input

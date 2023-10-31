@@ -25,8 +25,8 @@ const SectionsContainerPlaceholder: FC<Props> = ({ onClick }: Props) => {
           <span>Vamos começar a criar?</span>
         </p>
         <Button
-          backgroundColor="var(--primary-2)"
-          fontColor="var(--primary)"
+          backgroundColor="var(--green-3)"
+          fontColor="var(--green-1)"
           type="button"
           dimensions={{ width: '260px', height: '60px' }}
           fontSize="20px"

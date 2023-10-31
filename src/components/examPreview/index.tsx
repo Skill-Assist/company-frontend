@@ -82,7 +82,7 @@ const ExamPreview: FC<Props> = ({
           </li>
           <li>
             {examShowScore ? (
-              <CheckRoundedIcon style={{ color: '#829CE4' }} />
+              <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
             ) : (
               <CloseRoundedIcon style={{ color: 'rgba(255, 69, 69, 0.7)' }} />
             )}{' '}
@@ -90,7 +90,7 @@ const ExamPreview: FC<Props> = ({
           </li>
           <li>
             {examIsPublic ? (
-              <CheckRoundedIcon style={{ color: '#829CE4' }} />
+              <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
             ) : (
               <CloseRoundedIcon style={{ color: 'rgba(255, 69, 69, 0.7)' }} />
             )}{' '}

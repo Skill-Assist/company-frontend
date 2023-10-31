@@ -190,7 +190,7 @@ const ScoredSection: FC<Props> = ({
                         <div className={styles.tagsContainer}>
                           {modalContent.question.tags.map((tag, index) => (
                             <div key={index}>
-                              <AiFillTag size={20} color="var(--secondary-2)" />
+                              <AiFillTag size={20} color="var(--cinza-4)" />
                               <p key={index}>{tag}</p>
                             </div>
                           ))}
@@ -217,7 +217,7 @@ const ScoredSection: FC<Props> = ({
                       >
                         Download do arquivo{' '}
                         <AiOutlineCloudDownload
-                          fill="var(--secondary-2)"
+                          fill="var(--cinza-4)"
                           size={20}
                           style={{ cursor: 'pointer' }}
                           onClick={() => {

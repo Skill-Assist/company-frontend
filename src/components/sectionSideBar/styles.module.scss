@@ -12,18 +12,18 @@
   width: 100%;
 
   h2 {
-    color: var(--secondary);
+    color: var(--cinza-4);
     font-size: 22px;
   }
 
   svg {
     cursor: pointer;
-    fill: var(--secondary-2);
+    fill: var(--cinza-4);
     margin-right: 10px;
     transform: 300ms;
 
     &:hover {
-      fill: var(--primary);
+      fill: var(--green-1);
       scale: 1.05;
     }
   }
@@ -55,7 +55,7 @@
 }
 
 .optionalInfos {
-  border: 1px solid var(--neutral-100);
+  border: 1px solid var(--cinza-2);
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
@@ -88,15 +88,15 @@
 .dateInput {
   background: none;
   border: none;
-  color: var(--secondary-2);
-  border-bottom: 1px solid var(--neutral-100);
+  color: var(--cinza-4);
+  border-bottom: 1px solid var(--cinza-2);
   padding-bottom: 2px;
   text-align: center;
   transition: 300ms;
   cursor: text;
 
   &:hover, &:focus {
-    border-color: var(--primary);
+    border-color: var(--green-1);
   }
 }
 
@@ -114,7 +114,7 @@
   transition: 300ms;
 
   &:hover input ~ .checkmark {
-    background-color: var(--primary-2);
+    background-color: var(--green-3);
   }
 
   input {
@@ -126,7 +126,7 @@
     width: 0;
 
     &:checked ~ .checkmark {
-      background-color: var(--primary);
+      background-color: var(--green-1);
     }
 
     &:checked ~ .checkmark:after {
@@ -175,19 +175,19 @@
     padding: 8px 18px;
     font-size: 14px;
     font-weight: 500;
-    color: var(--neutral-0);
-    background-color: var(--primary);
+    color: var(--white);
+    background-color: var(--green-1);
     margin-right: 15px;
     transition: 300ms;
     cursor: pointer;
 
     &:hover {
-      background-color: var(--primary-2);
+      background-color: var(--green-3);
     }
 
     &:disabled {
-      color: var(--secondary-2);
-      background-color: var(--neutral-100);
+      color: var(--cinza-4);
+      background-color: var(--cinza-2);
       cursor: not-allowed;
     }
   }

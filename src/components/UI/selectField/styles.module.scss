@@ -4,9 +4,9 @@
   flex-direction: column;
 
   label {
-    color: var(--neutral-500);
+    color: var(--cinza-4);
     font-size: 1.6rem;
-    background: var(--neutral-75);
+    background: var(--background-light);
     transform: translateY(50%);
     width: fit-content;
     padding: 0 .4rem;
@@ -28,7 +28,7 @@
     
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--neutral-500);
+    color: var(--cinza-4);
     background: transparent;
     
     transition: 400ms;
@@ -40,7 +40,7 @@
     appearance: none;
     
     &:focus {
-      border: .1rem solid var(--primary);
+      border: .1rem solid var(--green-1);
     }
     
     &:hover {
@@ -49,14 +49,14 @@
     
     option {
       font-size: 1.4rem;
-      background-color: var(--neutral-0);
-      color: var(--neutral-500);
+      background-color: var(--white);
+      color: var(--cinza-4);
       padding: .5rem;
       transition: background-color 0.3s ease;
       
       &:checked {
-        background-color: var(--neutral-75);
-        color: var(--neutral-500);
+        background-color: var(--background-light);
+        color: var(--cinza-4);
       }
     }
   }

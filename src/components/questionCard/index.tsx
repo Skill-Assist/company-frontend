@@ -23,7 +23,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
           <BsFillTrashFill
             className={styles.deleteIcon}
             size={20}
-            fill="var(--warning)"
+            fill="var(--vermelho-1)"
             onClick={() =>
               toast.loading('Feature em desenvolvimento', {
                 duration: 3000,
@@ -34,7 +34,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
           <BsArrowDown
             size={25}
             className={open ? styles.rotate : ''}
-            fill="var(--secondary-2)"
+            fill="var(--cinza-4)"
           />
         </div>
       </div>
@@ -75,7 +75,7 @@ const QuestionCard: FC<Props> = ({ index, question }: Props) => {
             <div className={styles.tagsContainer}>
               {question.tags.map((tag, index) => (
                 <div key={index}>
-                  <AiFillTag size={20} color="var(--secondary-2)" />
+                  <AiFillTag size={20} color="var(--cinza-4)" />
                   <p key={index}>{tag}</p>
                 </div>
               ))}

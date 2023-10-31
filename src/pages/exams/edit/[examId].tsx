@@ -235,7 +235,7 @@ const EditExam: FC = () => {
       <Layout sidebar header>
         {updateLoading || pageLoading || !examData ? (
           <div className="loadingContainer">
-            <CircularProgress style={{ color: 'var(--primary)' }} />
+            <CircularProgress style={{ color: 'var(--green-1)' }} />
           </div>
         ) : (
           <div className={styles.container}>
@@ -432,8 +432,8 @@ const EditExam: FC = () => {
                 as seções do seu teste!
               </p>
               <Button
-                fontColor="var(--neutral-0)"
-                backgroundColor="var(--primary)"
+                fontColor="var(--white)"
+                backgroundColor="var(--green-1)"
                 type="link"
                 url={`/exams/${examUpdatedData?.id}`}
               >

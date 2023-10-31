@@ -161,7 +161,7 @@ const SectionForm: FC<Props> = ({
     <div className={styles.section}>
       {creatingSectionLoading ? (
         <div className="loadingContainer">
-          <CircularProgress style={{ color: 'var(--primary)' }} />
+          <CircularProgress style={{ color: 'var(--green-1)' }} />
         </div>
       ) : (
         <>
@@ -240,8 +240,8 @@ const SectionForm: FC<Props> = ({
               <Button
                 type="button"
                 backgroundColor="transparent"
-                fontColor="var(--neutral-500)"
-                borderColor="var(--warning)"
+                fontColor="var(--cinza-4)"
+                borderColor="var(--vermelho-1)"
                 dimensions={
                   isSuggestionSection
                     ? { width: '17.2rem', height: '4.1rem' }
@@ -267,8 +267,8 @@ const SectionForm: FC<Props> = ({
               <Button
                 type="submit"
                 backgroundColor="transparent"
-                fontColor="var(--neutral-500)"
-                borderColor="var(--azul2)"
+                fontColor="var(--cinza-4)"
+                borderColor="var(--azul-2)"
                 dimensions={
                   isSuggestionSection
                     ? { width: '17.2rem', height: '4.1rem' }
@@ -281,7 +281,7 @@ const SectionForm: FC<Props> = ({
                   style={{
                     fontSize: '2.4rem',
                     marginRight: '0.2rem',
-                    color: '#829CE4',
+                    color: 'var(--azul-1)',
                   }}
                 />
                 {isSuggestionSection ? 'Aceitar sugestão' : 'Criar'}

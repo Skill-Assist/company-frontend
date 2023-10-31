@@ -14,13 +14,13 @@
 
   h2 {
     font-size: 2.4rem;
-    color: var(--primary);
+    color: var(--green-1);
   }
 
   svg {
     cursor: pointer;
     margin-left: 1.0rem;
-    color: var(--neutral-600);
+    color: var(--cinza-1);
     font-size: 3.4rem;
   }
 }
@@ -50,7 +50,7 @@
   z-index: 1;
   top: 6.0rem;
   right: 0rem;
-  background-color: var(--neutral-0);
+  background-color: var(--white);
   border-radius: 0.8rem;
   padding: 1rem;
   box-shadow: .0rem .0rem 1.0rem rgba(0, 0, 0, 0.1);
@@ -62,7 +62,7 @@
     right: 1.4rem;
     height: 1rem;
     width: 1rem;
-    background: var(--neutral-0);
+    background: var(--white);
     transform: rotate(45deg);
   }
 
@@ -83,13 +83,13 @@
 
       &:hover a {
         cursor: pointer;
-        color: var(--primary) !important;
+        color: var(--green-1) !important;
       }
 
       &:hover svg {
         opacity: 1;
         cursor: pointer;
-        fill: var(--primary) !important;
+        fill: var(--green-1) !important;
       }
 
       a {

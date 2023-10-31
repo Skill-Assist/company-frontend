@@ -2,16 +2,16 @@
   min-width: 350px;
   max-width: 400px;
   padding-bottom: 15px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-black);
-  background-color: var(--neutral-0);
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 0.4rem 0 #00000040;
+  background-color: var(--white);
 }
 
 .header {
   position: relative;
   display: flex;
   height: 60px;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-radius: 1.2rem 1.2rem 0 0;
   justify-content: center;
 
   img {
@@ -47,7 +47,7 @@
 
   span {
     font-size: 16px;
-    color: var(--secondary-2);
+    color: var(--cinza-4);
     font-weight: bold;
     text-align: center;
     width: 60%;

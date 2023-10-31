@@ -159,10 +159,10 @@ const ExamPage = () => {
       <Tooltip {...props} arrow classes={{ popper: className }} />
     ))(() => ({
       [`& .${tooltipClasses.arrow}`]: {
-        color: 'var(--primary)',
+        color: 'var(--green-1)',
       },
       [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: 'var(--primary)',
+        backgroundColor: 'var(--green-1)',
         width: 200,
         fontSize: 10,
       },
@@ -224,8 +224,8 @@ const ExamPage = () => {
                       </StyledTooltip>
                     </div>
                     <Button
-                      backgroundColor="var(--primary-2)"
-                      fontColor="var(--primary)"
+                      backgroundColor="var(--green-3)"
+                      fontColor="var(--green-1)"
                       type="button"
                       dimensions={{ width: '260px', height: '60px' }}
                       fontSize="20px"
@@ -243,7 +243,7 @@ const ExamPage = () => {
                   <ul>
                     <li>
                       {examData.showScore ? (
-                        <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                        <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                       ) : (
                         <CloseRoundedIcon
                           style={{ color: 'rgba(255, 69, 69, 0.7)' }}
@@ -253,7 +253,7 @@ const ExamPage = () => {
                     </li>
                     <li>
                       {examData.isPublic ? (
-                        <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                        <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                       ) : (
                         <CloseRoundedIcon style={{ color: '#ff4545b2' }} />
                       )}{' '}
@@ -274,8 +274,8 @@ const ExamPage = () => {
                 <div className={styles.buttonsRow}>
                   <Button
                     type="button"
-                    backgroundColor="var(--warning)"
-                    fontColor="var(--neutral-0)"
+                    backgroundColor="var(--vermelho-1)"
+                    fontColor="var(--white)"
                     onClick={() => setShowDeleteModal(true)}
                     dimensions={{ width: '125px', height: ' 41px' }}
                   >
@@ -283,8 +283,8 @@ const ExamPage = () => {
                   </Button>
                   <Button
                     type="link"
-                    backgroundColor="var(--primary-4)"
-                    fontColor="var(--neutral-0)"
+                    backgroundColor="var(--green-2)"
+                    fontColor="var(--white)"
                     url={`/exams/edit/${examData.id}`}
                     dimensions={{ width: '106px', height: ' 41px' }}
                   >
@@ -350,7 +350,7 @@ const ExamPage = () => {
             >
               {deleteLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--primary)' }} />
+                  <CircularProgress style={{ color: 'var(--green-1)' }} />
                 </div>
               ) : (
                 <div className={styles.deleteModalContent}>
@@ -369,8 +369,8 @@ const ExamPage = () => {
                     <Button
                       type="button"
                       backgroundColor="transparent"
-                      fontColor="var(--secondary-2)"
-                      borderColor="var(--secondary-2)"
+                      fontColor="var(--cinza-4)"
+                      borderColor="var(--cinza-4)"
                       onClick={() => setShowDeleteModal(false)}
                       boxShadow={false}
                     >
@@ -378,8 +378,8 @@ const ExamPage = () => {
                     </Button>
                     <Button
                       type="button"
-                      backgroundColor="var(--warning)"
-                      fontColor="var(--neutral-0)"
+                      backgroundColor="var(--vermelho-1)"
+                      fontColor="var(--white)"
                       onClick={deleteHandler}
                     >
                       Excluir
@@ -400,7 +400,7 @@ const ExamPage = () => {
             >
               {switchStatusLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--primary)' }} />
+                  <CircularProgress style={{ color: 'var(--green-1)' }} />
                 </div>
               ) : (
                 <div className={styles.switchStatusModalContent}>
@@ -431,14 +431,14 @@ const ExamPage = () => {
                     {examData.status === 'draft' && (
                       <ul>
                         <li>
-                          <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                           <p>
                             Você poderá <span> convidar candidatos</span> para o
                             teste.
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                           <p>
                             Os candidatos já poderão{' '}
                             <span> realizar o teste</span>.
@@ -488,7 +488,7 @@ const ExamPage = () => {
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                           <p>
                             Você poderá <span>reabrir</span> o teste ao retornar
                             ao status <span>Publicado</span>.
@@ -499,7 +499,7 @@ const ExamPage = () => {
                     {examData.status === 'archived' && (
                       <ul>
                         <li>
-                          <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                           <p>
                             Você poderá convidar <span>novos candidatos</span>{' '}
                             para o teste, e o <span>histórico</span> anterior
@@ -507,7 +507,7 @@ const ExamPage = () => {
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: '#829CE4' }} />
+                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                           <p>
                             Você pode <span>arquivar</span> o teste novamente a
                             qualquer momento.
@@ -578,8 +578,8 @@ const ExamPage = () => {
                         <Button
                           type="button"
                           backgroundColor="transparent"
-                          fontColor="var(--secondary-2)"
-                          borderColor="var(--secondary-2)"
+                          fontColor="var(--cinza-4)"
+                          borderColor="var(--cinza-4)"
                           onClick={() => setSwitchStatusModal(false)}
                           boxShadow={false}
                           fontWeight="400"
@@ -588,8 +588,8 @@ const ExamPage = () => {
                         </Button>
                         <Button
                           type="button"
-                          backgroundColor="var(--primary)"
-                          fontColor="var(--neutral-0)"
+                          backgroundColor="var(--green-1)"
+                          fontColor="var(--white)"
                           onClick={switchStatus}
                           disabled={!isAgree}
                         >
@@ -605,8 +605,8 @@ const ExamPage = () => {
                     <div className={styles.actions}>
                       <Button
                         type="button"
-                        backgroundColor="var(--primary)"
-                        fontColor="var(--neutral-0)"
+                        backgroundColor="var(--green-1)"
+                        fontColor="var(--white)"
                         onClick={() => setSwitchStatusModal(false)}
                         boxShadow={false}
                         fontWeight="400"

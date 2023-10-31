@@ -188,7 +188,7 @@ const CreateExam: FC = () => {
       <Layout sidebar header>
         {createLoading ? (
           <div className="loadingContainer">
-            <CircularProgress style={{ color: 'var(--primary)' }} />
+            <CircularProgress style={{ color: 'var(--green-1)' }} />
           </div>
         ) : (
           <div className={styles.container}>
@@ -378,8 +378,8 @@ const CreateExam: FC = () => {
                 as seções do seu teste!
               </p>
               <Button
-                fontColor="var(--neutral-0)"
-                backgroundColor="var(--primary)"
+                fontColor="var(--white)"
+                backgroundColor="var(--green-1)"
                 type="link"
                 url={`/exams/${examCreatedData?.id}`}
               >

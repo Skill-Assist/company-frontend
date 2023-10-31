@@ -3,9 +3,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Logo from '@public/white_logo.svg';
-import Dashboard from '@public/icons/mui/dashboard.svg';
-import Exams from '@public/icons/mui/exams.svg';
-import Suport from '@public/icons/mui/support.svg';
+import Dashboard from '@public/icons/fa/dashboard.svg';
+import Exams from '@public/icons/fa/exams.svg';
+import Suport from '@public/icons/fa/support.svg';
+import ActiveDashboard from '@public/icons/fa/activeDashboard.svg';
+import ActiveExams from '@public/icons/fa/activeExams.svg';
+import ActiveSuport from '@public/icons/fa/activeSupport.svg';
 
 import styles from './styles.module.scss';
 
@@ -29,7 +32,7 @@ const Sidebar = () => {
           >
             <div>
               <Image
-                src={Dashboard}
+                src={router.pathname === '/' ? ActiveDashboard : Dashboard}
                 width={26}
                 height={23}
                 alt="dasboard_icon"
@@ -46,7 +49,12 @@ const Sidebar = () => {
             }`}
           >
             <div>
-              <Image src={Exams} width={20} height={27} alt="exams_icon" />
+              <Image
+                src={router.pathname.includes('/exams') ? ActiveExams : Exams}
+                width={20}
+                height={27}
+                alt="exams_icon"
+              />
             </div>
             <span className={styles.itemText}>Seus Testes</span>
           </Link>
@@ -59,7 +67,12 @@ const Sidebar = () => {
             }`}
           >
             <div>
-              <Image src={Suport} width={24} height={24} alt="suport_icon" />
+              <Image
+                src={router.pathname === '/help' ? ActiveSuport : Suport}
+                width={24}
+                height={24}
+                alt="suport_icon"
+              />
             </div>
             <span className={styles.itemText}>Suporte</span>
           </Link>

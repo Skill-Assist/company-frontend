@@ -106,8 +106,8 @@ const SectionsContainer: FC<Props> = ({
           </h2>
           <Button
             onClick={() => setNewSection(true)}
-            backgroundColor="var(--primary-4)"
-            fontColor="var(--neutral-0)"
+            backgroundColor="var(--green-2)"
+            fontColor="var(--white)"
             fontSize="1.8rem"
             fontWeight="400"
             type="button"
@@ -146,7 +146,7 @@ const SectionsContainer: FC<Props> = ({
           >
             {suggestionsLoading ? (
               <div className="loadingContainer">
-                <CircularProgress style={{ color: 'var(--primary)' }} />
+                <CircularProgress style={{ color: 'var(--green-1)' }} />
               </div>
             ) : (
               sectionsSuggestions &&

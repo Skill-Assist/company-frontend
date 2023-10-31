@@ -239,16 +239,12 @@ const SectionForm: FC<Props> = ({
             <div className={styles.actions}>
               <Button
                 type="button"
-                backgroundColor="transparent"
-                fontColor="var(--cinza-4)"
-                borderColor="var(--vermelho-1)"
+                actionType='action4'
                 dimensions={
                   isSuggestionSection
                     ? { width: '17.2rem', height: '4.1rem' }
                     : { width: '9.8rem', height: '4.1rem' }
                 }
-                fontSize="1.6rem"
-                fontWeight="400"
                 onClick={
                   isSuggestionSection
                     ? () => deleteSuggestion(sectionIndex)
@@ -266,16 +262,12 @@ const SectionForm: FC<Props> = ({
               </Button>
               <Button
                 type="submit"
-                backgroundColor="transparent"
-                fontColor="var(--cinza-4)"
-                borderColor="var(--azul-2)"
+                actionType='action3'
                 dimensions={
                   isSuggestionSection
                     ? { width: '17.2rem', height: '4.1rem' }
                     : { width: '9.8rem', height: '4.1rem' }
                 }
-                fontSize="1.6rem"
-                fontWeight="400"
               >
                 <CheckRoundedIcon
                   style={{

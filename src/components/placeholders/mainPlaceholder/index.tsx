@@ -3,8 +3,12 @@ import { useLottie } from "lottie-react";
 
 import ComputerMan from "@public/lottie/computer-man.json";
 
+import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
+
+
 import styles from "./styles.module.scss";
 import Link from "next/link";
+import Button from "@/components/UI/button";
 
 interface Props {
   title: string;
@@ -31,7 +35,12 @@ const Placeholder: FC<Props> = ({
         <p>
           {subtitle}
         </p>
-        <Link href={"exams/create"} className={styles.button}>{buttonText}</Link>
+        <Button 
+          type="button"
+          actionType="action4"
+        >
+          Criar um teste
+        </Button>
       </div>
       <div className={styles.view}>{View}</div>
     </div>

@@ -432,8 +432,7 @@ const EditExam: FC = () => {
                 as seções do seu teste!
               </p>
               <Button
-                fontColor="var(--white)"
-                backgroundColor="var(--green-1)"
+                actionType='confirm'
                 type="link"
                 url={`/exams/${examUpdatedData?.id}`}
               >

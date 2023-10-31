@@ -1,24 +1,28 @@
 import { FC, ReactNode } from 'react';
+import Link from 'next/link';
 
 import styles from './styles.module.scss';
-import Link from 'next/link';
 
 type Props = {
   children: ReactNode;
   type: 'button' | 'submit' | 'link';
   onClick?: () => void;
   url?: string;
-  fontColor: string;
-  backgroundColor: string;
-  borderColor?: string;
-  boxShadow?: boolean;
   dimensions?: {
     width: string;
     height: string;
   };
-  fontSize?: string;
-  fontWeight?: string;
   disabled?: boolean;
+  actionType:
+    | 'confirm'
+    | 'cancel'
+    | 'delete'
+    | 'edit'
+    | 'action1'
+    | 'action2'
+    | 'action3'
+    | 'action4';
+  form?: string;
 };
 
 const Button: FC<Props> = ({
@@ -26,53 +30,36 @@ const Button: FC<Props> = ({
   type,
   onClick,
   url,
-  backgroundColor,
-  fontColor,
-  borderColor,
-  boxShadow,
   dimensions,
-  fontSize,
-  fontWeight,
   disabled,
+  actionType,
+  form,
 }: Props) => {
+  const actionClass = styles[actionType];
+
   return (
     <>
       {type !== 'link' && !url ? (
+        
         <button
-          className={styles.button}
+          className={`${styles.button} ${actionClass}`}
           style={{
-            color: fontColor,
-            backgroundColor: backgroundColor,
-            border: borderColor ? `.1rem solid ${borderColor}` : 'none',
-            boxShadow: boxShadow
-              ? '.4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25)'
-              : 'none',
             width: dimensions?.width ? dimensions.width : '16.4rem',
             height: dimensions?.height ? dimensions.height : '4.1rem',
-            fontSize: fontSize ? fontSize : '1.6rem',
-            fontWeight: fontWeight ? fontWeight : '600',
           }}
-
           type={type}
           onClick={onClick}
           disabled={disabled}
+          form={form ? form : ''}
         >
           {children}
         </button>
       ) : (
         <Link
-          className={styles.button}
+          className={`${styles.button} ${actionClass}`}
           style={{
-            color: fontColor,
-            backgroundColor: backgroundColor,
             width: dimensions?.width ? dimensions.width : '16.4rem',
             height: dimensions?.height ? dimensions.height : '4.1rem',
-            border: borderColor ? `.1rem solid ${borderColor}` : 'none',
-            boxShadow: boxShadow
-              ? '.4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25)'
-              : 'none',
-            fontSize: fontSize ? fontSize : '1.6rem',
-            fontWeight: fontWeight ? fontWeight : '600',
           }}
           href={url ? url : '#'}
         >

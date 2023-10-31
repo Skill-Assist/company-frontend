@@ -224,11 +224,9 @@ const ExamPage = () => {
                       </StyledTooltip>
                     </div>
                     <Button
-                      backgroundColor="var(--green-3)"
-                      fontColor="var(--green-1)"
+                      actionType="action1"
                       type="button"
                       dimensions={{ width: '260px', height: '60px' }}
-                      fontSize="20px"
                       onClick={checkIfArchivableHandler}
                     >
                       {examData.status === 'draft'
@@ -274,8 +272,7 @@ const ExamPage = () => {
                 <div className={styles.buttonsRow}>
                   <Button
                     type="button"
-                    backgroundColor="var(--vermelho-1)"
-                    fontColor="var(--white)"
+                    actionType='delete'
                     onClick={() => setShowDeleteModal(true)}
                     dimensions={{ width: '125px', height: ' 41px' }}
                   >
@@ -283,8 +280,7 @@ const ExamPage = () => {
                   </Button>
                   <Button
                     type="link"
-                    backgroundColor="var(--green-2)"
-                    fontColor="var(--white)"
+                    actionType='edit'
                     url={`/exams/edit/${examData.id}`}
                     dimensions={{ width: '106px', height: ' 41px' }}
                   >
@@ -368,18 +364,14 @@ const ExamPage = () => {
                   <div>
                     <Button
                       type="button"
-                      backgroundColor="transparent"
-                      fontColor="var(--cinza-4)"
-                      borderColor="var(--cinza-4)"
+                      actionType='cancel'
                       onClick={() => setShowDeleteModal(false)}
-                      boxShadow={false}
                     >
                       Cancelar
                     </Button>
                     <Button
                       type="button"
-                      backgroundColor="var(--vermelho-1)"
-                      fontColor="var(--white)"
+                      actionType='delete'
                       onClick={deleteHandler}
                     >
                       Excluir
@@ -431,14 +423,18 @@ const ExamPage = () => {
                     {examData.status === 'draft' && (
                       <ul>
                         <li>
-                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
+                          <CheckRoundedIcon
+                            style={{ color: 'var(--azul-1)' }}
+                          />
                           <p>
                             Você poderá <span> convidar candidatos</span> para o
                             teste.
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
+                          <CheckRoundedIcon
+                            style={{ color: 'var(--azul-1)' }}
+                          />
                           <p>
                             Os candidatos já poderão{' '}
                             <span> realizar o teste</span>.
@@ -488,7 +484,9 @@ const ExamPage = () => {
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
+                          <CheckRoundedIcon
+                            style={{ color: 'var(--azul-1)' }}
+                          />
                           <p>
                             Você poderá <span>reabrir</span> o teste ao retornar
                             ao status <span>Publicado</span>.
@@ -499,7 +497,9 @@ const ExamPage = () => {
                     {examData.status === 'archived' && (
                       <ul>
                         <li>
-                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
+                          <CheckRoundedIcon
+                            style={{ color: 'var(--azul-1)' }}
+                          />
                           <p>
                             Você poderá convidar <span>novos candidatos</span>{' '}
                             para o teste, e o <span>histórico</span> anterior
@@ -507,7 +507,9 @@ const ExamPage = () => {
                           </p>
                         </li>
                         <li>
-                          <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
+                          <CheckRoundedIcon
+                            style={{ color: 'var(--azul-1)' }}
+                          />
                           <p>
                             Você pode <span>arquivar</span> o teste novamente a
                             qualquer momento.
@@ -577,19 +579,14 @@ const ExamPage = () => {
                       <div className={styles.actions}>
                         <Button
                           type="button"
-                          backgroundColor="transparent"
-                          fontColor="var(--cinza-4)"
-                          borderColor="var(--cinza-4)"
+                          actionType='cancel'
                           onClick={() => setSwitchStatusModal(false)}
-                          boxShadow={false}
-                          fontWeight="400"
                         >
                           Cancelar
                         </Button>
                         <Button
                           type="button"
-                          backgroundColor="var(--green-1)"
-                          fontColor="var(--white)"
+                          actionType='confirm'
                           onClick={switchStatus}
                           disabled={!isAgree}
                         >
@@ -605,11 +602,8 @@ const ExamPage = () => {
                     <div className={styles.actions}>
                       <Button
                         type="button"
-                        backgroundColor="var(--green-1)"
-                        fontColor="var(--white)"
+                        actionType='confirm'
                         onClick={() => setSwitchStatusModal(false)}
-                        boxShadow={false}
-                        fontWeight="400"
                       >
                         Entendi
                       </Button>

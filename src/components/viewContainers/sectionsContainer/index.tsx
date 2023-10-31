@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Plus from '@public/icons/mui/plus.svg';
 import DisablePlus from '@public/icons/mui/disablePlus.svg';
 
-import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
+// import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
 import Button from '@/components/UI/button';
 import SectionForm from '@/components/sectionForm';
 
@@ -20,6 +20,7 @@ import { CircularProgress } from '@mui/material';
 
 import styles from './styles.module.scss';
 import SectionCard from '@/components/sectionCard';
+import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
 
 interface Props {
   sections: Section[] | undefined;
@@ -106,10 +107,7 @@ const SectionsContainer: FC<Props> = ({
           </h2>
           <Button
             onClick={() => setNewSection(true)}
-            backgroundColor="var(--green-2)"
-            fontColor="var(--white)"
-            fontSize="1.8rem"
-            fontWeight="400"
+            actionType='action2'
             type="button"
             dimensions={{ width: '25rem!important', height: '5rem' }}
             disabled={(sectionsSuggestions && sectionsSuggestions.length > 0) || suggestionsLoading}

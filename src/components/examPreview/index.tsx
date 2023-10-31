@@ -4,6 +4,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import styles from './styles.module.scss';
+import Button from '../UI/button';
 
 interface Props {
   examTitle?: string;
@@ -105,9 +106,13 @@ const ExamPreview: FC<Props> = ({
         </div>
       </div>
 
-      <button type="submit" form={editing ? 'updateExam' : 'createExam'}>
+      <Button
+        type="submit"
+        form={editing ? 'updateExam' : 'createExam'}
+        actionType="confirm"
+      >
         {editing ? 'Salvar alterações' : 'Criar teste'}
-      </button>
+      </Button>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Skeleton from 'react-loading-skeleton';
@@ -76,7 +75,7 @@ const CreateExam: FC = () => {
 
   const prevJobLevel = useRef('');
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   const [examCreatedData, setExamCreatedData] = useState<Exam>();
 
@@ -378,8 +377,7 @@ const CreateExam: FC = () => {
                 as seções do seu teste!
               </p>
               <Button
-                fontColor="var(--white)"
-                backgroundColor="var(--green-1)"
+                actionType="confirm"
                 type="link"
                 url={`/exams/${examCreatedData?.id}`}
               >

@@ -25,12 +25,11 @@ const SectionsContainerPlaceholder: FC<Props> = ({ onClick }: Props) => {
           <span>Vamos começar a criar?</span>
         </p>
         <Button
-          backgroundColor="var(--green-3)"
-          fontColor="var(--green-1)"
           type="button"
           dimensions={{ width: '260px', height: '60px' }}
-          fontSize="20px"
           onClick={onClick}
+          actionType='confirm'
+          
         >
           Criar seção
         </Button>

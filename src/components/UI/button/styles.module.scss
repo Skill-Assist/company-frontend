@@ -4,32 +4,120 @@
   align-items: center;
   justify-content: center;
 
-  background: var(--green-1);
-  color: var(--white);
-  box-shadow: .4rem .4rem 2.5rem 0rem rgba(40, 89, 67, 0.25);
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 
   font-size: 1.6rem;
   font-weight: 600;
   white-space: nowrap;
 
-  cursor: pointer;
   transition: 400ms;
 
-  &:hover {
-    scale: 1.02;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.25);
+  }
+
+  &:active {
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.25);
   }
 
   &:disabled {
-    background: var(--bg_disabled)!important;
-    color: var(--font_disabled)!important;
-    font-weight: 400!important;
-
     cursor: not-allowed;
+    border: none;
+    background-color: var(--bg-disabled);
+    color: var(--font-disabled);
+    font-weight: 400;
+  }
+}
 
-    &:hover {
-      scale: 1;
-    }
+.confirm {
+  background-color: var(--green-1);
+  color: var(--white)!important;
+
+  &:hover,
+  &:active {
+    background-color: var(--btn-hover-confirm);
+  }
+}
+
+.cancel {
+  background-color: var(--white);
+  color: var(--cinza-4); // Ou #627179 ?
+  border: 1px solid var(--cinza-4); // Ou #627179 ?
+
+  &:hover,
+  &:active {
+    background-color: var(--cinza-6);
+  }
+}
+
+.delete {
+  background-color: var(--vermelho-1);
+  color: var(--white);
+  font-weight: 500;
+
+  &:hover,
+  &:active {
+    background-color: var(--vermelho-3);
+  }
+}
+
+.edit {
+  background-color: var(--white);
+  color: var(--azul-2);
+  border: 1px solid var(--azul-2);
+  font-weight: 500;
+
+  &:hover,
+  &:active {
+    background-color: var(--cinza-6);
+  }
+}
+
+.action1 {
+  background-color: var(--green-3);
+  color: var(--green-1);
+  font-weight: 500;
+
+  &:hover,
+  &:active {
+    background-color: var(--btn-hover-action-1);
+  }
+}
+
+.action2 {
+  background-color: var(--green-2);
+  color: var(--white);
+  font-weight: 400;
+
+  &:hover,
+  &:active {
+    background-color: var(--btn-hover-action-2);
+  }
+}
+
+.action3 {
+  background-color: var(--white);
+  color: var(--cinza-4);
+  border: 1px solid var(--azul-2);
+  font-weight: 400;
+
+  &:hover,
+  &:active {
+    background-color: var(--cinza-6);
+  }
+}
+
+.action4 {
+  background-color: var(--white);
+  color: var(--cinza-4);
+  border: 1px solid rgba(255, 69, 69, 0.70);
+  font-weight: 400;
+
+  &:hover,
+  &:active {
+    background-color: var(--cinza-6);
   }
 }

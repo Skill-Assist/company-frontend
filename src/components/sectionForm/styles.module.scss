@@ -1,7 +1,7 @@
 .section {
   position: relative;
   border-radius: 1rem;
-  border: 0.1rem solid var(--green-1);
+  border: 0.1rem solid var(--verde-1);
   background-color: #eff0ef;
   width: 100%;
   padding: 2.4rem;
@@ -14,7 +14,7 @@
   justify-content: space-between;
 
   h3 {
-    color: var(--green-1);
+    color: var(--verde-1);
     font-size: 2rem;
     font-weight: 600;
   }
@@ -24,7 +24,7 @@
     background-color: transparent;
     cursor: pointer;
     text-decoration: underline;
-    color: var(--green-1);
+    color: var(--verde-1);
     font-size: 1.2rem;
   }
 }

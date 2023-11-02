@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--green-1);
+  background-color: var(--verde-1);
   color: var(--white);
   width: 256px;
 }
@@ -42,7 +42,7 @@
       transition: all 400ms ease;
 
       &:hover {
-        background-color: var(--green-2);
+        background-color: var(--verde-2);
       }
 
 
@@ -55,5 +55,5 @@
 }
 
 .active {
-  background-color: var(--green-2);
+  background-color: var(--verde-2);
 }

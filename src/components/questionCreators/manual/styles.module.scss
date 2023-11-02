@@ -51,15 +51,15 @@
       cursor: pointer;
 
       &:focus {
-        color: var(--green-1);
-        border-bottom: 1px solid var(--green-1);
+        color: var(--verde-1);
+        border-bottom: 1px solid var(--verde-1);
       }
 
       option {
         padding: 5px;
 
         &:hover {
-          background-color: var(--green-3);
+          background-color: var(--verde-3);
         }
       }
     }
@@ -81,8 +81,8 @@
       }
 
       &:focus {
-        color: var(--green-1);
-        border-bottom: 1px solid var(--green-1);
+        color: var(--verde-1);
+        border-bottom: 1px solid var(--verde-1);
       }
     }
   }
@@ -132,7 +132,7 @@
     font-size: 14px;
     font-weight: 500;
     transition: 300ms;
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     color: var(--cinza-6);
 
     &:hover {
@@ -183,7 +183,7 @@
   transition: 300ms;
 
   &:hover input ~ .checkmark {
-    background-color: var(--green-3);
+    background-color: var(--verde-3);
   }
 
   input {
@@ -195,7 +195,7 @@
     width: 0;
 
     &:checked ~ .checkmark {
-      background-color: var(--green-1);
+      background-color: var(--verde-1);
     }
 
     &:checked ~ .checkmark:after {
@@ -287,7 +287,7 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--white);
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     margin: 0 0 5px 15px;
     transition: 300ms;
     cursor: pointer;
@@ -337,8 +337,8 @@
     }
 
     &:focus {
-      color: var(--green-1);
-      border: 1px solid var(--green-1);
+      color: var(--verde-1);
+      border: 1px solid var(--verde-1);
     }
 
     &::-webkit-outer-spin-button,
@@ -371,7 +371,7 @@
   label {
     font-size: 16px;
     font-weight: 500;
-    color: var(--green-1);
+    color: var(--verde-1);
     margin-left: 10px;
   }
 }
@@ -389,7 +389,7 @@
     label {
       font-size: 12px;
       font-weight: 500;
-      color: var(--green-1);
+      color: var(--verde-1);
       text-align: center;
       margin-right: 5px;
     }
@@ -444,8 +444,8 @@
       width: 80px;
 
       &:focus {
-        color: var(--green-1);
-        border-bottom: 1px solid var(--green-1);
+        color: var(--verde-1);
+        border-bottom: 1px solid var(--verde-1);
       }
     }
 
@@ -461,15 +461,15 @@
       width: 80px;
 
       &:focus {
-        color: var(--green-1);
-        border-bottom: 1px solid var(--green-1);
+        color: var(--verde-1);
+        border-bottom: 1px solid var(--verde-1);
       }
 
       option {
         padding: 5px;
 
         &:hover {
-          background-color: var(--green-3);
+          background-color: var(--verde-3);
         }
       }
     }
@@ -511,7 +511,7 @@
 }
 
 .submit {
-  background-color: var(--green-1);
+  background-color: var(--verde-1);
   color: var(--cinza-6);
 }
 

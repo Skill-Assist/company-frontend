@@ -23,12 +23,12 @@
     border-radius: 1.5rem;
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--green-1);
+    color: var(--verde-1);
     transition: 300ms ease-in-out;
 
     &:hover{
       scale: 1.05;
-      background: var(--green-1);
+      background: var(--verde-1);
       color: var(--white);
     }
 
@@ -37,7 +37,7 @@
     }
 
     &:hover svg{
-      fill: var(--green-3);
+      fill: var(--verde-3);
     }
   }
 }

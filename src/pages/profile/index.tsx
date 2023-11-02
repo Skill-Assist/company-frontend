@@ -165,7 +165,7 @@ const Profile = () => {
                   height="15"
                   width="15"
                   radius="9"
-                  color="var(--green-1)"
+                  color="var(--verde-1)"
                   ariaLabel="three-dots-loading"
                   visible={true}
                 />

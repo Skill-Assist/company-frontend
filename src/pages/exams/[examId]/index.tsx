@@ -1,22 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { TailSpin } from 'react-loader-spinner';
 import toast from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
-import { styled } from '@mui/material/styles';
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-
-import { useReadableDuration } from '@/hooks/readableDuration';
 
 import Modal from '@/components/modal';
 import Layout from '@/components/layout';
+import Button from '@/components/UI/button';
+import InvitationContainer from '@/components/viewContainers/invitationContainer';
+import SectionsContainer from '@/components/viewContainers/sectionsContainer';
 
+import { CircularProgress } from '@mui/material';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import warning from '@public/lottie/warning.json';
 
 import examService from '@/services/examService';
@@ -24,10 +21,7 @@ import examService from '@/services/examService';
 import { Exam } from '@/types/exam';
 
 import styles from './styles.module.scss';
-import Button from '@/components/UI/button';
-import { CircularProgress } from '@mui/material';
-import InvitationContainer from '@/components/viewContainers/invitationContainer';
-import SectionsContainer from '@/components/viewContainers/sectionsContainer';
+import ExamHeader from '@/components/examHeader';
 
 const ExamPage = () => {
   const [pageLoading, setPageLoading] = useState(true);
@@ -36,11 +30,11 @@ const ExamPage = () => {
   const [examData, setExamData] = useState<Exam>();
   const [showSectionsPage, setShowSectionsPage] = useState(true);
   const [isAgree, setIsAgree] = useState(false);
+  
   const [isArchivable, setIsArchivable] = useState<number>();
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [headerOpen, setHeaderOpen] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showSetupSectionModal, setShowSetupSectionModal] = useState(true);
   const [switchStatusModal, setSwitchStatusModal] = useState(false);
 
   const router = useRouter();
@@ -52,7 +46,6 @@ const ExamPage = () => {
       const response = await examService.getOwnExam(examId);
 
       if (response.status >= 200 && response.status < 300) {
-        console.log(response.data);
         setExamData(response.data);
         localStorage.setItem(
           'exameName',
@@ -79,7 +72,6 @@ const ExamPage = () => {
 
       if (response.status >= 200 && response.status < 300) {
         toast.success('Teste excluído com sucesso!');
-        console.log(response);
         router.push('/exams');
       } else {
         toast.error('Erro ao excluir teste!');
@@ -134,37 +126,37 @@ const ExamPage = () => {
     fetchOwnExam();
   }, []);
 
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [data, setData] = useState<any[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async (count: number) => {
-      try {
-        const response = await fetch('http://127.0.0.1:80/api/v1/health');
-        if (response.ok) {
-          const jsonData = await response.json();
-          setData((prevData) => [...prevData, jsonData]);
-          console.log('data', data);
-          console.log('jsonData', jsonData);
-        } else {
-          console.error('Erro na chamada da API');
-        }
-      } catch (error) {
-        console.error('Erro na chamada da API', error);
-      }
+  // useEffect(() => {
+  //   const fetchData = async (count: number) => {
+  //     try {
+  //       const response = await fetch('http://127.0.0.1:80/api/v1/health');
+  //       if (response.ok) {
+  //         const jsonData = await response.json();
+  //         setData((prevData) => [...prevData, jsonData]);
+  //         console.log('data', data);
+  //         console.log('jsonData', jsonData);
+  //       } else {
+  //         console.error('Erro na chamada da API');
+  //       }
+  //     } catch (error) {
+  //       console.error('Erro na chamada da API', error);
+  //     }
 
-      if (count < 10) {
-        // Chama a próxima chamada após um atraso (por exemplo, 1000 ms)
-        setTimeout(() => fetchData(count + 1), 1000);
-      } else {
-        // Todas as chamadas à API foram concluídas
-        setIsLoading(false);
-      }
-    };
+  //     if (count < 10) {
+  //       // Chama a próxima chamada após um atraso (por exemplo, 1000 ms)
+  //       setTimeout(() => fetchData(count + 1), 1000);
+  //     } else {
+  //       // Todas as chamadas à API foram concluídas
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    // Inicia a primeira chamada à API
-    fetchData(1);
-  }, []);
+  //   // Inicia a primeira chamada à API
+  //   fetchData(1);
+  // }, []);
 
   if (pageLoading) {
     return (
@@ -188,153 +180,17 @@ const ExamPage = () => {
       <div className="loadingContainer">Erro ao buscar teste</div>
     </Layout>;
   } else {
-    const readableDuration = useReadableDuration(examData?.durationInHours);
-
-    const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
-      <Tooltip {...props} arrow classes={{ popper: className }} />
-    ))(() => ({
-      [`& .${tooltipClasses.arrow}`]: {
-        color: 'var(--green-1)',
-      },
-      [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: 'var(--green-1)',
-        width: 200,
-        fontSize: 10,
-      },
-    }));
-
     return (
       <>
         <Layout sidebar header goBack>
           <div className={styles.container}>
-            <header>
-              <h1 onClick={() => console.log(data)}>
-                Teste{' '}
-                <span>
-                  "
-                  {examData.jobTitle[0].toLocaleUpperCase() +
-                    examData.jobTitle.slice(1)}
-                  "
-                </span>
-              </h1>
-              <div className={`${styles.examInfo} ${open ? styles.open : ''}`}>
-                <div className={styles.firstRow}>
-                  <ul>
-                    <li>
-                      Nível da vaga:{' '}
-                      <span>
-                        {examData.jobLevel[0].toLocaleUpperCase() +
-                          examData.jobLevel.slice(1)}
-                      </span>
-                    </li>
-                    <li>
-                      Duração do teste: <span>{readableDuration}</span>
-                    </li>
-                    <li>
-                      Prazo de envio:{' '}
-                      <span>
-                        {examData.submissionInHours / 24} dia
-                        {examData.submissionInHours / 24 > 1 && 's'}
-                      </span>
-                    </li>
-                  </ul>
-                  <div className={styles.statusContainer}>
-                    <div>
-                      <p>
-                        Status do teste:{' '}
-                        <span>
-                          {examData.status === 'draft'
-                            ? 'Rascunho'
-                            : examData.status === 'published'
-                            ? 'Publicado'
-                            : 'Arquivado'}
-                        </span>
-                      </p>
-                      <StyledTooltip
-                        title={
-                          'Os diferentes status definem como é possível interagir com o teste.'
-                        }
-                      >
-                        <InfoOutlinedIcon style={{ color: '#8C8895' }} />
-                      </StyledTooltip>
-                    </div>
-                    <Button
-                      actionType="action1"
-                      type="button"
-                      dimensions={{ width: '260px', height: '60px' }}
-                      onClick={checkIfArchivableHandler}
-                    >
-                      {examData.status === 'draft'
-                        ? 'Publicar'
-                        : examData.status === 'published'
-                        ? 'Arquivar'
-                        : 'Republicar'}
-                    </Button>
-                  </div>
-                </div>
-                <div className={styles.secondRow}>
-                  <ul>
-                    <li>
-                      {examData.showScore ? (
-                        <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
-                      ) : (
-                        <CloseRoundedIcon
-                          style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
-                        />
-                      )}{' '}
-                      O candidato receberá feedback do teste.
-                    </li>
-                    <li>
-                      {examData.isPublic ? (
-                        <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
-                      ) : (
-                        <CloseRoundedIcon style={{ color: 'var(--vermelho-1)', opacity: 0.7 }} />
-                      )}{' '}
-                      O teste não será adicionado ao banco de testes.
-                    </li>
-                  </ul>
-                  <div>
-                    <p>Descrição do teste:</p>
-                    <span>
-                      {examData.description ? (
-                        `"${examData.description}"`
-                      ) : (
-                        <i>Pendente</i>
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.buttonsRow}>
-                  <Button
-                    type="button"
-                    actionType="delete"
-                    onClick={() => setShowDeleteModal(true)}
-                    dimensions={{ width: '125px', height: ' 41px' }}
-                  >
-                    Excluir teste
-                  </Button>
-                  <Button
-                    type="link"
-                    actionType="edit"
-                    url={`/exams/edit/${examData.id}`}
-                    dimensions={{ width: '106px', height: ' 41px' }}
-                  >
-                    Editar
-                  </Button>
-                </div>
-                <div className={styles.arrowIconBx}>
-                  {open ? (
-                    <KeyboardArrowDownRoundedIcon
-                      onClick={() => setOpen((open) => !open)}
-                    />
-                  ) : (
-                    <KeyboardArrowUpRoundedIcon
-                      onClick={() => setOpen((open) => !open)}
-                    />
-                  )}
-                </div>
-              </div>
-            </header>
+            <ExamHeader
+              checkIfArchivableHandler={checkIfArchivableHandler}
+              examData={examData}
+              headerOpen={headerOpen}
+              setHeaderOpen={setHeaderOpen}
+              setShowDeleteModal={setShowDeleteModal}
+            />
             <>
               <nav>
                 <ul className={styles.stroke}>
@@ -357,7 +213,7 @@ const ExamPage = () => {
                   examDuration={examData.durationInHours}
                   examId={examData.id}
                   onCreateSection={fetchOwnExam}
-                  headerOpen={open}
+                  headerOpen={headerOpen}
                 />
               ) : (
                 <InvitationContainer />
@@ -381,7 +237,7 @@ const ExamPage = () => {
             >
               {deleteLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--green-1)' }} />
+                  <CircularProgress style={{ color: 'var(--verde-1)' }} />
                 </div>
               ) : (
                 <div className={styles.deleteModalContent}>
@@ -427,7 +283,7 @@ const ExamPage = () => {
             >
               {switchStatusLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--green-1)' }} />
+                  <CircularProgress style={{ color: 'var(--verde-1)' }} />
                 </div>
               ) : (
                 <div className={styles.switchStatusModalContent}>
@@ -591,8 +447,8 @@ const ExamPage = () => {
                   )}
                   {isArchivable === null || isArchivable === undefined ? (
                     <>
-                      <div className={styles.confirmChanges}>
-                        <label className={styles.checkboxContainer}>
+                      <div className={styles.checkboxContainer}>
+                        <label className={styles.checkmarkContainer}>
                           <input
                             onChange={() => {
                               setIsAgree(!isAgree);
@@ -645,24 +501,6 @@ const ExamPage = () => {
                     </div>
                   )}
                 </div>
-              )}
-            </Modal>
-          )}
-          {showSetupSectionModal && (
-            <Modal
-              handleClose={() => setShowSetupSectionModal(false)}
-              dimensions={{
-                width: '744px',
-                height: '476px',
-              }}
-              sidebarOn
-            >
-              {false ? (
-                <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--green-1)' }} />
-                </div>
-              ) : (
-                <div>Olaaaa</div>
               )}
             </Modal>
           )}

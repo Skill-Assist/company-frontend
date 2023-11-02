@@ -18,7 +18,7 @@
 
   h1 {
     font-size: 2rem;
-    color: var(--green-1);
+    color: var(--verde-1);
   }
 
   p {
@@ -43,7 +43,7 @@
     border: none;
     background: none;
     font-size: 18px;
-    color: var(--green-1);
+    color: var(--verde-1);
     font-weight: 600;
     background-color: var(--cinza-6);
     border-radius: 10px;
@@ -63,7 +63,7 @@
       width: 0%;
       content: ".";
       color: transparent;
-      background: var(--green-3);
+      background: var(--verde-3);
       z-index: -1;
       height: 100%;
     }

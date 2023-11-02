@@ -1,5 +1,8 @@
 import { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+
+import CloseIcon from '@public/icons/fa/close.svg';
 
 import Backdrop from './backdrop';
 
@@ -13,6 +16,7 @@ interface Props {
     height: string;
   };
   sidebarOn?: boolean;
+  closeIcon?: boolean;
 }
 
 const dropIn = {
@@ -41,6 +45,7 @@ const Modal: FC<Props> = ({
   children,
   dimensions,
   sidebarOn,
+  closeIcon,
 }: Props) => {
   const classes = {
     width: dimensions?.width || 'auto',
@@ -59,6 +64,16 @@ const Modal: FC<Props> = ({
         exit="exit"
         style={classes}
       >
+        {closeIcon && (
+          <Image
+            src={CloseIcon}
+            height={21}
+            width={21}
+            alt="close_icon"
+            className={styles.closeIcon}
+            onClick={handleClose}
+          />
+        )}
         {children}
       </motion.div>
     </Backdrop>

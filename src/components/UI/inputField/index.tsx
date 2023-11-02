@@ -77,7 +77,7 @@ const InputField: FC<Props> = ({
                   }
             }
             style={{ height: '56px' }}
-            defaultValue={value}
+            // defaultValue={value}
             value={value}
           />
           {innerText && (

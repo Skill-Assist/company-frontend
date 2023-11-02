@@ -235,7 +235,7 @@ const EditExam: FC = () => {
       <Layout sidebar header>
         {updateLoading || pageLoading || !examData ? (
           <div className="loadingContainer">
-            <CircularProgress style={{ color: 'var(--green-1)' }} />
+            <CircularProgress style={{ color: 'var(--verde-1)' }} />
           </div>
         ) : (
           <div className={styles.container}>

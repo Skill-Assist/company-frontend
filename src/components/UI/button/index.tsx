@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 type Props = {
   children: ReactNode;
   type: 'button' | 'submit' | 'link';
-  onClick?: () => void;
+  onClick?: (e:any | null) => void;
   url?: string;
   dimensions?: {
     width: string;
@@ -15,6 +15,7 @@ type Props = {
   disabled?: boolean;
   actionType:
     | 'confirm'
+    | 'bigConfirm'
     | 'cancel'
     | 'delete'
     | 'edit'

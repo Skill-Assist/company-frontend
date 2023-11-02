@@ -70,7 +70,7 @@
   }
 
   button {
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     color: var(--white);
     border: none;
     border-radius: 8px;
@@ -95,10 +95,10 @@
   width: 100%;
   margin: auto;
   padding: 5px 10px;
-  background-color: var(--green-3);
+  background-color: var(--verde-3);
 
   p {
-    color: var(--green-1);
+    color: var(--verde-1);
     white-space: nowrap;
     font-weight: 600;
     margin-right: 5px;
@@ -106,7 +106,7 @@
   }
 
   button {
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     color: var(--white);
     border: none;
     border-radius: 8px;
@@ -186,7 +186,7 @@
     width: 0;
 
     &:checked ~ .checkmark {
-      background-color: var(--green-1);
+      background-color: var(--verde-1);
     }
 
     &:checked ~ .checkmark:after {
@@ -285,7 +285,7 @@
   position: absolute;
   top: 0px;
   right: 0px;
-  fill: var(--green-1);
+  fill: var(--verde-1);
   transition: all 400ms ease;
   cursor: pointer;
 

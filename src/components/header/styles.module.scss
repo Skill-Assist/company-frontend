@@ -14,7 +14,7 @@
 
   h2 {
     font-size: 2.4rem;
-    color: var(--green-1);
+    color: var(--verde-1);
   }
 
   svg {
@@ -83,13 +83,13 @@
 
       &:hover a {
         cursor: pointer;
-        color: var(--green-1) !important;
+        color: var(--verde-1) !important;
       }
 
       &:hover svg {
         opacity: 1;
         cursor: pointer;
-        fill: var(--green-1) !important;
+        fill: var(--verde-1) !important;
       }
 
       a {

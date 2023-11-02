@@ -48,15 +48,12 @@ const sectionService = {
   },
 
   updateSection: async (
-    sectionId: string,
+    sectionId: number,
     section: {
       name?: string;
       description?: string;
-      weight?: string;
-      startDate?: Date;
+      weight?: number;
       durationInHours?: number;
-      isShuffleQuestions?: boolean;
-      hasProctoring?: boolean;
     }
   ) => {
     let config = {

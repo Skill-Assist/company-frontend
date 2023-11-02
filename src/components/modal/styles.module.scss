@@ -3,9 +3,21 @@
   background: var(--cinza-6);
   color: var(--cinza-4);
   margin: auto;
-  max-width: 60rem;
+  // max-width: 60rem;
 
   border-radius: 1.2rem; 
   display: flex;
   flex-direction: column;
+
+  .closeIcon{
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    cursor: pointer;
+    transition: 300ms;
+
+    &:hover{
+      transform: scale(1.1);
+    }
+  }
 }

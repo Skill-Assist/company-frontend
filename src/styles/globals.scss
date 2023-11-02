@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --green-1: #285943;
-  --green-2: #418265;
-  --green-3: #8ed696;
+  --verde-1: #285943;
+  --verde-2: #418265;
+  --verde-3: #8ed696;
 
   --vermelho-1: #ff4545;
   --vermelho-2: #ff7d7d;
@@ -22,6 +22,7 @@
   --background-light: #f2f2f2;
   
   --white: #ffffff;
+  --preto: #000000;
   --preto-principal: #212b36;
 
   --font-disabled: #4f4d55;
@@ -58,13 +59,13 @@
   
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: var(--green-2);
+    background: var(--verde-2);
     border-radius: 0.2rem;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--green-1);
+    background: var(--verde-1);
   }
 }
 

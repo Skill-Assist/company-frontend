@@ -6,7 +6,7 @@
   header {
     h1 {
       margin-left: 8rem;
-      color: var(--green-1);
+      color: var(--verde-1);
       font-size: 3.5rem;
       font-weight: 600;
       margin-bottom: 1.5rem;
@@ -29,7 +29,7 @@
 
   border-radius: 0rem 0rem 4rem 4rem;
   background: var(--background-light);
-  box-shadow: 0rem 1.1rem 3rem -2.7rem var(--green-1);
+  box-shadow: 0rem 1.1rem 3rem -2.7rem var(--verde-1);
 
   ul {
     display: flex;
@@ -44,7 +44,7 @@
       white-space: nowrap;
 
       span {
-        color: var(--green-1);
+        color: var(--verde-1);
         font-weight: 500;
         margin-left: 1rem;
       }
@@ -82,7 +82,7 @@
       font-weight: 500;
 
       span {
-        color: var(--green-2);
+        color: var(--verde-2);
         font-weight: 600;
       }
     }
@@ -103,7 +103,7 @@
     max-width: 50%;
 
     span {
-      color: var(--green-1);
+      color: var(--verde-1);
       font-weight: 500;
     }
   }
@@ -161,7 +161,7 @@
   text-align: center;
 
   h1 {
-    color: var(--green-1);
+    color: var(--verde-1);
     font-size: 3rem;
     font-weight: 700;
     line-height: 186.4%;
@@ -188,7 +188,7 @@
   padding: 1rem 7rem;
 
   h1 {
-    color: var(--green-1);
+    color: var(--verde-1);
     text-align: center;
     font-size: 3rem;
     font-weight: 700;
@@ -213,7 +213,7 @@
     text-align: center;
 
     span {
-      color: var(--green-2);
+      color: var(--verde-2);
       font-size: 1.8rem;
       font-weight: 600;
       line-height: 186.4%;
@@ -282,7 +282,7 @@
       width: 0;
 
       &:checked ~ .checkmark {
-        background-color: var(--green-2);
+        background-color: var(--verde-2);
       }
 
       &:checked ~ .checkmark:after {
@@ -296,7 +296,7 @@
     display: block;
     height: 2.2rem;
     width: 2.2rem;
-    border: .3rem solid var(--green-2);
+    border: .3rem solid var(--verde-2);
     border-radius: .2rem;
 
     &::after {
@@ -340,7 +340,7 @@
     
 
     span {
-      color: var(--green-2);
+      color: var(--verde-2);
     }
   }
 }
@@ -372,7 +372,7 @@
     position: relative;
     text-align: center;
     font-size: 2.2rem;
-    color: var(--green-1);
+    color: var(--verde-1);
     font-weight: 500;
     width: 100%;
 
@@ -382,7 +382,7 @@
       position: absolute;
       left: 0;
       top: 3.1rem;
-      background-color: var(--green-2);
+      background-color: var(--verde-2);
       width: 50%;
       height: .56rem;
 

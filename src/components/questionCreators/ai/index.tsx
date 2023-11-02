@@ -458,7 +458,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                     colors: {
                       ...theme.colors,
                       primary25: 'var(--cinza-6)',
-                      primary: 'var(--green-3)',
+                      primary: 'var(--verde-3)',
                     },
                   })}
                   components={animatedComponents}
@@ -637,7 +637,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -707,7 +707,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -778,7 +778,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -943,7 +943,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -1013,7 +1013,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -1084,7 +1084,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                               </div>
                               <div className={styles.criteriaValues}>
                                 <div>
-                                  <label style={{ color: 'var(--green-3)' }}>
+                                  <label style={{ color: 'var(--verde-3)' }}>
                                     Max
                                   </label>
                                   <input
@@ -1264,7 +1264,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 <div className={styles.criteriaValues}>
                                   <div>
                                     <label
-                                      style={{ color: 'var(--green-3)' }}
+                                      style={{ color: 'var(--verde-3)' }}
                                     >
                                       Max
                                     </label>
@@ -1342,7 +1342,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 <div className={styles.criteriaValues}>
                                   <div>
                                     <label
-                                      style={{ color: 'var(--green-3)' }}
+                                      style={{ color: 'var(--verde-3)' }}
                                     >
                                       Max
                                     </label>
@@ -1421,7 +1421,7 @@ const AiCreator: FC<Props> = ({ close, fetchQuestions }: Props) => {
                                 <div className={styles.criteriaValues}>
                                   <div>
                                     <label
-                                      style={{ color: 'var(--green-3)' }}
+                                      style={{ color: 'var(--verde-3)' }}
                                     >
                                       Max
                                     </label>

@@ -182,10 +182,10 @@ const ExamPage = () => {
       <Tooltip {...props} arrow classes={{ popper: className }} />
     ))(() => ({
       [`& .${tooltipClasses.arrow}`]: {
-        color: 'var(--green-1)',
+        color: 'var(--verde-1)',
       },
       [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: 'var(--green-1)',
+        backgroundColor: 'var(--verde-1)',
         width: 200,
         fontSize: 10,
       },
@@ -349,7 +349,7 @@ const ExamPage = () => {
             >
               {deleteLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--green-1)' }} />
+                  <CircularProgress style={{ color: 'var(--verde-1)' }} />
                 </div>
               ) : (
                 <div className={styles.deleteModalContent}>
@@ -395,7 +395,7 @@ const ExamPage = () => {
             >
               {switchStatusLoading ? (
                 <div className="loadingContainer">
-                  <CircularProgress style={{ color: 'var(--green-1)' }} />
+                  <CircularProgress style={{ color: 'var(--verde-1)' }} />
                 </div>
               ) : (
                 <div className={styles.switchStatusModalContent}>

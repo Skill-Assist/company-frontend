@@ -1,0 +1,127 @@
+.examInfo {
+  position: relative;
+  padding: 0 8rem 4rem;
+
+  opacity: 1;
+  max-height: 11rem;
+  overflow-y: hidden;
+  transition: all 1000ms ease;
+
+  border-radius: 0rem 0rem 4rem 4rem;
+  background: var(--background-light);
+  box-shadow: 0rem 1.1rem 3rem -2.7rem var(--verde-1);
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 50%;
+
+    li {
+      display: flex;
+      align-items: center;
+      color: var(--cinza-4);
+      white-space: nowrap;
+
+      span {
+        color: var(--verde-1);
+        font-weight: 500;
+        margin-left: 1rem;
+      }
+    }
+  }
+}
+
+.open {
+  margin-top: 1.5rem;
+  max-height: 100rem;
+  opacity: 1;
+  transition: all 1000ms ease;
+}
+
+.firstRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+
+.statusContainer {
+  display: flex;
+  flex-direction: column;
+  width: 26rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    p {
+      color: #000;
+      font-weight: 500;
+
+      span {
+        color: var(--verde-2);
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.secondRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  transition: 500ms;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--cinza-4);
+    max-width: 50%;
+
+    span {
+      color: var(--verde-1);
+      font-weight: 500;
+    }
+  }
+}
+
+.buttonsRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 3rem;
+
+  button {
+    color: var(--white);
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0.4rem 0.4rem 2.5rem 0rem rgba(40, 89, 67, 0.25);
+  }
+}
+
+.arrowIconBx {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 2.7rem !important;
+    fill: rgba(0, 0, 0, 0.54) !important;
+    cursor: pointer;
+  }
+}

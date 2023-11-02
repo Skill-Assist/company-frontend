@@ -31,7 +31,7 @@
       transition: 300ms;
 
       &:focus {
-        border-color: var(--green-1);
+        border-color: var(--verde-1);
       }
     }
   }
@@ -44,7 +44,7 @@
     padding: 6px 20px;
     width: min-content;
     border-radius: 8px;
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     color: var(--white);
     font-weight: 600;
     transition: 300ms;

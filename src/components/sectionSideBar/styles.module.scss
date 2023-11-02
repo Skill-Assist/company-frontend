@@ -23,7 +23,7 @@
     transform: 300ms;
 
     &:hover {
-      fill: var(--green-1);
+      fill: var(--verde-1);
       scale: 1.05;
     }
   }
@@ -96,7 +96,7 @@
   cursor: text;
 
   &:hover, &:focus {
-    border-color: var(--green-1);
+    border-color: var(--verde-1);
   }
 }
 
@@ -114,7 +114,7 @@
   transition: 300ms;
 
   &:hover input ~ .checkmark {
-    background-color: var(--green-3);
+    background-color: var(--verde-3);
   }
 
   input {
@@ -126,7 +126,7 @@
     width: 0;
 
     &:checked ~ .checkmark {
-      background-color: var(--green-1);
+      background-color: var(--verde-1);
     }
 
     &:checked ~ .checkmark:after {
@@ -176,13 +176,13 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--white);
-    background-color: var(--green-1);
+    background-color: var(--verde-1);
     margin-right: 15px;
     transition: 300ms;
     cursor: pointer;
 
     &:hover {
-      background-color: var(--green-3);
+      background-color: var(--verde-3);
     }
 
     &:disabled {

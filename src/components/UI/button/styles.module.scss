@@ -29,12 +29,30 @@
     background-color: var(--bg-disabled);
     color: var(--font-disabled);
     font-weight: 400;
+
+    &:hover{
+      background-color: var(--bg-disabled);
+    }
   }
 }
 
 .confirm {
-  background-color: var(--green-1);
-  color: var(--white)!important;
+  background-color: var(--verde-1);
+  color: var(--white) !important;
+
+  &:hover,
+  &:active {
+    background-color: var(--btn-hover-confirm);
+  }
+}
+
+.bigConfirm {
+  background-color: var(--verde-1);
+  color: var(--white) !important;
+  width: 22rem!important;
+  height: 6rem!important;
+  font-size: 2rem;
+  font-weight: 400;
 
   &:hover,
   &:active {
@@ -77,8 +95,8 @@
 }
 
 .action1 {
-  background-color: var(--green-3);
-  color: var(--green-1);
+  background-color: var(--verde-3);
+  color: var(--verde-1);
   font-weight: 500;
   font-size: 2rem;
 
@@ -89,7 +107,7 @@
 }
 
 .action2 {
-  background-color: var(--green-2);
+  background-color: var(--verde-2);
   color: var(--white);
   font-weight: 400;
 
@@ -114,7 +132,7 @@
 .action4 {
   background-color: var(--white);
   color: var(--cinza-4);
-  border: 1px solid rgba(255, 69, 69, 0.70);
+  border: 1px solid rgba(255, 69, 69, 0.7);
   font-weight: 400;
 
   &:hover,

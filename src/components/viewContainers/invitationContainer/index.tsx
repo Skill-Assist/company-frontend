@@ -203,7 +203,7 @@ const InvitationContainer = () => {
         return (
           <p
             style={{
-              backgroundColor: 'var(--green-3)',
+              backgroundColor: 'var(--verde-3)',
               color: 'var(--white)',
             }}
             className={styles.status}
@@ -458,7 +458,7 @@ const InvitationContainer = () => {
                             }}
                             type="button"
                           >
-                            <GiNotebook fill="var(--green-3)" size={25} />
+                            <GiNotebook fill="var(--verde-3)" size={25} />
                           </button>
                         </Tooltip>
                         <Tooltip
@@ -479,7 +479,7 @@ const InvitationContainer = () => {
                             }}
                             type="button"
                           >
-                            <AiOutlineSend fill="var(--green-1)" size={25} />
+                            <AiOutlineSend fill="var(--verde-1)" size={25} />
                           </button>
                         </Tooltip>
                       </div>

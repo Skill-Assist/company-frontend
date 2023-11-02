@@ -48,23 +48,23 @@
   }
 
   &::-webkit-scrollbar {
-    width: 0.4rem;
+    width: 0.5rem;
   }
-
+  
   /* Track */
   &::-webkit-scrollbar-track {
-    border-radius: 1rem;
+    border-radius: 0.2rem;
   }
-
+  
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: var(--green-1);
-    border-radius: 1rem;
+    background: var(--green-2);
+    border-radius: 0.2rem;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--green-3);
+    background: var(--green-1);
   }
 }
 

@@ -1,12 +1,10 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { BsFillTrashFill } from 'react-icons/bs';
 import Image from 'next/image';
 
-import Plus from '@public/icons/mui/plus.svg';
-import DisablePlus from '@public/icons/mui/disablePlus.svg';
+import Plus from '@public/icons/fa/plus.svg';
+import DisablePlus from '@public/icons/fa/disablePlus.svg';
 
 // import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
 import Button from '@/components/UI/button';
@@ -83,18 +81,17 @@ const SectionsContainer: FC<Props> = ({
     }[]
   >();
 
-  useEffect(() => {
-    if (!sections || sections.length === 0) {
-      console.log('oi');
-      fetchSectionsSuggestions(
-        examId.toString(),
-        setSectionsSuggestions,
-        setSuggestionsLoading
-      );
-    } else {
-      setSectionsSuggestions(undefined);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!sections || sections.length === 0) {
+  //     fetchSectionsSuggestions(
+  //       examId.toString(),
+  //       setSectionsSuggestions,
+  //       setSuggestionsLoading
+  //     );
+  //   } else {
+  //     setSectionsSuggestions(undefined);
+  //   }
+  // }, []);
 
   return (
     <div className={styles.container}>

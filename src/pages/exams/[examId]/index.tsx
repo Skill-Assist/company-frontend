@@ -40,6 +40,7 @@ const ExamPage = () => {
 
   const [open, setOpen] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSetupSectionModal, setShowSetupSectionModal] = useState(true);
   const [switchStatusModal, setSwitchStatusModal] = useState(false);
 
   const router = useRouter();
@@ -51,6 +52,7 @@ const ExamPage = () => {
       const response = await examService.getOwnExam(examId);
 
       if (response.status >= 200 && response.status < 300) {
+        console.log(response.data);
         setExamData(response.data);
         localStorage.setItem(
           'exameName',
@@ -103,6 +105,7 @@ const ExamPage = () => {
   };
 
   const switchStatus = async () => {
+    setSwitchStatusLoading(true);
     const examId = router.query.examId;
 
     if (examId && typeof examId === 'string') {
@@ -129,6 +132,38 @@ const ExamPage = () => {
 
   useEffect(() => {
     fetchOwnExam();
+  }, []);
+
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async (count: number) => {
+      try {
+        const response = await fetch('http://127.0.0.1:80/api/v1/health');
+        if (response.ok) {
+          const jsonData = await response.json();
+          setData((prevData) => [...prevData, jsonData]);
+          console.log('data', data);
+          console.log('jsonData', jsonData);
+        } else {
+          console.error('Erro na chamada da API');
+        }
+      } catch (error) {
+        console.error('Erro na chamada da API', error);
+      }
+
+      if (count < 10) {
+        // Chama a próxima chamada após um atraso (por exemplo, 1000 ms)
+        setTimeout(() => fetchData(count + 1), 1000);
+      } else {
+        // Todas as chamadas à API foram concluídas
+        setIsLoading(false);
+      }
+    };
+
+    // Inicia a primeira chamada à API
+    fetchData(1);
   }, []);
 
   if (pageLoading) {
@@ -173,7 +208,7 @@ const ExamPage = () => {
         <Layout sidebar header goBack>
           <div className={styles.container}>
             <header>
-              <h1>
+              <h1 onClick={() => console.log(data)}>
                 Teste{' '}
                 <span>
                   "
@@ -244,7 +279,7 @@ const ExamPage = () => {
                         <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                       ) : (
                         <CloseRoundedIcon
-                          style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                          style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                         />
                       )}{' '}
                       O candidato receberá feedback do teste.
@@ -253,7 +288,7 @@ const ExamPage = () => {
                       {examData.isPublic ? (
                         <CheckRoundedIcon style={{ color: 'var(--azul-1)' }} />
                       ) : (
-                        <CloseRoundedIcon style={{ color: '#ff4545b2' }} />
+                        <CloseRoundedIcon style={{ color: 'var(--vermelho-1)', opacity: 0.7 }} />
                       )}{' '}
                       O teste não será adicionado ao banco de testes.
                     </li>
@@ -272,7 +307,7 @@ const ExamPage = () => {
                 <div className={styles.buttonsRow}>
                   <Button
                     type="button"
-                    actionType='delete'
+                    actionType="delete"
                     onClick={() => setShowDeleteModal(true)}
                     dimensions={{ width: '125px', height: ' 41px' }}
                   >
@@ -280,7 +315,7 @@ const ExamPage = () => {
                   </Button>
                   <Button
                     type="link"
-                    actionType='edit'
+                    actionType="edit"
                     url={`/exams/edit/${examData.id}`}
                     dimensions={{ width: '106px', height: ' 41px' }}
                   >
@@ -364,14 +399,14 @@ const ExamPage = () => {
                   <div>
                     <Button
                       type="button"
-                      actionType='cancel'
+                      actionType="cancel"
                       onClick={() => setShowDeleteModal(false)}
                     >
                       Cancelar
                     </Button>
                     <Button
                       type="button"
-                      actionType='delete'
+                      actionType="delete"
                       onClick={deleteHandler}
                     >
                       Excluir
@@ -442,7 +477,7 @@ const ExamPage = () => {
                         </li>
                         <li>
                           <CloseRoundedIcon
-                            style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                            style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                           />
                           <p>
                             Não será mais possível
@@ -453,7 +488,7 @@ const ExamPage = () => {
                         </li>
                         <li>
                           <CloseRoundedIcon
-                            style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                            style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                           />
                           <p>
                             Não será possível retornar ao status
@@ -466,7 +501,7 @@ const ExamPage = () => {
                       <ul>
                         <li>
                           <CloseRoundedIcon
-                            style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                            style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                           />
                           <p>
                             O teste <span>não</span> estará mais{' '}
@@ -476,7 +511,7 @@ const ExamPage = () => {
                         </li>
                         <li>
                           <CloseRoundedIcon
-                            style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                            style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                           />
                           <p>
                             Não será mais possível <span>convidar</span> novos
@@ -517,7 +552,7 @@ const ExamPage = () => {
                         </li>
                         <li>
                           <CloseRoundedIcon
-                            style={{ color: 'rgba(255, 69, 69, 0.7)' }}
+                            style={{ color: 'var(--vermelho-1)', opacity: 0.7 }}
                           />
                           <p>
                             Ainda <span>não</span> será possível{' '}
@@ -579,14 +614,14 @@ const ExamPage = () => {
                       <div className={styles.actions}>
                         <Button
                           type="button"
-                          actionType='cancel'
+                          actionType="cancel"
                           onClick={() => setSwitchStatusModal(false)}
                         >
                           Cancelar
                         </Button>
                         <Button
                           type="button"
-                          actionType='confirm'
+                          actionType="confirm"
                           onClick={switchStatus}
                           disabled={!isAgree}
                         >
@@ -602,7 +637,7 @@ const ExamPage = () => {
                     <div className={styles.actions}>
                       <Button
                         type="button"
-                        actionType='confirm'
+                        actionType="confirm"
                         onClick={() => setSwitchStatusModal(false)}
                       >
                         Entendi
@@ -610,6 +645,24 @@ const ExamPage = () => {
                     </div>
                   )}
                 </div>
+              )}
+            </Modal>
+          )}
+          {showSetupSectionModal && (
+            <Modal
+              handleClose={() => setShowSetupSectionModal(false)}
+              dimensions={{
+                width: '744px',
+                height: '476px',
+              }}
+              sidebarOn
+            >
+              {false ? (
+                <div className="loadingContainer">
+                  <CircularProgress style={{ color: 'var(--green-1)' }} />
+                </div>
+              ) : (
+                <div>Olaaaa</div>
               )}
             </Modal>
           )}

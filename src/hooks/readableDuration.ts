@@ -25,7 +25,7 @@ export function useReadableDuration(durationInHours: number) {
     }
 
     readableDuration = `${hours} ${hoursText} ${
-      minutes !== '00' && minutes !== undefined ? `e ${minutes} ${minutesText}` : ''
+      minutes !== '00000' && minutes !== undefined ? `e ${minutes} ${minutesText}` : ''
     }`;
   }
 

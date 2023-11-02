@@ -13,7 +13,7 @@ interface Props {
 
 const SectionCard: FC<Props> = ({ section, index, examId }: Props) => {
   return (
-    <div className={styles.section}>
+    <Link href={`/exams/${examId}/${section.id}`} className={styles.section}>
       <div className={styles.cardHeader}>
         <h3>Seção {index + 1}</h3>
       </div>
@@ -46,7 +46,7 @@ const SectionCard: FC<Props> = ({ section, index, examId }: Props) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: auto;
 
   header {
     h1 {
@@ -361,6 +362,7 @@
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
+
 .stroke {
   display: flex;
   align-items: center;

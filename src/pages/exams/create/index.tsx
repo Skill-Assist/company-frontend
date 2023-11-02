@@ -75,7 +75,7 @@ const CreateExam: FC = () => {
 
   const prevJobLevel = useRef('');
 
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const [examCreatedData, setExamCreatedData] = useState<Exam>();
 

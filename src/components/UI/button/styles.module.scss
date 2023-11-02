@@ -44,8 +44,8 @@
 
 .cancel {
   background-color: var(--white);
-  color: var(--cinza-4); // Ou #627179 ?
-  border: 1px solid var(--cinza-4); // Ou #627179 ?
+  color: var(--cinza-4);
+  border: 1px solid var(--cinza-4);
 
   &:hover,
   &:active {
@@ -80,6 +80,7 @@
   background-color: var(--green-3);
   color: var(--green-1);
   font-weight: 500;
+  font-size: 2rem;
 
   &:hover,
   &:active {

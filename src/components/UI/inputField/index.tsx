@@ -15,6 +15,7 @@ interface Props {
   value?: string | number;
   counter?: boolean;
   innerText?: string;
+  labelBgColor?: string;
 }
 
 const InputField: FC<Props> = ({
@@ -30,6 +31,7 @@ const InputField: FC<Props> = ({
   value,
   counter,
   innerText,
+  labelBgColor
 }: Props) => {
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newTime = event.target.value;
@@ -52,7 +54,7 @@ const InputField: FC<Props> = ({
 
   return (
     <div className={styles.field}>
-      <label htmlFor={label}>
+      <label htmlFor={label} style={labelBgColor ? {background: labelBgColor} : {}}>
         {label} <span>{required && '*'}</span>
       </label>
 

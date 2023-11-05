@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from 'react';
+import { FC, FormEvent, RefObject, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
@@ -6,11 +6,10 @@ import Image from 'next/image';
 import Plus from '@public/icons/fa/plus.svg';
 import DisablePlus from '@public/icons/fa/disablePlus.svg';
 
-// import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
 import Button from '@/components/UI/button';
 import SectionForm from '@/components/sectionForm';
 import SectionCard from '@/components/sectionCard';
-import SectionsContainerPlaceholder from '@/components/placeholders/sectionsContainerPlaceholder';
+import NoContentPlaceholder from '@/components/placeholders/noContentPlaceholder';
 import Modal from '@/components/modal';
 
 import sectionService from '@/services/sectionService';
@@ -50,7 +49,7 @@ const fetchSectionsSuggestions = async (
   isTestSection: boolean,
   setSectionsSuggestions: (value: Section[]) => void,
   setSuggestionsLoading: (value: boolean) => void,
-  setShowSetupSectionModal: (value: boolean) => void
+  setShowSetupTestModal: (value: boolean) => void
 ) => {
   if (!isProjectSection && !isTestSection) {
     toast.error('Selecione pelo menos um tipo de seção', {
@@ -77,7 +76,7 @@ const fetchSectionsSuggestions = async (
   //   });
   //   setSuggestionsLoading(false);
   // }
-  setShowSetupSectionModal(false);
+  setShowSetupTestModal(false);
 };
 
 const SectionsContainer: FC<Props> = ({
@@ -87,7 +86,8 @@ const SectionsContainer: FC<Props> = ({
   onCreateSection,
   headerOpen,
 }: Props) => {
-  const [newSection, setNewSection] = useState(false);
+  const [newSection, setNewSection] = useState<'' | 'project' | 'test'>('');
+  const [isBtnDropdownOpen, setIsBtnDropdownOpen] = useState(false);
 
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [sectionsSuggestions, setSectionsSuggestions] = useState<
@@ -97,7 +97,7 @@ const SectionsContainer: FC<Props> = ({
     }[]
   >();
 
-  const [showSetupSectionModal, setShowSetupSectionModal] = useState(
+  const [showSetupTestModal, setShowSetupTestModal] = useState(
     !sections || sections.length === 0 ? true : false
   );
 
@@ -116,6 +116,24 @@ const SectionsContainer: FC<Props> = ({
       fontSize: 10,
     },
   }));
+
+  const useOutsideAlerter = (ref: RefObject<HTMLDivElement>) => {
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          setIsBtnDropdownOpen(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  };
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useOutsideAlerter(wrapperRef);
 
   return (
     <>
@@ -144,9 +162,9 @@ const SectionsContainer: FC<Props> = ({
                     : ''
                 }
               >
-                <span>
+                <div style={{ position: 'relative' }} ref={wrapperRef}>
                   <Button
-                    onClick={() => setNewSection(true)}
+                    onClick={() => setIsBtnDropdownOpen(true)}
                     actionType="action2"
                     type="button"
                     dimensions={{ width: '25rem!important', height: '5rem' }}
@@ -199,7 +217,28 @@ const SectionsContainer: FC<Props> = ({
                       Criar nova seção
                     </div>
                   </Button>
-                </span>
+                  <div
+                    className={`${styles.dropdownMenu} ${
+                      isBtnDropdownOpen ? styles.open : styles.closed
+                    }`}
+                  >
+                    <ul>
+                      <li>
+                        <button onClick={() => setNewSection('project')}>
+                          <p>Seção Projeto</p>
+                          <p>Questão desafio</p>
+                          {true && <span>Já existe uma seção projeto.</span>}
+                        </button>
+                      </li>
+                      <li>
+                        <button onClick={() => setNewSection('test')}>
+                          <p>Seção Prova</p>
+                          <p>Questão Objetiva, Discursiva e Programação.</p>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </StyledTooltip>
             </div>
           </div>
@@ -240,7 +279,7 @@ const SectionsContainer: FC<Props> = ({
               )}
 
               {/* FORMULÁRIO DE NOVA SECTION */}
-              {!suggestionsLoading && newSection && (
+              {!suggestionsLoading && newSection !== '' && (
                 <motion.div
                   variants={dropIn}
                   initial="hidden"
@@ -253,6 +292,7 @@ const SectionsContainer: FC<Props> = ({
                     examDuration={examDuration}
                     examId={examId}
                     sections={sections}
+                    sectionType={newSection}
                     onCreateSection={onCreateSection}
                     setNewSection={setNewSection}
                   />
@@ -289,6 +329,7 @@ const SectionsContainer: FC<Props> = ({
                     </motion.div>
                   );
                 })}
+
               {/* PLACEHOLDER */}
               {!suggestionsLoading &&
                 !newSection &&
@@ -301,8 +342,13 @@ const SectionsContainer: FC<Props> = ({
                     animate="visible"
                     exit="exit"
                   >
-                    <SectionsContainerPlaceholder
-                      onClick={() => setNewSection(true)}
+                    <NoContentPlaceholder
+                      onClick={() => setNewSection('test')}
+                      title="Ainda não existem seções para o seu teste..."
+                      description="Para começar a criar seu teste, é necessário que você crie pelo menos
+                      1 seção. As seções são etapas do teste e representam um conjunto
+                      organizado de questões. Ah, e você pode criar quantas seções quiser!"
+                      buttonText="Criar seção"
                     />
                   </motion.div>
                 )}
@@ -311,7 +357,7 @@ const SectionsContainer: FC<Props> = ({
         </div>
       </div>
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-        {showSetupSectionModal && (
+        {showSetupTestModal && (
           <Modal
             handleClose={() => {}}
             dimensions={{
@@ -319,7 +365,6 @@ const SectionsContainer: FC<Props> = ({
               height: '769px',
             }}
             sidebarOn
-            closeIcon
           >
             {false ? (
               <div className="loadingContainer">
@@ -411,7 +456,7 @@ const SectionsContainer: FC<Props> = ({
                       isTestSection,
                       setSectionsSuggestions,
                       setSuggestionsLoading,
-                      setShowSetupSectionModal
+                      setShowSetupTestModal
                     )
                   }
                   type="button"

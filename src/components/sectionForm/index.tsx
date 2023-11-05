@@ -13,6 +13,7 @@ import sectionService from '@/services/sectionService';
 import { Section } from '@/types/section';
 
 import styles from './styles.module.scss';
+import { useReadableDuration } from '@/hooks/readableDuration';
 
 interface Props {
   sectionIndex: number;
@@ -29,6 +30,7 @@ interface Props {
   }[];
   setSectionsSuggestions?: (value: any) => void;
   setNewSection?: (value: any) => void;
+  sectionType?: string;
 }
 
 const SectionForm: FC<Props> = ({
@@ -43,6 +45,7 @@ const SectionForm: FC<Props> = ({
   sectionsSuggestions,
   setSectionsSuggestions,
   setNewSection,
+  sectionType,
 }: Props) => {
   const [isSuggestionSection, setIsSuggestionSection] = useState(
     isSuggestion || false
@@ -94,8 +97,11 @@ const SectionForm: FC<Props> = ({
     setRemainingDuration(examDuration - totalDuration);
   }, [sectionWeight, sectionDuration, sections, examDuration]);
 
+  const readableRemaningHours = useReadableDuration(remainingDuration);
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log('SUBMIT')
 
     setCreatingSectionLoading(true);
 
@@ -109,6 +115,7 @@ const SectionForm: FC<Props> = ({
       description: sectionDescription,
       weight: sectionWeight / 100,
       durationInHours: sectionDurationConverted,
+      // type: sectionType,
     };
 
     const response = await sectionService.createSection(examId, newSection);
@@ -121,6 +128,8 @@ const SectionForm: FC<Props> = ({
       deleteSuggestion(sectionIndex);
       setCreatingSectionLoading(false);
       onCreateSection();
+      if (!setNewSection) return;
+      setNewSection('');
     } else {
       toast.error('Erro ao criar seção', {
         duration: 3000,
@@ -153,7 +162,7 @@ const SectionForm: FC<Props> = ({
 
   const deleteSection = async () => {
     if (!setNewSection) return;
-    setNewSection(false);
+    setNewSection('');
     cleanHandler();
   };
 
@@ -166,13 +175,17 @@ const SectionForm: FC<Props> = ({
       ) : (
         <>
           <div className={styles.cardHeader}>
-            <h3>Nova seção - Seção {sectionIndex + 1}</h3>
+            <h3>
+              Nova seção {sectionType === 'project' ? 'projeto' : 'prova'} -
+              Seção {sectionIndex + 1}
+            </h3>
             <button onClick={cleanHandler}>Limpar informações</button>
           </div>
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} id="createSectionForm">
             <div className={styles.formsContent}>
               <div className={styles.firstRow}>
                 <InputField
+                  labelBgColor="#eff0ef"
                   key={`sectionName-${inputKey}`}
                   label="Nome da seção"
                   required
@@ -180,14 +193,15 @@ const SectionForm: FC<Props> = ({
                   counter
                   min={3}
                   max={30}
-                  value={sectionName[0].toUpperCase() + sectionName.slice(1)}
+                  value={sectionName ? sectionName[0].toUpperCase() + sectionName.slice(1) : sectionName}
                   setState={setSectionName}
                 />
                 <InputField
+                  labelBgColor="#eff0ef"
                   key={`sectionWeight-${inputKey}`}
                   label="Peso da seção (%)"
                   type="number"
-                  max={sectionWeight + remainingWeight * 100}
+                  max={100}
                   min={1}
                   value={sectionWeight}
                   setState={setSectionWeight}
@@ -197,31 +211,23 @@ const SectionForm: FC<Props> = ({
                   helperText="Peso da seção em relação ao teste inteiro."
                 />
                 <InputField
+                  labelBgColor="#eff0ef"
                   key={`sectionDuration-${inputKey}`}
                   label="Duração (horas : minutos)"
                   type="time"
-                  max={Number(
-                    (
-                      Number(sectionDuration.split(':')[0]) +
-                      Number(sectionDuration.split(':')[1]) / 60 +
-                      remainingDuration
-                    ).toFixed(2)
-                  )}
+                  max={examDuration}
                   min={1}
                   value={sectionDuration}
                   setState={setSectionDuration}
                   innerText={`${
                     Math.floor(remainingDuration) !== 1 ? 'restam' : 'resta'
-                  } ${Math.floor(remainingDuration)} hora${
-                    Math.floor(remainingDuration) !== 1 ? 's' : ''
-                  } e ${((remainingDuration % 1) * 60).toFixed(0)} minuto${
-                    +((remainingDuration % 1) * 60).toFixed(0) !== 1 ? 's' : ''
-                  }`}
+                  } ${remainingDuration > 0 ? readableRemaningHours : '0 horas'}`}
                   helperText="Tempo disponível para responder à seção, considerando a duração total do teste."
                 />
               </div>
               <div>
                 <InputField
+                  labelBgColor="#eff0ef"
                   key={`sectionDescription-${inputKey}`}
                   label="Descrição da seção"
                   required
@@ -263,6 +269,7 @@ const SectionForm: FC<Props> = ({
               </Button>
               <Button
                 type="submit"
+                form="createSectionForm"
                 actionType="action3"
                 dimensions={
                   isSuggestionSection

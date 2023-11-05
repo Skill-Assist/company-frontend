@@ -71,7 +71,7 @@
   width: 2rem;
   height: 3rem;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1;
   transition: 300ms;
 
   &:hover {
@@ -151,7 +151,6 @@
     height: 17.6rem;
   }
 }
-
 
 .deleteModalContent {
   text-align: center;

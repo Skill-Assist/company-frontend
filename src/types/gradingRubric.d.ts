@@ -1,4 +1,5 @@
 export type GradingRubric = {
+  open: boolean;
   criteria: {
     title: string;
     total_points: number;

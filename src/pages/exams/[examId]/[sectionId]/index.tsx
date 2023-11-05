@@ -31,7 +31,7 @@ import styles from './styles.module.scss';
 import sectionService from '@/services/sectionService';
 import { Section } from '@/types/section';
 
-const ExamPage = () => {
+const SectionPage = () => {
   const [pageLoading, setPageLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [switchStatusLoading, setSwitchStatusLoading] = useState(false);
@@ -330,6 +330,7 @@ const ExamPage = () => {
               examId={examData.id}
               headerOpen={open}
               fetchOwnSection={fetchOwnSection}
+              sectionData={sectionData}
             />
           </div>
         </Layout>
@@ -622,4 +623,4 @@ const ExamPage = () => {
   }
 };
 
-export default ExamPage;
+export default SectionPage;

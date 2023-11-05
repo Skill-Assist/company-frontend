@@ -177,9 +177,8 @@ const SectionCard: FC<Props> = ({
         {!isEditing && (
           <div
             className={styles.cardOptions}
-            onClick={() => setIsDropdownOpen((prevState) => !prevState)}
           >
-            <div>
+            <div onClick={() => setIsDropdownOpen((prevState) => !prevState)}>
               <Image src={Options} alt="options" />
             </div>
             <div

@@ -1,0 +1,183 @@
+.card {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid rgb(40, 89, 67, 0.3);
+  background: var(--creating_bg);
+  padding: 2.4rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h1 {
+    color: var(--verde-1);
+    font-size: 2.2rem;
+    font-weight: 600;
+  }
+
+  svg {
+    font-size: 2.7rem !important;
+    fill: rgba(0, 0, 0, 0.54) !important;
+    cursor: pointer;
+  }
+}
+
+.openedContent {
+  h2 {
+    color: var(--verde-1);
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin: 1rem 0;
+  }
+}
+
+.open {
+  max-height: 1000rem !important;
+  opacity: 1;
+  transition: all 1000ms ease;
+}
+
+.gradingRubricContainer {
+  position: relative;
+
+  opacity: 1;
+  max-height: 0rem;
+  overflow-y: hidden;
+  transition: all 1000ms ease;
+
+  h1 {
+    color: var(--verde-1);
+    font-size: 2.2;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.gradingRubricHeader {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.gradingRubricCard {
+  border-radius: 1rem;
+  background: var(--primary-background);
+  padding: 3.7rem 3.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.gradingRubricCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h3 {
+    color: var(--verde-1);
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  svg {
+    font-size: 2.7rem !important;
+    fill: rgba(0, 0, 0, 0.54) !important;
+    cursor: pointer;
+  }
+}
+
+.gradingRubricForm {
+  position: relative;
+  opacity: 1;
+  max-height: 0rem;
+  overflow-y: hidden;
+  transition: all 1000ms ease;
+
+  h4 {
+    color: var(--verde-1);
+    font-size: 2rem;
+    font-weight: 500;
+  }
+}
+
+.gradingRubricTitleWeightContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+
+.criteriaContainer {
+  margin: 2rem 0;
+}
+
+.criteriaCategory {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.6rem;
+
+  p {
+    color: var(--preto);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 150%;
+  }
+}
+
+.criteriaValues {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+
+  p {
+    color: var(--preto);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 150%;
+
+    span {
+      font-weight: 500;
+    }
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid var(--preto);
+    margin: 0 0.5rem;
+    width: 5rem;
+    background-color: transparent;
+    text-align: center;
+    color: var(--preto);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 150%;
+    transform: translateY(-0.6rem);
+  }
+}
+
+.criteriaInput {
+  p {
+    color: var(--preto);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 150%;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2.2rem;
+}

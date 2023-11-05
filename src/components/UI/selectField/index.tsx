@@ -10,6 +10,7 @@ interface Props {
   value?: string;
   options: string[];
   onChange: (value: string) => void;
+  labelBgColor?: string;
 }
 
 const SelectField: FC<Props> = ({
@@ -18,12 +19,16 @@ const SelectField: FC<Props> = ({
   value,
   options,
   onChange,
+  labelBgColor,
 }: Props) => {
   const selectRef = useRef<HTMLSelectElement>(null);
   return (
     <div className={styles.field}>
       {label && (
-        <label htmlFor={label}>
+        <label
+          htmlFor={label}
+          style={labelBgColor ? { background: labelBgColor } : {}}
+        >
           {label} <span>{required && '*'}</span>
         </label>
       )}
@@ -51,6 +56,7 @@ const SelectField: FC<Props> = ({
         height={34}
         width={34}
         alt="arrowDownIcon"
+        style={label ? { top: '3.3rem' } : { top: '1.5rem' }}
       />
     </div>
   );

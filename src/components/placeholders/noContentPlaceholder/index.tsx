@@ -8,18 +8,24 @@ import Button from '@/components/UI/button';
 
 interface Props {
   onClick: () => void;
+  title: string;
+  description: string;
+  buttonText: string;
 }
 
-const SectionsContainerPlaceholder: FC<Props> = ({ onClick }: Props) => {
+const NoContentPlaceholder: FC<Props> = ({
+  onClick,
+  title,
+  description,
+  buttonText,
+}: Props) => {
   return (
     <div className={styles.container}>
       <Lottie animationData={LookingMan} className={styles.view} />
       <div className={styles.content}>
-        <h1>Ainda não existem seções para o seu teste...</h1>
+        <h1>{title}</h1>
         <p>
-          Para começar a criar seu teste, é necessário que você crie pelo menos
-          1 seção. As seções são etapas do teste e representam um conjunto
-          organizado de questões. Ah, e você pode criar quantas seções quiser!
+          {description}
           <br />
           <br />
           <span>Vamos começar a criar?</span>
@@ -28,14 +34,13 @@ const SectionsContainerPlaceholder: FC<Props> = ({ onClick }: Props) => {
           type="button"
           dimensions={{ width: '260px', height: '60px' }}
           onClick={onClick}
-          actionType='confirm'
-          
+          actionType="confirm"
         >
-          Criar seção
+          {buttonText}
         </Button>
       </div>
     </div>
   );
 };
 
-export default SectionsContainerPlaceholder;
+export default NoContentPlaceholder;

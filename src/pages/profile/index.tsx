@@ -1,27 +1,27 @@
-import { FormEvent, useRef, useState, useEffect, ChangeEvent } from 'react';
-import cookie from 'react-cookies';
-import Image from 'next/image';
-import InputMask from 'react-input-mask';
-import { toast } from 'react-hot-toast';
-import { TailSpin, ThreeDots } from 'react-loader-spinner';
-import { BiPencil } from 'react-icons/bi';
+import { FormEvent, useRef, useState, useEffect, ChangeEvent } from "react";
+import cookie from "react-cookies";
+import Image from "next/image";
+import InputMask from "react-input-mask";
+import { toast } from "react-hot-toast";
+import { TailSpin, ThreeDots } from "react-loader-spinner";
+import { BiPencil } from "react-icons/bi";
 
-import Layout from '@/components/layout';
+import Layout from "@/components/layout";
 
-import userService from '@/services/userService';
+import userService from "@/services/userService";
 
-import { User } from '@/types/user';
+import { User } from "@/types/user";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 const Profile = () => {
   const [user, setUser] = useState<User>();
   const [pageLoading, setPageLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [nationalId, setNationalId] = useState('');
-  const [mobilePhone, setMobilePhone] = useState('');
+  const [nationalId, setNationalId] = useState("");
+  const [mobilePhone, setMobilePhone] = useState("");
   const [selectedFile, setSelectedFile] = useState<File>();
-  const [logo, setLogo] = useState('');
+  const [logo, setLogo] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -34,9 +34,9 @@ const Profile = () => {
     const email = emailInputRef.current?.value;
 
     if (!name || !email) {
-      toast.error('Preencha todos os campos', {
+      toast.error("Preencha todos os campos", {
         duration: 3000,
-        position: 'top-center',
+        position: "top-center",
       });
       return;
     }
@@ -51,9 +51,9 @@ const Profile = () => {
     const response = await userService.update(data);
 
     if (response.status >= 200 && response.status < 300) {
-      toast.success('Perfil atualizado com sucesso', {
+      toast.success("Perfil atualizado com sucesso", {
         duration: 3000,
-        position: 'top-center',
+        position: "top-center",
       });
       setIsEditing(false);
       return;
@@ -72,29 +72,29 @@ const Profile = () => {
     const formData = new FormData();
 
     if (selectedFile) {
-      formData.append('file', selectedFile);
+      formData.append("file", selectedFile);
     }
 
     const response = await userService.update(formData);
 
     if (response.status >= 200 && response.status < 300) {
       setLogo(response.data.logo);
-      toast.success('Foto atualizada com sucesso', {
+      toast.success("Foto atualizada com sucesso", {
         duration: 3000,
-        position: 'top-center',
+        position: "top-center",
       });
       setIsEditing(false);
     } else {
-      toast.error('Erro ao atualizar foto', {
+      toast.error("Erro ao atualizar foto", {
         duration: 3000,
-        position: 'top-center',
+        position: "top-center",
       });
       setIsEditing(false);
     }
   };
 
   useEffect(() => {
-    const user = localStorage.getItem('skillAssistUser');
+    const user = localStorage.getItem("skillAssistUser");
     if (user) {
       setUser(JSON.parse(user));
       setMobilePhone(JSON.parse(user).mobilePhone);
@@ -121,11 +121,11 @@ const Profile = () => {
       </Layout>
     );
   } else if (!user) {
-    cookie.remove('token');
+    cookie.remove("token");
     toast.error(
-      'Erro de conexão. Verifique sua internet e tente novamente...',
+      "Erro de conexão. Verifique sua internet e tente novamente...",
       {
-        icon: '📶',
+        icon: "📶",
       }
     );
     setTimeout(() => {
@@ -146,7 +146,7 @@ const Profile = () => {
                 <>
                   <BiPencil size={30} className={styles.editIcon} />
                   <Image
-                    src={logo !== '' ? logo : user.logo}
+                    src={logo !== "" ? logo : user.logo}
                     height={100}
                     width={100}
                     alt="profile_picture"
@@ -179,8 +179,8 @@ const Profile = () => {
           <div className={styles.profileIntro}>
             <div>
               <h3>
-                Perfil do{' '}
-                {user.roles[0] === 'candidate' ? 'Candidato' : 'Recrutador'}
+                Perfil do{" "}
+                {user.roles[0] === "candidate" ? "Candidato" : "Recrutador"}
               </h3>
               <p>Atualize suas informações detalhes por aqui</p>
             </div>
@@ -216,14 +216,14 @@ const Profile = () => {
               <InputMask
                 id="nationalId"
                 mask={
-                  user.roles[0] === 'candidate'
-                    ? '999.999.999-99'
-                    : '99.999.999/9999-99'
+                  user.roles[0] === "candidate"
+                    ? "999.999.999-99"
+                    : "99.999.999/9999-99"
                 }
                 placeholder={
-                  user.roles[0] === 'candidate'
-                    ? 'Digite seu CPF'
-                    : 'Digite seu CNPJ'
+                  user.roles[0] === "candidate"
+                    ? "Digite seu CPF"
+                    : "Digite seu CNPJ"
                 }
                 type="text"
                 defaultValue={nationalId}
@@ -251,7 +251,7 @@ const Profile = () => {
                 disabled={!isEditing}
               />
               <input
-                placeholder={'Digite seu email'}
+                placeholder={"Digite seu email"}
                 type="email"
                 defaultValue={user.email}
                 disabled={true}
